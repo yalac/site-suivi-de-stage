@@ -35,7 +35,7 @@ class Users
         return $this->id;
     }
 
-    public function setId(Number $id): static
+    public function setId(?int $id): static
     {
         $this->id = $id;
 
