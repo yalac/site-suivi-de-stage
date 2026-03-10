@@ -228,21 +228,10 @@
             <h2 class="card-title">Inscription</h2>
             <p class="card-caption">Creez un compte pour acceder au site de suivi de stages</p>
 
-<<<<<<< HEAD
-    {{ form_start(registrationForm, { attr: { novalidate: 'novalidate' } }) }}
-        {{ form_row(registrationForm.nom) }}
-        {{ form_row(registrationForm.prenom) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.idRole) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-=======
             {{ form_start(registrationForm, { attr: { novalidate: 'novalidate' } }) }}
                 {% if form_errors(registrationForm) %}
                     <div class="feedback">{{ form_errors(registrationForm) }}</div>
                 {% endif %}
->>>>>>> ed43d66f43798e7c8f76aa78716111f5a764988a
 
                 {{ form_row(registrationForm.nom, {
                     row_attr: { class: 'input-group' },
