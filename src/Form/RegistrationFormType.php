@@ -6,10 +6,12 @@ use App\Entity\Users;
 use App\Entity\Roles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -21,7 +23,16 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
-            ->add('email')
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank(
+                        message: 'Veuillez saisir une adresse e-mail.',
+                    ),
+                    new Email(
+                        message: 'Veuillez saisir une adresse e-mail valide.',
+                    ),
+                ],
+            ])
             ->add('idRole', EntityType::class, [
                 'class' => Roles::class,
                 'choice_label' => 'nom',
