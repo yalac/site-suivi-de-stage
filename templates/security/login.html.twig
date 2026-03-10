@@ -1,38 +1,239 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-deep: #07112a;
+            --bg-mid: #0b1b3f;
+            --card: rgba(8, 20, 47, 0.72);
+            --card-border: rgba(104, 137, 197, 0.28);
+            --text-main: #f2f7ff;
+            --text-soft: #9cafcb;
+            --input-bg: rgba(14, 31, 67, 0.9);
+            --input-border: rgba(99, 131, 192, 0.35);
+            --primary: #4d90e6;
+            --primary-hover: #3c7fd6;
+            --error: #ffd5d5;
+            --error-bg: rgba(141, 31, 56, 0.35);
+            --error-border: rgba(227, 87, 126, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Manrope', 'Segoe UI', sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%),
+                radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%),
+                linear-gradient(165deg, var(--bg-mid) 0%, #081433 46%, var(--bg-deep) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .auth-layout {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .brand-badge {
+            width: min(520px, 95%);
+            margin: 0 auto 1.5rem;
+            padding: 0;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(243, 246, 251, 0.95);
+            overflow: hidden;
+        }
+
+        .brand-badge img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+
+        .app-title {
+            margin: 0;
+            font-size: clamp(2rem, 4.2vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: 0.015em;
+            text-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+        }
+
+        .app-subtitle {
+            margin: 0.45rem 0 0;
+            color: var(--text-soft);
+            font-size: 1.06rem;
+            font-weight: 500;
+        }
+
+        .login-card {
+            margin-top: 2rem;
+            border-radius: 18px;
+            border: 1px solid var(--card-border);
+            background: var(--card);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 22px 60px rgba(3, 10, 24, 0.58);
+            padding: 1.7rem;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.95rem;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .card-caption {
+            margin: 0.4rem 0 1.35rem;
+            color: var(--text-soft);
+            font-size: 1rem;
+        }
+
+        .feedback {
+            margin-bottom: 1rem;
+            padding: 0.8rem 0.95rem;
+            border-radius: 12px;
+            border: 1px solid;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .feedback-error {
+            color: var(--error);
+            border-color: var(--error-border);
+            background: var(--error-bg);
+        }
+
+        .feedback-info {
+            color: #dce8ff;
+            border-color: rgba(88, 124, 190, 0.5);
+            background: rgba(36, 60, 108, 0.35);
+        }
+
+        .input-group {
+            margin-bottom: 1.15rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.42rem;
+            font-size: 0.97rem;
+            font-weight: 600;
+            color: #d5e0f3;
+        }
+
+        .input-group input {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            padding: 0.78rem 0.88rem;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(195, 207, 232, 0.65);
+        }
+
+        .input-group input:focus {
+            border-color: rgba(129, 173, 245, 0.82);
+            box-shadow: 0 0 0 3px rgba(80, 141, 239, 0.22);
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 0.82rem 1rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #f6fbff;
+            background: linear-gradient(180deg, #5ca3f0 0%, var(--primary) 100%);
+            cursor: pointer;
+            margin-top: 0.55rem;
+            transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(180deg, #68adf7 0%, var(--primary-hover) 100%);
+            box-shadow: 0 12px 24px rgba(39, 97, 178, 0.42);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 640px) {
+            .brand-badge {
+                width: 100%;
+            }
+
+            .app-title {
+                font-size: 2.15rem;
+            }
+
+            .login-card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <main class="auth-layout">
+        <section class="brand">
+            <div class="brand-badge">
+                <img src="/images/logo-chataigneraie.png" alt="Campus La Chataigneraie">
             </div>
-        {% endif %}
+            <h1 class="app-title">Suivi de Stages</h1>
+            <p class="app-subtitle">BTS SIO - La Chataigneraie</p>
+        </section>
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+        <section class="login-card">
+            <h2 class="card-title">Connexion</h2>
+            <p class="card-caption">Accedez a l'application de suivi de stages</p>
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
+            <form method="post">
+                {% if error %}
+                    <div class="feedback feedback-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
-            </div>
-        #}
+                {% if app.user %}
+                    <div class="feedback feedback-info">
+                        Connecte en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">deconnexion</a>
+                    </div>
+                {% endif %}
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
+                <div class="input-group">
+                    <label for="username">Identifiant</label>
+                    <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" placeholder="Identifiant" required autofocus>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" name="_password" id="password" autocomplete="current-password" placeholder="Mot de passe" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+                <button class="submit-btn" type="submit">Se connecter</button>
+            </form>
+        </section>
+    </main>
 {% endblock %}
