@@ -8,9 +8,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class InternshipsController extends AbstractController
 {
-    #[Route('/stages', name: 'app_internships')]
-    public function index(): Response
-    {
-        return $this->render('home/internships.html.twig');
-    }
+	#[Route('/stages', name: 'app_internships')]
+	public function index(): Response
+	{
+		return $this->render('home/internships.html.twig');
+	}
 }
+
