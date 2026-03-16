@@ -1,8 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Tableau de bord{% endblock %}
 
 {% block body %}
-    <h1>Accueil</h1>
-    <p>Bienvenue sur le site de suivi de stages.</p>
+    <main style="min-height: 100vh; margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, #0b1b3f 0%, #081433 46%, #07112a 100%); color: #f2f7ff; padding: 2rem 1.5rem;">
+        <section style="max-width: 1200px; margin: 0 auto;">
+            <header style="margin-bottom: 2rem;">
+                <h1 style="margin: 0 0 0.4rem; font-size: clamp(2rem, 3vw, 2.6rem); font-weight: 700;">Tableau de bord</h1>
+                <p style="margin: 0; color: #9cafcb; font-size: 0.98rem;">Suivi des stages - BTS SIO La Chataigneraie</p>
+            </header>
+
+            <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem;">
+                <a href="{{ path('app_students') }}" style="text-decoration: none; color: inherit;">
+                    <article style="border-radius: 14px; padding: 1.1rem 1.2rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.5); box-shadow: 0 16px 40px rgba(3, 10, 24, 0.6); transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;">
+                        <h2 style="margin: 0 0 0.4rem; font-size: 1.1rem; font-weight: 700;">Étudiants</h2>
+                        <p style="margin: 0; color: #9cafcb; font-size: 0.92rem;">Liste des étudiants, affectations et informations de contact.</p>
+                    </article>
+                </a>
+
+                <a href="{{ path('app_companies') }}" style="text-decoration: none; color: inherit;">
+                    <article style="border-radius: 14px; padding: 1.1rem 1.2rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.5); box-shadow: 0 16px 40px rgba(3, 10, 24, 0.6); transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;">
+                        <h2 style="margin: 0 0 0.4rem; font-size: 1.1rem; font-weight: 700;">Entreprises</h2>
+                        <p style="margin: 0; color: #9cafcb; font-size: 0.92rem;">Suivi des entreprises partenaires et tuteurs.</p>
+                    </article>
+                </a>
+
+                <a href="{{ path('app_internships') }}" style="text-decoration: none; color: inherit;">
+                    <article style="border-radius: 14px; padding: 1.1rem 1.2rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.5); box-shadow: 0 16px 40px rgba(3, 10, 24, 0.6); transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;">
+                        <h2 style="margin: 0 0 0.4rem; font-size: 1.1rem; font-weight: 700;">Stages</h2>
+                        <p style="margin: 0; color: #9cafcb; font-size: 0.92rem;">Gestion des conventions, périodes et affectations de stage.</p>
+                    </article>
+                </a>
+
+                <a href="{{ path('app_followup_visits') }}" style="text-decoration: none; color: inherit;">
+                    <article style="border-radius: 14px; padding: 1.1rem 1.2rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.5); box-shadow: 0 16px 40px rgba(3, 10, 24, 0.6); transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;">
+                        <h2 style="margin: 0 0 0.4rem; font-size: 1.1rem; font-weight: 700;">Suivi &amp; visites</h2>
+                        <p style="margin: 0; color: #9cafcb; font-size: 0.92rem;">Organisation des visites, comptes rendus et suivis pédagogiques.</p>
+                    </article>
+                </a>
+
+                <a href="{{ path('app_history') }}" style="text-decoration: none; color: inherit;">
+                    <article style="border-radius: 14px; padding: 1.1rem 1.2rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.5); box-shadow: 0 16px 40px rgba(3, 10, 24, 0.6); transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;">
+                        <h2 style="margin: 0 0 0.4rem; font-size: 1.1rem; font-weight: 700;">Historique</h2>
+                        <p style="margin: 0; color: #9cafcb; font-size: 0.92rem;">Consultation des années précédentes et archivage.</p>
+                    </article>
+                </a>
+            </section>
+        </section>
+    </main>
 {% endblock %}
