@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,6 +34,20 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Roles $idRole = null;
+
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'elevesPrisEnCharge')]
+    private ?self $profReferent = null;
+
+    /**
+     * @var Collection<int, self>
+     */
+    #[ORM\OneToMany(mappedBy: 'profReferent', targetEntity: self::class)]
+    private Collection $elevesPrisEnCharge;
+
+    public function __construct()
+    {
+        $this->elevesPrisEnCharge = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -101,6 +117,47 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdRole(?Roles $idRole): static
     {
         $this->idRole = $idRole;
+
+        return $this;
+    }
+
+    public function getProfReferent(): ?self
+    {
+        return $this->profReferent;
+    }
+
+    public function setProfReferent(?self $profReferent): static
+    {
+        $this->profReferent = $profReferent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getElevesPrisEnCharge(): Collection
+    {
+        return $this->elevesPrisEnCharge;
+    }
+
+    public function addElevesPrisEnCharge(self $eleve): static
+    {
+        if (!$this->elevesPrisEnCharge->contains($eleve)) {
+            $this->elevesPrisEnCharge->add($eleve);
+            $eleve->setProfReferent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeElevesPrisEnCharge(self $eleve): static
+    {
+        if ($this->elevesPrisEnCharge->removeElement($eleve)) {
+            if ($eleve->getProfReferent() === $this) {
+                $eleve->setProfReferent(null);
+            }
+        }
 
         return $this;
     }
