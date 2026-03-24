@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Stage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @extends ServiceEntityRepository<Stage>
@@ -27,7 +28,7 @@ class StageRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->andWhere('s.dateDebut IS NULL OR s.dateDebut <= :date')
             ->andWhere('s.dateFin IS NULL OR s.dateFin >= :date')
-            ->setParameter('date', $date->format('Y-m-d'))
+            ->setParameter('date', $date, Types::DATE_IMMUTABLE)
             ->orderBy('s.dateDebut', 'ASC')
         ;
 

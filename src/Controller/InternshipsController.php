@@ -17,9 +17,11 @@ class InternshipsController extends AbstractController
 	public function index(StageRepository $stageRepository): Response
 	{
 		$stages = $stageRepository->findCurrent();
+		$allStages = $stageRepository->findAll();
 
 		return $this->render('home/internships.html.twig', [
 			'stages' => $stages,
+			'allStages' => $allStages,
 		]);
 	}
 

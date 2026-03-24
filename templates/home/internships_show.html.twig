@@ -3,17 +3,27 @@
 {% block title %}Détails du stage{% endblock %}
 
 {% block body %}
-    <h1>Détails du stage #{{ stage.id }}</h1>
+    <main style="min-height: 100vh; margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, #0b1b3f 0%, #081433 46%, #07112a 100%); color: #f2f7ff; padding: 2rem 1.5rem;">
+        <section style="max-width: 900px; margin: 0 auto;">
+            <header style="margin-bottom:1rem;">
+                <h1 style="margin:0 0 0.4rem; font-size:1.6rem; font-weight:700;">Détails du stage #{{ stage.id }}</h1>
+                <p style="margin:0; color:#9cafcb;">Informations complètes du stage.</p>
+            </header>
 
-    <ul>
-        <li><strong>Élève:</strong> {{ stage.eleve.prenom }} {{ stage.eleve.nom }}</li>
-        <li><strong>Entreprise:</strong> {{ stage.entreprise.nom }}</li>
-        <li><strong>Date début:</strong> {{ stage.dateDebut ? stage.dateDebut|date('Y-m-d') : '' }}</li>
-        <li><strong>Date fin:</strong> {{ stage.dateFin ? stage.dateFin|date('Y-m-d') : '' }}</li>
-    </ul>
+            <div style="border-radius:14px; padding:1rem; background:rgba(8,20,47,0.9); border:1px solid rgba(104,137,197,0.08); box-shadow:0 8px 24px rgba(3,10,24,0.45);">
+                <ul style="list-style:none; padding:0; margin:0 0 1rem 0; color:#cfe3ff;">
+                    <li style="padding:0.4rem 0;"><strong>Élève:</strong> {{ stage.eleve.prenom }} {{ stage.eleve.nom }}</li>
+                    <li style="padding:0.4rem 0;"><strong>Entreprise:</strong> {{ stage.entreprise.nom }}</li>
+                    <li style="padding:0.4rem 0;"><strong>Date début:</strong> {{ stage.dateDebut ? stage.dateDebut|date('Y-m-d') : '—' }}</li>
+                    <li style="padding:0.4rem 0;"><strong>Date fin:</strong> {{ stage.dateFin ? stage.dateFin|date('Y-m-d') : '—' }}</li>
+                </ul>
 
-    <p>
-        <a href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier</a> |
-        <a href="{{ path('app_internships') }}">Retour</a>
-    </p>
+                <div style="display:flex; gap:0.6rem;">
+                    <a href="{{ path('app_stage_edit', {'id': stage.id}) }}" style="background:#2b69c9; color:#fff; padding:0.5rem 0.9rem; border-radius:8px; text-decoration:none;">Modifier</a>
+                    <a href="{{ path('app_internships') }}" style="align-self:center; color:#9cafcb; text-decoration:none;">Retour</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
 {% endblock %}
