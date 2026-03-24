@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du stage{% endblock %}
+
+{% block body %}
+    <h1>Détails du stage #{{ stage.id }}</h1>
+
+    <ul>
+        <li><strong>Élève:</strong> {{ stage.eleve.prenom }} {{ stage.eleve.nom }}</li>
+        <li><strong>Entreprise:</strong> {{ stage.entreprise.nom }}</li>
+        <li><strong>Date début:</strong> {{ stage.dateDebut ? stage.dateDebut|date('Y-m-d') : '' }}</li>
+        <li><strong>Date fin:</strong> {{ stage.dateFin ? stage.dateFin|date('Y-m-d') : '' }}</li>
+    </ul>
+
+    <p>
+        <a href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier</a> |
+        <a href="{{ path('app_internships') }}">Retour</a>
+    </p>
+{% endblock %}

@@ -15,4 +15,22 @@ class StageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Stage::class);
     }
+
+    /**
+     * Retourne les stages en cours à la date donnée (ou aujourd'hui si null)
+     * Un stage est en cours si dateDebut <= date AND (dateFin IS NULL OR dateFin >= date)
+     */
+    public function findCurrent(\DateTimeInterface $date = null): array
+    {
+        $date = $date ?? new \DateTimeImmutable('today');
+
+        $qb = $this->createQueryBuilder('s')
+            ->andWhere('s.dateDebut IS NULL OR s.dateDebut <= :date')
+            ->andWhere('s.dateFin IS NULL OR s.dateFin >= :date')
+            ->setParameter('date', $date->format('Y-m-d'))
+            ->orderBy('s.dateDebut', 'ASC')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -1,8 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Stages{% endblock %}
+{% block title %}Stages en cours{% endblock %}
 
 {% block body %}
-    <h1>Stages</h1>
-    <p>Page à venir pour la gestion des stages.</p>
+    <h1>Stages en cours</h1>
+
+    <p><a href="{{ path('app_stage_new') }}">Créer un nouveau stage</a></p>
+
+    {% if stages is empty %}
+        <p>Aucun stage en cours.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Élève</th>
+                    <th>Entreprise</th>
+                    <th>Date début</th>
+                    <th>Date fin</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for stage in stages %}
+                <tr>
+                    <td>{{ stage.id }}</td>
+                    <td>{{ stage.eleve.prenom }} {{ stage.eleve.nom }}</td>
+                    <td>{{ stage.entreprise.nom }}</td>
+                    <td>{{ stage.dateDebut ? stage.dateDebut|date('Y-m-d') : '' }}</td>
+                    <td>{{ stage.dateFin ? stage.dateFin|date('Y-m-d') : '' }}</td>
+                    <td>
+                        <a href="{{ path('app_stage_show', {'id': stage.id}) }}">Voir</a> |
+                        <a href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier</a> |
+                        <form method="post" action="{{ path('app_stage_delete', {'id': stage.id}) }}" style="display:inline" onsubmit="return confirm('Supprimer ce stage ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stage.id) }}">
+                            <button type="submit">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
 {% endblock %}
+
