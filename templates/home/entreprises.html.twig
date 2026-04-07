@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Entreprises{% endblock %}
+
+{% block body %}
+    <main style="min-height: 100vh; margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, #0b1b3f 0%, #081433 46%, #07112a 100%); color: #f2f7ff; padding: 2rem 1.5rem;">
+        <a href="{{ path('app_home') }}" style="position:fixed; top:1rem; left:1rem; z-index:20; display:inline-block; background:rgba(8,20,47,0.92); color:#cfe3ff; padding:0.5rem 0.8rem; border:1px solid rgba(104,137,197,0.2); border-radius:10px; box-shadow:0 8px 24px rgba(3,10,24,0.35); text-decoration:none;">
+            Retour a l'accueil
+        </a>
+        <section style="max-width: 1200px; margin: 0 auto;">
+            <header style="margin-bottom: 1.2rem;">
+                <h1 style="margin: 0 0 0.4rem; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700;">Entreprises</h1>
+                <p style="margin: 0; color: #9cafcb; font-size: 0.98rem;">Liste des entreprises enregistrées et actions rapides.</p>
+            </header>
+
+            <div style="border-radius: 14px; padding: 1rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.12); box-shadow: 0 8px 24px rgba(3,10,24,0.5);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; gap:1rem; flex-wrap:wrap;">
+                    <div style="color:#9cafcb; font-size:0.95rem;">Afficher toutes les entreprises enregistrées dans la base.</div>
+                    <div>
+                        <a href="{{ path('app_entreprise_new') }}" style="background:#2b69c9; color:#fff; padding:0.45rem 0.8rem; border-radius:8px; text-decoration:none;">Créer une entreprise</a>
+                    </div>
+                </div>
+
+                {% if entreprises is empty %}
+                    <p style="color:#9cafcb;">Aucune entreprise enregistrée.</p>
+                {% else %}
+                    <div style="overflow:auto;">
+                    <table style="width:100%; border-collapse:collapse;">
+                        <thead>
+                            <tr style="text-align:left; color:#cfe3ff;">
+                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">ID</th>
+                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Nom</th>
+                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Adresse</th>
+                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Code postal</th>
+                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Ville</th>
+                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for entreprise in entreprises %}
+                            <tr style="border-top:1px solid rgba(255,255,255,0.02);">
+                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.id }}</td>
+                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.nomEntreprise }}</td>
+                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.adresseEntreprise }}</td>
+                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.cpentreprise }}</td>
+                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.villeEntreprise }}</td>
+                                <td style="padding:0.6rem 0.8rem;">
+                                    <a href="{{ path('app_entreprise_show', {'id': entreprise.id}) }}" style="color:#9cafcb; text-decoration:none; margin-right:0.6rem;">Voir</a>
+                                    <a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}" style="color:#9cafcb; text-decoration:none; margin-right:0.6rem;">Modifier</a>
+                                    <form method="post" action="{{ path('app_entreprise_delete', {'id': entreprise.id}) }}" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entreprise.id) }}">
+                                        <button type="submit" style="background:transparent; color:#ff7b7b; border:0; padding:0; cursor:pointer;" onclick="return confirm('Voulez-vous vraiment supprimer cette entreprise ?');">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+{% endblock %}
+
+
