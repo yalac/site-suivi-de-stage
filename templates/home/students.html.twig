@@ -1,8 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Utilisateurs{% endblock %}
+{% block title %}Étudiants{% endblock %}
 
 {% block body %}
-    <h1>Utilisateurs</h1>
-    <p>Page à venir pour la gestion des utilisateurs (étudiants, professeurs, etc.).</p>
+    <h1>Étudiants</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Trigramme</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Promotion</th>
+                <th>Classe</th>
+                <th>Session</th>
+                <th>Professeur Référent</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for eleve in eleves %}
+                <tr>
+                    <td><strong>{{ eleve.trigramme }}</strong></td>
+                    <td>{{ eleve.prenom }}</td>
+                    <td>{{ eleve.nom }}</td>
+                    <td>
+                        {% if eleve.promotion %}
+                            {{ eleve.promotion.classe }} - {{ eleve.promotion.session }}
+                        {% else %}
+                            <span class="badge bg-warning">Non assigné</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if eleve.promotion %}
+                            {{ eleve.promotion.classe }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if eleve.promotion %}
+                            {{ eleve.promotion.session }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ eleve.profReferent.prenom }} {{ eleve.profReferent.nom }}</td>
+                    <td>
+                        <a href="{{ path('app_internships') }}" class="btn btn-sm btn-info">Stages</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if eleves is empty %}
+        <p class="alert alert-info">Aucun étudiant trouvé.</p>
+    {% endif %}
 {% endblock %}

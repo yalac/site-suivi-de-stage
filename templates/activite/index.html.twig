@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activités{% endblock %}
+
+{% block body %}
+    <h1>Activités</h1>
+
+    <a href="{{ path('app_activite_new') }}" class="btn btn-primary mb-3">Ajouter une activité</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Stage</th>
+                <th>Étudiant</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activite in activites %}
+                <tr>
+                    <td>{{ activite.titre }}</td>
+                    <td>
+                        {% if activite.description %}
+                            {{ activite.description|slice(0, 100) }}...
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if activite.stage %}
+                            Stage #{{ activite.stage.id }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if activite.stage and activite.stage.eleve %}
+                            {{ activite.stage.eleve.prenom }} {{ activite.stage.eleve.nom }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_activite_show', {'id': activite.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                        <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('app_activite_delete', {'id': activite.id}) }}" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ activite.id) }}">
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucune activité trouvée</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

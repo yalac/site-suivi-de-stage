@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Activité: {{ activite.titre }}{% endblock %}
+
+{% block body %}
+    <h1>Modifier Activité: {{ activite.titre }}</h1>
+
+    {% include 'activite/_form.html.twig' with {'button_label': 'Mettre à jour'} %}
+
+    <a href="{{ path('app_activite_show', {'id': activite.id}) }}" class="btn btn-secondary mt-3">Voir</a>
+    <a href="{{ path('app_activite_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+{% endblock %}

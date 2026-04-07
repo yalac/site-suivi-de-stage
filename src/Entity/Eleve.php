@@ -23,6 +23,9 @@ class Eleve
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $profReferent = null;
 
+    #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'eleves')]
+    private ?Promotion $promotion = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,5 +65,25 @@ class Eleve
         $this->profReferent = $profReferent;
 
         return $this;
+    }
+
+    public function getPromotion(): ?Promotion
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?Promotion $promotion): static
+    {
+        $this->promotion = $promotion;
+
+        return $this;
+    }
+    /* Calcul TRIGRAMME */
+    public function getTrigramme(): string
+    {
+        $prenom = strtoupper(substr($this->prenom ?? '', 0, 1));
+        $nom = strtoupper(substr($this->nom ?? '', 0, 2));
+
+        return $prenom . $nom;
     }
 }

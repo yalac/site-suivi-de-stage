@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\EleveRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -11,8 +12,12 @@ class UsersController extends AbstractController
 {
     #[Route('/utilisateurs', name: 'app_users')]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(): Response
+    public function index(EleveRepository $eleveRepository): Response
     {
-        return $this->render('home/students.html.twig');
+        $eleves = $eleveRepository->findAll();
+
+        return $this->render('home/students.html.twig', [
+            'eleves' => $eleves,
+        ]);
     }
 }

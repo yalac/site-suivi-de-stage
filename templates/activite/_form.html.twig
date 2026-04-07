@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+    <div class="mb-3">
+        {{ form_label(form.titre, 'Titre') }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.titre) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description') }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '5'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.stage, 'Stage') }}
+        {{ form_widget(form.stage, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.stage) }}
+    </div>
+
+    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

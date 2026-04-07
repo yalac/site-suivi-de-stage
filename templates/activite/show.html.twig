@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activité: {{ activite.titre }}{% endblock %}
+
+{% block body %}
+    <h1>{{ activite.titre }}</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Description:</strong><br>
+                {% if activite.description %}
+                    {{ activite.description }}
+                {% else %}
+                    Pas de description
+                {% endif %}
+            </p>
+
+            <p><strong>Stage:</strong><br>
+                {% if activite.stage %}
+                    Stage #{{ activite.stage.id }} - {{ activite.stage.eleve.prenom }} {{ activite.stage.eleve.nom }}
+                {% else %}
+                    Non assigné
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="btn btn-warning">Modifier</a>
+        <a href="{{ path('app_activite_index') }}" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+{% endblock %}

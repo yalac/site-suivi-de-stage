@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Activité{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une Activité</h1>
+
+    {% include 'activite/_form.html.twig' with {'button_label': 'Créer'} %}
+
+    <a href="{{ path('app_activite_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+{% endblock %}

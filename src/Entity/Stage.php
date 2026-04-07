@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StageRepository::class)]
@@ -26,6 +28,20 @@ class Stage
 
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $dateFin = null;
+
+    #[ORM\ManyToOne(inversedBy: 'stages')]
+    private ?Service $service = null;
+
+    /**
+     * @var Collection<int, Activite>
+     */
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'stage', orphanRemoval: true)]
+    private Collection $activites;
+
+    public function __construct()
+    {
+        $this->activites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +92,47 @@ class Stage
     public function setDateFin(?\DateTimeInterface $dateFin): static
     {
         $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): static
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Activite>
+     */
+    public function getActivites(): Collection
+    {
+        return $this->activites;
+    }
+
+    public function addActivite(Activite $activite): static
+    {
+        if (!$this->activites->contains($activite)) {
+            $this->activites->add($activite);
+            $activite->setStage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivite(Activite $activite): static
+    {
+        if ($this->activites->removeElement($activite)) {
+            if ($activite->getStage() === $this) {
+                $activite->setStage(null);
+            }
+        }
 
         return $this;
     }
