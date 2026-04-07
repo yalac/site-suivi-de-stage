@@ -15,16 +15,16 @@ class Promotion
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $classe = null;
+    #[ORM\Column(name: 'classe_promotion', length: 100)]
+    private ?string $classePromotion = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $session = null;
+    #[ORM\Column(name: 'annee_promotion', length: 20)]
+    private ?string $anneePromotion = null;
 
     /**
      * @var Collection<int, Eleve>
      */
-    #[ORM\OneToMany(targetEntity: Eleve::class, mappedBy: 'promotion')]
+    #[ORM\OneToMany(targetEntity: Eleve::class, mappedBy: 'promotionEleve')]
     private Collection $eleves;
 
     public function __construct()
@@ -37,27 +37,25 @@ class Promotion
         return $this->id;
     }
 
-    public function getClasse(): ?string
+    public function getClassePromotion(): ?string
     {
-        return $this->classe;
+        return $this->classePromotion;
     }
 
-    public function setClasse(string $classe): static
+    public function setClassePromotion(string $classePromotion): static
     {
-        $this->classe = $classe;
-
+        $this->classePromotion = $classePromotion;
         return $this;
     }
 
-    public function getSession(): ?string
+    public function getAnneePromotion(): ?string
     {
-        return $this->session;
+        return $this->anneePromotion;
     }
 
-    public function setSession(string $session): static
+    public function setAnneePromotion(string $anneePromotion): static
     {
-        $this->session = $session;
-
+        $this->anneePromotion = $anneePromotion;
         return $this;
     }
 
@@ -73,7 +71,7 @@ class Promotion
     {
         if (!$this->eleves->contains($eleve)) {
             $this->eleves->add($eleve);
-            $eleve->setPromotion($this);
+            $eleve->setPromotionEleve($this);
         }
 
         return $this;
@@ -83,8 +81,8 @@ class Promotion
     {
         if ($this->eleves->removeElement($eleve)) {
             // set the owning side to null (unless already changed)
-            if ($eleve->getPromotion() === $this) {
-                $eleve->setPromotion(null);
+            if ($eleve->getPromotionEleve() === $this) {
+                $eleve->setPromotionEleve(null);
             }
         }
 

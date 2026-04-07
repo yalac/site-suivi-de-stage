@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -10,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\Table(name: 'utilisateur')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['emailUtilisateur'], message: 'There is already an account with this email')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -18,91 +20,113 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $nom = null;
+    #[ORM\Column(name: 'nom_utilisateur', length: 150)]
+    private ?string $nomUtilisateur = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $prenom = null;
+    #[ORM\Column(name: 'prenom_utilisateur', length: 100)]
+    private ?string $prenomUtilisateur = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $email = null;
+    #[ORM\Column(name: 'mdputilisateur', length: 255)]
+    private ?string $mdputilisateur = null;
 
-    #[ORM\Column(name: 'mot_de_passe', length: 100)]
-    private ?string $motDePasse = null;
+    #[ORM\Column(name: 'email_utilisateur', length: 200)]
+    private ?string $emailUtilisateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
-    #[ORM\JoinColumn(name: 'id_role', nullable: false)]
-    private ?Role $role = null;
+    #[ORM\JoinColumn(name: 'role_utilisateur_id', nullable: false)]
+    private ?Role $roleUtilisateur = null;
+
+    /**
+     * @var Collection<int, Eleve>
+     */
+    #[ORM\ManyToMany(targetEntity: Eleve::class, inversedBy: 'utilisateurs')]
+    #[ORM\JoinTable(name: 'utilisateur_eleve')]
+    private Collection $eleves;
+
+    public function __construct()
+    {
+        $this->eleves = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): static
+    public function getNomUtilisateur(): ?string
     {
-        $this->id = $id;
+        return $this->nomUtilisateur;
+    }
 
+    public function setNomUtilisateur(string $nomUtilisateur): static
+    {
+        $this->nomUtilisateur = $nomUtilisateur;
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getPrenomUtilisateur(): ?string
     {
-        return $this->nom;
+        return $this->prenomUtilisateur;
     }
 
-    public function setNom(string $nom): static
+    public function setPrenomUtilisateur(string $prenomUtilisateur): static
     {
-        $this->nom = $nom;
-
+        $this->prenomUtilisateur = $prenomUtilisateur;
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getMdputilisateur(): ?string
     {
-        return $this->prenom;
+        return $this->mdputilisateur;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setMdputilisateur(string $mdputilisateur): static
     {
-        $this->prenom = $prenom;
-
+        $this->mdputilisateur = $mdputilisateur;
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmailUtilisateur(): ?string
     {
-        return $this->email;
+        return $this->emailUtilisateur;
     }
 
-    public function setEmail(string $email): static
+    public function setEmailUtilisateur(string $emailUtilisateur): static
     {
-        $this->email = $email;
-
+        $this->emailUtilisateur = $emailUtilisateur;
         return $this;
     }
 
-    public function getMotDePasse(): ?string
+    public function getRoleUtilisateur(): ?Role
     {
-        return $this->motDePasse;
+        return $this->roleUtilisateur;
     }
 
-    public function setMotDePasse(string $motDePasse): static
+    public function setRoleUtilisateur(?Role $roleUtilisateur): static
     {
-        $this->motDePasse = $motDePasse;
-
+        $this->roleUtilisateur = $roleUtilisateur;
         return $this;
     }
 
-    public function getRole(): ?Role
+    /**
+     * @return Collection<int, Eleve>
+     */
+    public function getEleves(): Collection
     {
-        return $this->role;
+        return $this->eleves;
     }
 
-    public function setRole(?Role $role): static
+    public function addEleve(Eleve $eleve): static
     {
-        $this->role = $role;
+        if (!$this->eleves->contains($eleve)) {
+            $this->eleves->add($eleve);
+        }
+        return $this;
+    }
 
+    public function removeEleve(Eleve $eleve): static
+    {
+        $this->eleves->removeElement($eleve);
         return $this;
     }
 
@@ -113,7 +137,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->emailUtilisateur;
     }
 
     /**
@@ -122,8 +146,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = [];
-        if ($this->role) {
-            $roles[] = 'ROLE_' . strtoupper($this->role->getNom());
+        if ($this->roleUtilisateur) {
+            $roles[] = 'ROLE_' . strtoupper($this->roleUtilisateur->getNomRole());
         }
 
         // guarantee every user at least has ROLE_USER
@@ -148,7 +172,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return $this->motDePasse ?? '';
+        return $this->mdputilisateur ?? '';
     }
 
     /**

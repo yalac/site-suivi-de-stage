@@ -21,31 +21,31 @@
         <tbody>
             {% for eleve in eleves %}
                 <tr>
-                    <td><strong>{{ eleve.trigramme }}</strong></td>
-                    <td>{{ eleve.prenom }}</td>
-                    <td>{{ eleve.nom }}</td>
+                    <td><strong>{{ (eleve.prenomEleve|slice(0,1)|upper) ~ (eleve.nomEleve|slice(0,2)|upper) }}</strong></td>
+                    <td>{{ eleve.prenomEleve }}</td>
+                    <td>{{ eleve.nomEleve }}</td>
                     <td>
-                        {% if eleve.promotion %}
-                            {{ eleve.promotion.classe }} - {{ eleve.promotion.session }}
+                        {% if eleve.promotionEleve %}
+                            {{ eleve.promotionEleve.classePromotion }} - {{ eleve.promotionEleve.anneePromotion }}
                         {% else %}
                             <span class="badge bg-warning">Non assigné</span>
                         {% endif %}
                     </td>
                     <td>
-                        {% if eleve.promotion %}
-                            {{ eleve.promotion.classe }}
+                        {% if eleve.promotionEleve %}
+                            {{ eleve.promotionEleve.classePromotion }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
                     <td>
-                        {% if eleve.promotion %}
-                            {{ eleve.promotion.session }}
+                        {% if eleve.promotionEleve %}
+                            {{ eleve.promotionEleve.anneePromotion }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
-                    <td>{{ eleve.profReferent.prenom }} {{ eleve.profReferent.nom }}</td>
+                    <td>{{ eleve.profReferent }}</td>
                     <td>
                         <a href="{{ path('app_internships') }}" class="btn btn-sm btn-info">Stages</a>
                     </td>

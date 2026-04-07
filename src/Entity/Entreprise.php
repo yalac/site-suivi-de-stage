@@ -13,52 +13,64 @@ class Entreprise
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 150)]
-    private ?string $nom = null;
+    #[ORM\Column(name: 'nom_entreprise', length: 200)]
+    private ?string $nomEntreprise = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $adresse = null;
+    #[ORM\Column(name: 'adresse_entreprise', length: 200)]
+    private ?string $adresseEntreprise = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $ville = null;
+    #[ORM\Column(name: 'cpentreprise')]
+    private ?int $cpentreprise = null;
+
+    #[ORM\Column(name: 'ville_entreprise', length: 200)]
+    private ?string $villeEntreprise = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNomEntreprise(): ?string
     {
-        return $this->nom;
+        return $this->nomEntreprise;
     }
 
-    public function setNom(string $nom): static
+    public function setNomEntreprise(string $nomEntreprise): static
     {
-        $this->nom = $nom;
-
+        $this->nomEntreprise = $nomEntreprise;
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getAdresseEntreprise(): ?string
     {
-        return $this->adresse;
+        return $this->adresseEntreprise;
     }
 
-    public function setAdresse(?string $adresse): static
+    public function setAdresseEntreprise(string $adresseEntreprise): static
     {
-        $this->adresse = $adresse;
-
+        $this->adresseEntreprise = $adresseEntreprise;
         return $this;
     }
 
-    public function getVille(): ?string
+    public function getCpentreprise(): ?int
     {
-        return $this->ville;
+        return $this->cpentreprise;
     }
 
-    public function setVille(?string $ville): static
+    public function setCpentreprise(int $cpentreprise): static
     {
-        $this->ville = $ville;
+        $this->cpentreprise = $cpentreprise;
+        return $this;
+    }
+
+    public function getVilleEntreprise(): ?string
+    {
+        return $this->villeEntreprise;
+    }
+
+    public function setVilleEntreprise(string $villeEntreprise): static
+    {
+        $this->villeEntreprise = $villeEntreprise;
 
         return $this;
     }

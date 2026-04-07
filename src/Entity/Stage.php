@@ -15,27 +15,26 @@ class Stage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Eleve::class)]
-    #[ORM\JoinColumn(name: 'id_eleve', nullable: false)]
-    private ?Eleve $idEleve = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $descriptifStage = null;
+
+    #[ORM\Column(name: 'date_debut_stage', type: 'date', nullable: true)]
+    private ?\DateTimeInterface $dateDebutStage = null;
+
+    #[ORM\Column(name: 'date_fin_stage', type: 'date', nullable: true)]
+    private ?\DateTimeInterface $dateFinStage = null;
+
+    #[ORM\Column(name: 'duree_stage', nullable: true)]
+    private ?int $dureeStage = null;
 
     #[ORM\ManyToOne(targetEntity: Entreprise::class)]
-    #[ORM\JoinColumn(name: 'id_entreprise', nullable: false)]
-    private ?Entreprise $idEntreprise = null;
-
-    #[ORM\Column(name: 'date_debut', type: 'date', nullable: true)]
-    private ?\DateTimeInterface $dateDebut = null;
-
-    #[ORM\Column(name: 'date_fin', type: 'date', nullable: true)]
-    private ?\DateTimeInterface $dateFin = null;
-
-    #[ORM\ManyToOne(inversedBy: 'stages')]
-    private ?Service $service = null;
+    #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
+    private ?Entreprise $entrepriseStage = null;
 
     /**
      * @var Collection<int, Activite>
      */
-    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'stage', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'stageActivite', orphanRemoval: true)]
     private Collection $activites;
 
     public function __construct()
@@ -48,63 +47,58 @@ class Stage
         return $this->id;
     }
 
-    public function getIdEleve(): ?Eleve
+    public function getDescriptifStage(): ?string
     {
-        return $this->idEleve;
+        return $this->descriptifStage;
     }
 
-    public function setIdEleve(?Eleve $idEleve): static
+    public function setDescriptifStage(?string $descriptifStage): static
     {
-        $this->idEleve = $idEleve;
-
+        $this->descriptifStage = $descriptifStage;
         return $this;
     }
 
-    public function getIdEntreprise(): ?Entreprise
+    public function getDateDebutStage(): ?\DateTimeInterface
     {
-        return $this->idEntreprise;
+        return $this->dateDebutStage;
     }
 
-    public function setIdEntreprise(?Entreprise $idEntreprise): static
+    public function setDateDebutStage(?\DateTimeInterface $dateDebutStage): static
     {
-        $this->idEntreprise = $idEntreprise;
-
+        $this->dateDebutStage = $dateDebutStage;
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeInterface
+    public function getDateFinStage(): ?\DateTimeInterface
     {
-        return $this->dateDebut;
+        return $this->dateFinStage;
     }
 
-    public function setDateDebut(?\DateTimeInterface $dateDebut): static
+    public function setDateFinStage(?\DateTimeInterface $dateFinStage): static
     {
-        $this->dateDebut = $dateDebut;
-
+        $this->dateFinStage = $dateFinStage;
         return $this;
     }
 
-    public function getDateFin(): ?\DateTimeInterface
+    public function getDureeStage(): ?int
     {
-        return $this->dateFin;
+        return $this->dureeStage;
     }
 
-    public function setDateFin(?\DateTimeInterface $dateFin): static
+    public function setDureeStage(?int $dureeStage): static
     {
-        $this->dateFin = $dateFin;
-
+        $this->dureeStage = $dureeStage;
         return $this;
     }
 
-    public function getService(): ?Service
+    public function getEntrepriseStage(): ?Entreprise
     {
-        return $this->service;
+        return $this->entrepriseStage;
     }
 
-    public function setService(?Service $service): static
+    public function setEntrepriseStage(?Entreprise $entrepriseStage): static
     {
-        $this->service = $service;
-
+        $this->entrepriseStage = $entrepriseStage;
         return $this;
     }
 
@@ -120,7 +114,7 @@ class Stage
     {
         if (!$this->activites->contains($activite)) {
             $this->activites->add($activite);
-            $activite->setIdStage($this);
+            $activite->setStageActivite($this);
         }
 
         return $this;
@@ -129,8 +123,8 @@ class Stage
     public function removeActivite(Activite $activite): static
     {
         if ($this->activites->removeElement($activite)) {
-            if ($activite->getIdStage() === $this) {
-                $activite->setIdStage(null);
+            if ($activite->getStageActivite() === $this) {
+                $activite->setStageActivite(null);
             }
         }
 

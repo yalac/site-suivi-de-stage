@@ -36,8 +36,8 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if activite.idStage and activite.idStage.idEleve %}
-                            {{ activite.idStage.idEleve.prenom }} {{ activite.idStage.idEleve.nom }}
+                        {% if activite.stageActivite %}
+                            N/A
                         {% else %}
                             -
                         {% endif %}

@@ -16,13 +16,13 @@ class Role
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $nom = null;
+    #[ORM\Column(name: 'nom_role', length: 50)]
+    private ?string $nomRole = null;
 
     /**
      * @var Collection<int, Utilisateur>
      */
-    #[ORM\OneToMany(targetEntity: Utilisateur::class, mappedBy: 'role')]
+    #[ORM\OneToMany(targetEntity: Utilisateur::class, mappedBy: 'roleUtilisateur')]
     private Collection $utilisateurs;
 
     public function __construct()
@@ -42,14 +42,14 @@ class Role
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getNomRole(): ?string
     {
-        return $this->nom;
+        return $this->nomRole;
     }
 
-    public function setNom(string $nom): static
+    public function setNomRole(string $nomRole): static
     {
-        $this->nom = $nom;
+        $this->nomRole = $nomRole;
 
         return $this;
     }
@@ -66,7 +66,7 @@ class Role
     {
         if (!$this->utilisateurs->contains($utilisateur)) {
             $this->utilisateurs->add($utilisateur);
-            $utilisateur->setRole($this);
+            $utilisateur->setRoleUtilisateur($this);
         }
 
         return $this;
@@ -76,8 +76,8 @@ class Role
     {
         if ($this->utilisateurs->removeElement($utilisateur)) {
             // set the owning side to null (unless already changed)
-            if ($utilisateur->getRole() === $this) {
-                $utilisateur->setRole(null);
+            if ($utilisateur->getRoleUtilisateur() === $this) {
+                $utilisateur->setRoleUtilisateur(null);
             }
         }
 

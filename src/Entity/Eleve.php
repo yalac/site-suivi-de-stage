@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EleveRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EleveRepository::class)]
@@ -13,77 +15,143 @@ class Eleve
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $nom = null;
+    #[ORM\Column(name: 'nom_eleve', length: 150)]
+    private ?string $nomEleve = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $prenom = null;
+    #[ORM\Column(name: 'prenom_eleve', length: 150)]
+    private ?string $prenomEleve = null;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
-    #[ORM\JoinColumn(name: 'id_utilisateur_referent', nullable: false)]
-    private ?Utilisateur $idUtilisateurReferent = null;
+    #[ORM\Column(name: 'prof_referent', length: 150, nullable: true)]
+    private ?string $profReferent = null;
+
+    #[ORM\Column(name: 'prof_visite', length: 150, nullable: true)]
+    private ?string $profVisite = null;
+
+    #[ORM\ManyToOne(targetEntity: Option::class)]
+    #[ORM\JoinColumn(name: 'option_eleve_id', nullable: true)]
+    private ?Option $optionEleve = null;
 
     #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'eleves')]
-    private ?Promotion $promotion = null;
+    #[ORM\JoinColumn(name: 'promotion_eleve_id', nullable: true)]
+    private ?Promotion $promotionEleve = null;
+
+    #[ORM\ManyToOne(targetEntity: Stage::class)]
+    #[ORM\JoinColumn(name: 'stage_eleve_id', nullable: true)]
+    private ?Stage $stageEleve = null;
+
+    /**
+     * @var Collection<int, Utilisateur>
+     */
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'eleves')]
+    #[ORM\JoinTable(name: 'utilisateur_eleve')]
+    private Collection $utilisateurs;
+
+    public function __construct()
+    {
+        $this->utilisateurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNomEleve(): ?string
     {
-        return $this->nom;
+        return $this->nomEleve;
     }
 
-    public function setNom(string $nom): static
+    public function setNomEleve(string $nomEleve): static
     {
-        $this->nom = $nom;
-
+        $this->nomEleve = $nomEleve;
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getPrenomEleve(): ?string
     {
-        return $this->prenom;
+        return $this->prenomEleve;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenomEleve(string $prenomEleve): static
     {
-        $this->prenom = $prenom;
-
+        $this->prenomEleve = $prenomEleve;
         return $this;
     }
 
-    public function getIdUtilisateurReferent(): ?Utilisateur
+    public function getProfReferent(): ?string
     {
-        return $this->idUtilisateurReferent;
+        return $this->profReferent;
     }
 
-    public function setIdUtilisateurReferent(?Utilisateur $idUtilisateurReferent): static
+    public function setProfReferent(?string $profReferent): static
     {
-        $this->idUtilisateurReferent = $idUtilisateurReferent;
-
+        $this->profReferent = $profReferent;
         return $this;
     }
 
-    public function getPromotion(): ?Promotion
+    public function getProfVisite(): ?string
     {
-        return $this->promotion;
+        return $this->profVisite;
     }
 
-    public function setPromotion(?Promotion $promotion): static
+    public function setProfVisite(?string $profVisite): static
     {
-        $this->promotion = $promotion;
-
+        $this->profVisite = $profVisite;
         return $this;
     }
-    /* Calcul TRIGRAMME */
-    public function getTrigramme(): string
-    {
-        $prenom = strtoupper(substr($this->prenom ?? '', 0, 1));
-        $nom = strtoupper(substr($this->nom ?? '', 0, 2));
 
-        return $prenom . $nom;
+    public function getOptionEleve(): ?Option
+    {
+        return $this->optionEleve;
+    }
+
+    public function setOptionEleve(?Option $optionEleve): static
+    {
+        $this->optionEleve = $optionEleve;
+        return $this;
+    }
+
+    public function getPromotionEleve(): ?Promotion
+    {
+        return $this->promotionEleve;
+    }
+
+    public function setPromotionEleve(?Promotion $promotionEleve): static
+    {
+        $this->promotionEleve = $promotionEleve;
+        return $this;
+    }
+
+    public function getStageEleve(): ?Stage
+    {
+        return $this->stageEleve;
+    }
+
+    public function setStageEleve(?Stage $stageEleve): static
+    {
+        $this->stageEleve = $stageEleve;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Utilisateur>
+     */
+    public function getUtilisateurs(): Collection
+    {
+        return $this->utilisateurs;
+    }
+
+    public function addUtilisateur(Utilisateur $utilisateur): static
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->add($utilisateur);
+        }
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateur $utilisateur): static
+    {
+        $this->utilisateurs->removeElement($utilisateur);
+        return $this;
     }
 }

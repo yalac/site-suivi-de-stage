@@ -39,10 +39,10 @@
                                     {% for s in allStages %}
                                         <tr>
                                             <td style="padding:0.4rem;">{{ s.id }}</td>
-                                            <td style="padding:0.4rem;">{{ s.idEleve ? (s.idEleve.prenom ~ ' ' ~ s.idEleve.nom) : 'NULL' }}</td>
-                                            <td style="padding:0.4rem;">{{ s.idEntreprise ? s.idEntreprise.nom : 'NULL' }}</td>
-                                            <td style="padding:0.4rem;">{{ s.dateDebut ? s.dateDebut|date('Y-m-d') : 'NULL' }}</td>
-                                            <td style="padding:0.4rem;">{{ s.dateFin ? s.dateFin|date('Y-m-d') : 'NULL' }}</td>
+                                            <td style="padding:0.4rem;">N/A</td>
+                                            <td style="padding:0.4rem;">{{ s.entrepriseStage ? s.entrepriseStage.nomEntreprise : 'NULL' }}</td>
+                                            <td style="padding:0.4rem;">{{ s.dateDebutStage ? s.dateDebutStage|date('Y-m-d') : 'NULL' }}</td>
+                                            <td style="padding:0.4rem;">{{ s.dateFinStage ? s.dateFinStage|date('Y-m-d') : 'NULL' }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -67,10 +67,10 @@
                         {% for stage in stages %}
                             <tr style="border-top:1px solid rgba(255,255,255,0.02);">
                                 <td style="padding:0.6rem 0.8rem;">{{ stage.id }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.idEleve.prenom }} {{ stage.idEleve.nom }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.idEntreprise.nom }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.dateDebut ? stage.dateDebut|date('Y-m-d') : '—' }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.dateFin ? stage.dateFin|date('Y-m-d') : '—' }}</td>
+                                <td style="padding:0.6rem 0.8rem;">N/A</td>
+                                <td style="padding:0.6rem 0.8rem;">{{ stage.entrepriseStage.nomEntreprise }}</td>
+                                <td style="padding:0.6rem 0.8rem;">{{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</td>
+                                <td style="padding:0.6rem 0.8rem;">{{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</td>
                                 <td style="padding:0.6rem 0.8rem;">
                                     <a href="{{ path('app_stage_show', {'id': stage.id}) }}" style="color:#9cafcb; text-decoration:none; margin-right:0.6rem;">Voir</a>
                                     <a href="{{ path('app_stage_edit', {'id': stage.id}) }}" style="color:#9cafcb; text-decoration:none; margin-right:0.6rem;">Modifier</a>

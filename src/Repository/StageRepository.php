@@ -19,17 +19,17 @@ class StageRepository extends ServiceEntityRepository
 
     /**
      * Retourne les stages en cours à la date donnée (ou aujourd'hui si null)
-     * Un stage est en cours si dateDebut <= date AND (dateFin IS NULL OR dateFin >= date)
+     * Un stage est en cours si dateDebutStage <= date AND (dateFinStage IS NULL OR dateFinStage >= date)
      */
     public function findCurrent(\DateTimeInterface $date = null): array
     {
         $date = $date ?? new \DateTimeImmutable('today');
 
         $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.dateDebut IS NULL OR s.dateDebut <= :date')
-            ->andWhere('s.dateFin IS NULL OR s.dateFin >= :date')
+            ->andWhere('s.dateDebutStage IS NULL OR s.dateDebutStage <= :date')
+            ->andWhere('s.dateFinStage IS NULL OR s.dateFinStage >= :date')
             ->setParameter('date', $date, Types::DATE_IMMUTABLE)
-            ->orderBy('s.dateDebut', 'ASC')
+            ->orderBy('s.dateDebutStage', 'ASC')
         ;
 
         return $qb->getQuery()->getResult();
