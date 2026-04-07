@@ -21,8 +21,8 @@ class Activite
     private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity: Stage::class, inversedBy: 'activites')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Stage $stage = null;
+    #[ORM\JoinColumn(name: 'id_stage', nullable: false)]
+    private ?Stage $idStage = null;
 
     public function getId(): ?int
     {
@@ -53,14 +53,14 @@ class Activite
         return $this;
     }
 
-    public function getStage(): ?Stage
+    public function getIdStage(): ?Stage
     {
-        return $this->stage;
+        return $this->idStage;
     }
 
-    public function setStage(?Stage $stage): static
+    public function setIdStage(?Stage $idStage): static
     {
-        $this->stage = $stage;
+        $this->idStage = $idStage;
 
         return $this;
     }

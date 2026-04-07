@@ -29,15 +29,15 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if activite.stage %}
-                            Stage #{{ activite.stage.id }}
+                        {% if activite.idStage %}
+                            Stage #{{ activite.idStage.id }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
                     <td>
-                        {% if activite.stage and activite.stage.eleve %}
-                            {{ activite.stage.eleve.prenom }} {{ activite.stage.eleve.nom }}
+                        {% if activite.idStage and activite.idStage.idEleve %}
+                            {{ activite.idStage.idEleve.prenom }} {{ activite.idStage.idEleve.nom }}
                         {% else %}
                             -
                         {% endif %}

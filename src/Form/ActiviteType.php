@@ -16,7 +16,7 @@ class ActiviteType extends AbstractType
         $builder
             ->add('titre')
             ->add('description')
-            ->add('stage', EntityType::class, [
+            ->add('idStage', EntityType::class, [
                 'class' => Stage::class,
                 'choice_label' => 'id',
             ])

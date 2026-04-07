@@ -19,9 +19,9 @@ class Eleve
     #[ORM\Column(length: 50)]
     private ?string $prenom = null;
 
-    #[ORM\ManyToOne(targetEntity: Users::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Users $profReferent = null;
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
+    #[ORM\JoinColumn(name: 'id_utilisateur_referent', nullable: false)]
+    private ?Utilisateur $idUtilisateurReferent = null;
 
     #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'eleves')]
     private ?Promotion $promotion = null;
@@ -55,14 +55,14 @@ class Eleve
         return $this;
     }
 
-    public function getProfReferent(): ?Users
+    public function getIdUtilisateurReferent(): ?Utilisateur
     {
-        return $this->profReferent;
+        return $this->idUtilisateurReferent;
     }
 
-    public function setProfReferent(?Users $profReferent): static
+    public function setIdUtilisateurReferent(?Utilisateur $idUtilisateurReferent): static
     {
-        $this->profReferent = $profReferent;
+        $this->idUtilisateurReferent = $idUtilisateurReferent;
 
         return $this;
     }

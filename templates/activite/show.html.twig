@@ -16,8 +16,8 @@
             </p>
 
             <p><strong>Stage:</strong><br>
-                {% if activite.stage %}
-                    Stage #{{ activite.stage.id }} - {{ activite.stage.eleve.prenom }} {{ activite.stage.eleve.nom }}
+                {% if activite.idStage %}
+                    Stage #{{ activite.idStage.id }} - {{ activite.idStage.idEleve.prenom }} {{ activite.idStage.idEleve.nom }}
                 {% else %}
                     Non assigné
                 {% endif %}

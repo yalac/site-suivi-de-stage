@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\RolesRepository;
-use BcMath\Number;
+use App\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RolesRepository::class)]
-class Roles
+#[ORM\Entity(repositoryClass: RoleRepository::class)]
+#[ORM\Table(name: 'role')]
+class Role
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,14 +20,14 @@ class Roles
     private ?string $nom = null;
 
     /**
-     * @var Collection<int, Users>
+     * @var Collection<int, Utilisateur>
      */
-    #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'idRole')]
-    private Collection $users;
+    #[ORM\OneToMany(targetEntity: Utilisateur::class, mappedBy: 'role')]
+    private Collection $utilisateurs;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -55,29 +55,29 @@ class Roles
     }
 
     /**
-     * @return Collection<int, Users>
+     * @return Collection<int, Utilisateur>
      */
-    public function getUsers(): Collection
+    public function getUtilisateurs(): Collection
     {
-        return $this->users;
+        return $this->utilisateurs;
     }
 
-    public function addUser(Users $user): static
+    public function addUtilisateur(Utilisateur $utilisateur): static
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setIdRole($this);
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->add($utilisateur);
+            $utilisateur->setRole($this);
         }
 
         return $this;
     }
 
-    public function removeUser(Users $user): static
+    public function removeUtilisateur(Utilisateur $utilisateur): static
     {
-        if ($this->users->removeElement($user)) {
+        if ($this->utilisateurs->removeElement($utilisateur)) {
             // set the owning side to null (unless already changed)
-            if ($user->getIdRole() === $this) {
-                $user->setIdRole(null);
+            if ($utilisateur->getRole() === $this) {
+                $utilisateur->setRole(null);
             }
         }
 

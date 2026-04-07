@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UsersRepository::class)]
+#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[ORM\Table(name: 'utilisateur')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class Users implements UserInterface, PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,12 +27,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $mdp = null;
+    #[ORM\Column(name: 'mot_de_passe', length: 100)]
+    private ?string $motDePasse = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Roles $idRole = null;
+    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
+    #[ORM\JoinColumn(name: 'id_role', nullable: false)]
+    private ?Role $role = null;
 
     public function getId(): ?int
     {
@@ -81,59 +82,81 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getMdp(): ?string
+    public function getMotDePasse(): ?string
     {
-        return $this->mdp;
+        return $this->motDePasse;
     }
 
-    public function setMdp(string $mdp): static
+    public function setMotDePasse(string $motDePasse): static
     {
-        $this->mdp = $mdp;
+        $this->motDePasse = $motDePasse;
 
         return $this;
     }
 
-    public function getIdRole(): ?Roles
+    public function getRole(): ?Role
     {
-        return $this->idRole;
+        return $this->role;
     }
 
-    public function setIdRole(?Roles $idRole): static
+    public function setRole(?Role $role): static
     {
-        $this->idRole = $idRole;
+        $this->role = $role;
 
         return $this;
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
     public function getUserIdentifier(): string
     {
-        return $this->email ?? '';
+        return (string) $this->email;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function getRoles(): array
     {
         $roles = [];
-
-        if ($this->idRole !== null && $this->idRole->getNom() !== null) {
-            $roles[] = $this->idRole->getNom();
+        if ($this->role) {
+            $roles[] = 'ROLE_' . strtoupper($this->role->getNom());
         }
 
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
-        return array_values(array_unique($roles));
+        return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
     {
-        return $this;
+        return null;
     }
 
-    public function getPassword(): ?string
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
-        return $this->mdp;
+        return $this->motDePasse ?? '';
     }
 
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials(): void
     {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

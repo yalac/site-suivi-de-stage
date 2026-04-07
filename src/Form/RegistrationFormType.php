@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Users;
-use App\Entity\Roles;
+use App\Entity\Utilisateur;
+use App\Entity\Role;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -33,8 +33,8 @@ class RegistrationFormType extends AbstractType
                     ),
                 ],
             ])
-            ->add('idRole', EntityType::class, [
-                'class' => Roles::class,
+            ->add('role', EntityType::class, [
+                'class' => Role::class,
                 'choice_label' => 'nom',
                 'placeholder' => 'Choisissez un rôle',
             ])
@@ -69,7 +69,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Users::class,
+            'data_class' => Utilisateur::class,
         ]);
     }
 }
