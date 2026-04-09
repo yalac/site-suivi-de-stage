@@ -20,36 +20,6 @@
 
                 {% if stages is empty %}
                     <p style="color:#9cafcb;">Aucun stage en cours.</p>
-                    <div style="margin-top:0.8rem; color:#9cafcb;">
-                        <p>Diagnostic : <strong>{{ allStages|length }}</strong> stage(s) en base.</p>
-                        {% if allStages is not empty %}
-                            <details style="color:#cfe3ff;">
-                                <summary style="cursor:pointer;">Voir tous les stages (debug)</summary>
-                                <table style="width:100%; border-collapse:collapse; margin-top:0.6rem;">
-                                    <thead>
-                                        <tr style="text-align:left; color:#cfe3ff;">
-                                            <th style="padding:0.4rem; border-bottom:1px solid rgba(255,255,255,0.04);">ID</th>
-                                            <th style="padding:0.4rem; border-bottom:1px solid rgba(255,255,255,0.04);">Élève</th>
-                                            <th style="padding:0.4rem; border-bottom:1px solid rgba(255,255,255,0.04);">Entreprise</th>
-                                            <th style="padding:0.4rem; border-bottom:1px solid rgba(255,255,255,0.04);">Date début</th>
-                                            <th style="padding:0.4rem; border-bottom:1px solid rgba(255,255,255,0.04);">Date fin</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for s in allStages %}
-                                        <tr>
-                                            <td style="padding:0.4rem;">{{ s.id }}</td>
-                                            <td style="padding:0.4rem;">N/A</td>
-                                            <td style="padding:0.4rem;">{{ s.entrepriseStage ? s.entrepriseStage.nomEntreprise : 'NULL' }}</td>
-                                            <td style="padding:0.4rem;">{{ s.dateDebutStage ? s.dateDebutStage|date('Y-m-d') : 'NULL' }}</td>
-                                            <td style="padding:0.4rem;">{{ s.dateFinStage ? s.dateFinStage|date('Y-m-d') : 'NULL' }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </details>
-                        {% endif %}
-                    </div>
                 {% else %}
                     <div style="overflow:auto;">
                     <table style="width:100%; border-collapse:collapse;">
