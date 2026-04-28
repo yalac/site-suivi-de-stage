@@ -54,7 +54,7 @@
         .brand-badge {
             width: min(520px, 95%);
             margin: 0 auto 1.5rem;
-            padding: 0;
+            padding: 8px;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.25);
             background: rgba(243, 246, 251, 0.95);
@@ -147,7 +147,6 @@
             padding: 0.78rem 0.88rem;
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .input-group input::placeholder {
@@ -161,22 +160,13 @@
 
         .submit-btn {
             width: 100%;
+            display: block;
+            margin-top: 0.55rem;
+            padding: 0.82rem 1rem;
             border: 0;
             border-radius: 10px;
-            padding: 0.82rem 1rem;
             font-size: 1.05rem;
             font-weight: 600;
-            color: #f6fbff;
-            background: linear-gradient(180deg, #5ca3f0 0%, var(--primary) 100%);
-            cursor: pointer;
-            margin-top: 0.55rem;
-            transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
-        }
-
-        .submit-btn:hover {
-            background: linear-gradient(180deg, #68adf7 0%, var(--primary-hover) 100%);
-            box-shadow: 0 12px 24px rgba(39, 97, 178, 0.42);
-            transform: translateY(-1px);
         }
 
         @media (max-width: 640px) {
@@ -205,7 +195,7 @@
             <p class="app-subtitle">BTS SIO - La Chataigneraie</p>
         </section>
 
-        <section class="login-card">
+        <section class="login-card app-card" style="border-radius: 18px; padding: 1.7rem;">
             <h2 class="card-title">Connexion</h2>
             <p class="card-caption">Accedez au site de suivi de stages</p>
 
@@ -232,7 +222,7 @@
 
                 <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
-                <button class="submit-btn" type="submit">Se connecter</button>
+                <button class="submit-btn app-button-primary" type="submit">Se connecter</button>
             </form>
         </section>
     </main>

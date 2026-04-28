@@ -88,4 +88,9 @@ class Promotion
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->classePromotion . ' - ' . $this->anneePromotion;
+    }
 }

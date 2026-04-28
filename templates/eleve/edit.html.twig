@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'utilisateur{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .form-with-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .unified-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(104, 137, 197, 0.06);
+            margin-top: 0.5rem;
+        }
+
+        .unified-actions .app-button-primary {
+            margin: 0;
+        }
+
+        .danger-form button {
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <h1 class="app-title">Modifier l'utilisateur</h1>
+                <p class="app-subtitle">Mettre à jour les informations de l'élève.</p>
+            </header>
+
+            <section class="app-card">
+                <div class="form-with-actions">
+                    {{ include('eleve/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+                    <div class="unified-actions app-section-actions">
+                        <button type="submit" form="user-form-edit" class="app-button-primary">Enregistrer</button>
+                        <a class="app-link" href="{{ path('app_users') }}">Retour à la liste</a>
+                        <div class="danger-form">{{ include('eleve/_delete_form.html.twig') }}</div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+{% endblock %}

@@ -2,45 +2,86 @@
 
 {% block title %}Détail entreprise{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .details-table th,
+        .details-table td {
+            padding: 0.7rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: top;
+        }
+
+        .details-table th {
+            width: 35%;
+            text-align: left;
+        }
+
+        .stage-actions {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stage-actions .app-button-primary {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <main style="min-height: 100vh; margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, #0b1b3f 0%, #081433 46%, #07112a 100%); color: #f2f7ff; padding: 2rem 1.5rem;">
-        <section style="max-width: 900px; margin: 0 auto;">
-            <header style="margin-bottom:1rem;">
-                <h1 style="margin:0 0 0.4rem; font-size:1.6rem; font-weight:700;">Détail de l'entreprise</h1>
-                <p style="margin:0; color:#9cafcb;">Informations complètes de l'entreprise sélectionnée.</p>
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">Détail de l'entreprise</h1>
+                <p class="app-subtitle">Informations complètes de l'entreprise sélectionnée.</p>
             </header>
 
-            <div style="border-radius:14px; padding:1rem; background:rgba(8,20,47,0.9); border:1px solid rgba(104,137,197,0.08); box-shadow:0 8px 24px rgba(3,10,24,0.45);">
+            <div class="app-card">
                 <div style="overflow:auto; margin-bottom:1rem;">
-                    <table style="width:100%; border-collapse:collapse;">
+                    <table class="details-table">
                         <tbody>
-                            <tr style="border-top:1px solid rgba(255,255,255,0.05);">
-                                <th style="text-align:left; width:35%; padding:0.7rem; color:#cfe3ff;">ID</th>
-                                <td style="padding:0.7rem; color:#f2f7ff;">{{ entreprise.id }}</td>
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ entreprise.id }}</td>
                             </tr>
-                            <tr style="border-top:1px solid rgba(255,255,255,0.05);">
-                                <th style="text-align:left; padding:0.7rem; color:#cfe3ff;">Nom</th>
-                                <td style="padding:0.7rem; color:#f2f7ff;">{{ entreprise.nomEntreprise }}</td>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ entreprise.nomEntreprise }}</td>
                             </tr>
-                            <tr style="border-top:1px solid rgba(255,255,255,0.05);">
-                                <th style="text-align:left; padding:0.7rem; color:#cfe3ff;">Adresse</th>
-                                <td style="padding:0.7rem; color:#f2f7ff;">{{ entreprise.adresseEntreprise }}</td>
+                            <tr>
+                                <th>Adresse</th>
+                                <td>{{ entreprise.adresseEntreprise }}</td>
                             </tr>
-                            <tr style="border-top:1px solid rgba(255,255,255,0.05);">
-                                <th style="text-align:left; padding:0.7rem; color:#cfe3ff;">Code postal</th>
-                                <td style="padding:0.7rem; color:#f2f7ff;">{{ entreprise.cpentreprise }}</td>
+                            <tr>
+                                <th>Code postal</th>
+                                <td>{{ entreprise.cpentreprise }}</td>
                             </tr>
-                            <tr style="border-top:1px solid rgba(255,255,255,0.05); border-bottom:1px solid rgba(255,255,255,0.05);">
-                                <th style="text-align:left; padding:0.7rem; color:#cfe3ff;">Ville</th>
-                                <td style="padding:0.7rem; color:#f2f7ff;">{{ entreprise.villeEntreprise }}</td>
+                            <tr>
+                                <th>Ville</th>
+                                <td>{{ entreprise.villeEntreprise }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-                    <a href="{{ path('app_entreprise_index') }}" style="color:#9cafcb; text-decoration:none;">Retour à la liste</a>
-                    <a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}" style="background:#2b69c9; color:#fff; padding:0.5rem 0.9rem; border-radius:8px; border:0; text-decoration:none;">Modifier</a>
+                <div class="stage-actions">
+                    <a href="{{ path('app_entreprise_index') }}" class="app-link">Retour à la liste</a>
+                    <a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}" class="app-button-primary">Modifier</a>
                     {{ include('entreprise/_delete_form.html.twig') }}
                 </div>
             </div>

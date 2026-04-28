@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .details-table th,
+        .details-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .details-table th {
+            width: 32%;
+        }
+
+        .action-row {
+            margin-top: 0.25rem;
+        }
+
+        .danger-form button {
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <h1 class="app-title">Détail de l'utilisateur</h1>
+                <p class="app-subtitle">Informations complètes de l'élève sélectionné.</p>
+            </header>
+
+            <section class="app-card">
+                <table class="details-table app-table">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ eleve.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ eleve.nomEleve }}</td>
+                        </tr>
+                        <tr>
+                            <th>Prénom</th>
+                            <td>{{ eleve.prenomEleve }}</td>
+                        </tr>
+                        <tr>
+                            <th>Professeur référent</th>
+                            <td>{{ eleve.profReferent }}</td>
+                        </tr>
+                        <tr>
+                            <th>Professeur visite</th>
+                            <td>{{ eleve.profVisite }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="action-row app-section-actions">
+                    <a class="app-link" href="{{ path('app_users') }}">Retour à la liste</a>
+                    <a class="app-button-primary" href="{{ path('app_eleve_edit', {'id': eleve.id}) }}">Modifier</a>
+                    <div class="danger-form">{{ include('eleve/_delete_form.html.twig') }}</div>
+                </div>
+            </section>
+        </section>
+    </main>
+{% endblock %}

@@ -2,31 +2,67 @@
 
 {% block title %}Activité: {{ activite.titre }}{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .details-text {
+            margin: 0 0 1rem;
+            color: #cfe3ff;
+            line-height: 1.6;
+        }
+
+        .stage-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .stage-actions .app-button-primary {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>{{ activite.titre }}</h1>
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">{{ activite.titre }}</h1>
+                <p class="app-subtitle">Détail de l'activité</p>
+            </header>
 
-    <div class="card">
-        <div class="card-body">
-            <p><strong>Description:</strong><br>
-                {% if activite.description %}
-                    {{ activite.description }}
-                {% else %}
-                    Pas de description
-                {% endif %}
-            </p>
+            <section class="app-card">
+                <p class="details-text">
+                    <strong>Description:</strong><br>
+                    {% if activite.description %}
+                        {{ activite.description }}
+                    {% else %}
+                        Pas de description
+                    {% endif %}
+                </p>
 
-            <p><strong>Stage:</strong><br>
-                {% if activite.stageActivite %}
-                    Stage #{{ activite.stageActivite.id }} - {{ activite.stageActivite.descriptifStage|default('N/A') }}
-                {% else %}
-                    Non assigné
-                {% endif %}
-            </p>
-        </div>
-    </div>
+                <p class="details-text">
+                    <strong>Stage:</strong><br>
+                    {% if activite.stageActivite %}
+                        Stage #{{ activite.stageActivite.id }} - {{ activite.stageActivite.descriptifStage|default('N/A') }}
+                    {% else %}
+                        Non assigné
+                    {% endif %}
+                </p>
 
-    <div class="mt-3">
-        <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="btn btn-warning">Modifier</a>
-        <a href="{{ path('app_activite_index') }}" class="btn btn-secondary">Retour à la liste</a>
-    </div>
+                <div class="stage-actions">
+                    <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="app-button-primary">Modifier</a>
+                    <a href="{{ path('app_activite_index') }}" class="app-link">Retour à la liste</a>
+                </div>
+            </section>
+        </section>
+    </main>
 {% endblock %}

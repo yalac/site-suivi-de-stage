@@ -2,60 +2,120 @@
 
 {% block title %}Activités{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .table-wrap {
+            overflow: auto;
+        }
+
+        .table-left {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-left th {
+            text-align: left;
+        }
+
+        .table-left td,
+        .table-left th {
+            padding: 0.6rem 0.8rem;
+        }
+
+        .table-left thead th {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .table-left tbody tr {
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .table-actions a {
+            margin-right: 0.6rem;
+        }
+
+        .table-actions form {
+            display: inline;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>Activités</h1>
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <h1 class="app-title">Activités</h1>
+                <p class="app-subtitle">Liste des activités enregistrées et actions rapides.</p>
+            </header>
 
-    <a href="{{ path('app_activite_new') }}" class="btn btn-primary mb-3">Ajouter une activité</a>
+            <section class="app-card">
+                <div class="page-actions" style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom:0.8rem;">
+                    <p class="app-muted">Afficher toutes les activités enregistrées dans la base.</p>
+                    <a href="{{ path('app_activite_new') }}" class="app-button-primary">Ajouter une activité</a>
+                </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Stage</th>
-                <th>Étudiant</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for activite in activites %}
-                <tr>
-                    <td>{{ activite.titre }}</td>
-                    <td>
-                        {% if activite.description %}
-                            {{ activite.description|slice(0, 100) }}...
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if activite.idStage %}
-                            Stage #{{ activite.idStage.id }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if activite.stageActivite %}
-                            N/A
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{ path('app_activite_show', {'id': activite.id}) }}" class="btn btn-sm btn-info">Voir</a>
-                        <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
-                        <form method="post" action="{{ path('app_activite_delete', {'id': activite.id}) }}" style="display:inline;">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ activite.id) }}">
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5" class="text-center">Aucune activité trouvée</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% if activites is empty %}
+                    <p class="app-muted">Aucune activité trouvée.</p>
+                {% else %}
+                    <div class="table-wrap">
+                        <table class="table-left">
+                            <thead>
+                                <tr>
+                                    <th>Titre</th>
+                                    <th>Description</th>
+                                    <th>Stage</th>
+                                    <th>Étudiant</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for activite in activites %}
+                                    <tr>
+                                        <td>{{ activite.titre }}</td>
+                                        <td>
+                                            {% if activite.description %}
+                                                {{ activite.description|slice(0, 100) }}...
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if activite.idStage %}
+                                                Stage #{{ activite.idStage.id }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if activite.stageActivite %}
+                                                N/A
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td class="table-actions">
+                                            <a href="{{ path('app_activite_show', {'id': activite.id}) }}" class="app-link">Voir</a>
+                                            <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="app-link">Modifier</a>
+                                            <form method="post" action="{{ path('app_activite_delete', {'id': activite.id}) }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ activite.id) }}">
+                                                <button class="app-button-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </section>
+        </section>
+    </main>
 {% endblock %}

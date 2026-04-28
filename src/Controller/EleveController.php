@@ -10,12 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-final class UsersController extends AbstractController
+#[Route('/eleve')]
+final class EleveController extends AbstractController
 {
-    #[Route('/utilisateurs', name: 'app_users')]
-    #[IsGranted('ROLE_ADMIN')]
     #[Route(name: 'app_eleve_index', methods: ['GET'])]
     public function index(EleveRepository $eleveRepository): Response
     {

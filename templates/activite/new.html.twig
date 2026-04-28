@@ -2,10 +2,68 @@
 
 {% block title %}Nouvelle Activité{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .form-stack {
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: #cfe3ff;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.55rem 0.65rem;
+            border: 1px solid rgba(104, 137, 197, 0.25);
+            border-radius: 8px;
+            background: rgba(9, 21, 49, 0.85);
+            color: #f2f7ff;
+            box-sizing: border-box;
+        }
+
+        .field-error {
+            margin-top: 0.2rem;
+            color: #ff9b9b;
+            font-size: 0.9rem;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 0.8rem;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>Ajouter une Activité</h1>
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">Ajouter une Activité</h1>
+                <p class="app-subtitle">Créer une nouvelle activité liée à un stage.</p>
+            </header>
 
-    {% include 'activite/_form.html.twig' with {'button_label': 'Créer'} %}
+            <section class="app-card">
+                {% include 'activite/_form.html.twig' with {'button_label': 'Créer'} %}
 
-    <a href="{{ path('app_activite_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+                <div class="page-actions">
+                    <a href="{{ path('app_activite_index') }}" class="app-link">Retour à la liste</a>
+                </div>
+            </section>
+        </section>
+    </main>
 {% endblock %}

@@ -1,21 +1,23 @@
 {{ form_start(form) }}
-    <div class="mb-3">
-        {{ form_label(form.titre, 'Titre') }}
-        {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.titre) }}
+    <div class="form-stack">
+        <div>
+            {{ form_label(form.titre, 'Titre', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.titre, {'attr': {'class': 'form-input'}}) }}
+            <div class="field-error">{{ form_errors(form.titre) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-input', 'rows': '5'}}) }}
+            <div class="field-error">{{ form_errors(form.description) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.idStage, 'Stage', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.idStage, {'attr': {'class': 'form-input'}}) }}
+            <div class="field-error">{{ form_errors(form.idStage) }}</div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        {{ form_label(form.description, 'Description') }}
-        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '5'}}) }}
-        {{ form_errors(form.description) }}
-    </div>
-
-    <div class="mb-3">
-        {{ form_label(form.idStage, 'Stage') }}
-        {{ form_widget(form.idStage, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.idStage) }}
-    </div>
-
-    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    <button class="app-button-primary" type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}
