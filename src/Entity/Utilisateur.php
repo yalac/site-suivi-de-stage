@@ -183,4 +183,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function __toString(): string
+    {
+        return $this->prenomUtilisateur . ' ' . $this->nomUtilisateur;
+    }
 }

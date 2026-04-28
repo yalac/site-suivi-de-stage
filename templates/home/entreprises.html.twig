@@ -2,54 +2,108 @@
 
 {% block title %}Entreprises{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1.2rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .page-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+
+        .page-actions p {
+            margin: 0;
+        }
+
+        .table-wrap {
+            overflow: auto;
+        }
+
+        .table-left {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-left th {
+            text-align: left;
+        }
+
+        .table-left td,
+        .table-left th {
+            padding: 0.6rem 0.8rem;
+        }
+
+        .table-left thead th {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .table-left tbody tr {
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .table-actions a {
+            margin-right: 0.6rem;
+        }
+
+        .table-actions form {
+            display: inline;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <main style="min-height: 100vh; margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, #0b1b3f 0%, #081433 46%, #07112a 100%); color: #f2f7ff; padding: 2rem 1.5rem;">
-        <a href="{{ path('app_home') }}" style="position:fixed; top:1rem; left:1rem; z-index:20; display:inline-block; background:rgba(8,20,47,0.92); color:#cfe3ff; padding:0.5rem 0.8rem; border:1px solid rgba(104,137,197,0.2); border-radius:10px; box-shadow:0 8px 24px rgba(3,10,24,0.35); text-decoration:none;">
-            Retour a l'accueil
-        </a>
-        <section style="max-width: 1200px; margin: 0 auto;">
-            <header style="margin-bottom: 1.2rem;">
-                <h1 style="margin: 0 0 0.4rem; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700;">Entreprises</h1>
-                <p style="margin: 0; color: #9cafcb; font-size: 0.98rem;">Liste des entreprises enregistrées et actions rapides.</p>
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <h1 class="app-title">Entreprises</h1>
+                <p class="app-subtitle">Liste des entreprises enregistrées et actions rapides.</p>
             </header>
 
-            <div style="border-radius: 14px; padding: 1rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.12); box-shadow: 0 8px 24px rgba(3,10,24,0.5);">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; gap:1rem; flex-wrap:wrap;">
-                    <div style="color:#9cafcb; font-size:0.95rem;">Afficher toutes les entreprises enregistrées dans la base.</div>
-                    <div>
-                        <a href="{{ path('app_entreprise_new') }}" style="background:#2b69c9; color:#fff; padding:0.45rem 0.8rem; border-radius:8px; text-decoration:none;">Créer une entreprise</a>
-                    </div>
+            <div class="app-card">
+                <div class="page-actions">
+                    <p class="app-muted">Afficher toutes les entreprises enregistrées dans la base.</p>
+                    <a href="{{ path('app_entreprise_new') }}" class="app-button-primary">Créer une entreprise</a>
                 </div>
 
                 {% if entreprises is empty %}
-                    <p style="color:#9cafcb;">Aucune entreprise enregistrée.</p>
+                    <p class="app-muted">Aucune entreprise enregistrée.</p>
                 {% else %}
-                    <div style="overflow:auto;">
-                    <table style="width:100%; border-collapse:collapse;">
+                    <div class="table-wrap">
+                    <table class="table-left">
                         <thead>
                             <tr style="text-align:left; color:#cfe3ff;">
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">ID</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Nom</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Adresse</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Code postal</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Ville</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Actions</th>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Adresse</th>
+                                <th>Code postal</th>
+                                <th>Ville</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for entreprise in entreprises %}
-                            <tr style="border-top:1px solid rgba(255,255,255,0.02);">
-                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.id }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.nomEntreprise }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.adresseEntreprise }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.cpentreprise }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ entreprise.villeEntreprise }}</td>
-                                <td style="padding:0.6rem 0.8rem;">
-                                    <a href="{{ path('app_entreprise_show', {'id': entreprise.id}) }}" style="color:#9cafcb; text-decoration:none; margin-right:0.6rem;">Voir</a>
-                                    <a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}" style="color:#9cafcb; text-decoration:none; margin-right:0.6rem;">Modifier</a>
-                                    <form method="post" action="{{ path('app_entreprise_delete', {'id': entreprise.id}) }}" style="display:inline;">
+                            <tr>
+                                <td>{{ entreprise.id }}</td>
+                                <td>{{ entreprise.nomEntreprise }}</td>
+                                <td>{{ entreprise.adresseEntreprise }}</td>
+                                <td>{{ entreprise.cpentreprise }}</td>
+                                <td>{{ entreprise.villeEntreprise }}</td>
+                                <td class="table-actions">
+                                    <a class="app-link" href="{{ path('app_entreprise_show', {'id': entreprise.id}) }}">Voir</a>
+                                    <a class="app-link" href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}">Modifier</a>
+                                    <form method="post" action="{{ path('app_entreprise_delete', {'id': entreprise.id}) }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entreprise.id) }}">
-                                        <button type="submit" style="background:transparent; color:#ff7b7b; border:0; padding:0; cursor:pointer;" onclick="return confirm('Voulez-vous vraiment supprimer cette entreprise ?');">Supprimer</button>
+                                        <button type="submit" class="app-button-danger" onclick="return confirm('Voulez-vous vraiment supprimer cette entreprise ?');">Supprimer</button>
                                     </form>
                                 </td>
                             </tr>

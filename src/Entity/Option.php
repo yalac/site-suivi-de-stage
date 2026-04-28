@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OptionRepository::class)]
-#[ORM\Table(name: 'option')]
+#[ORM\Table(name: '`option`')]
 class Option
 {
     #[ORM\Id]
@@ -71,5 +71,10 @@ class Option
             }
         }
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nomOption ?? '';
     }
 }

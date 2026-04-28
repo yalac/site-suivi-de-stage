@@ -130,4 +130,12 @@ class Stage
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        $entreprise = $this->entrepriseStage?->getNomEntreprise() ?? 'N/A';
+        $debut = $this->dateDebutStage?->format('Y-m-d') ?? '?';
+        $fin = $this->dateFinStage?->format('Y-m-d') ?? '?';
+        return "$entreprise ($debut - $fin)";
+    }
 }

@@ -2,46 +2,97 @@
 
 {% block title %}Modifier entreprise{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .form-stack {
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 0.8rem;
+        }
+
+        .form-actions .app-button-primary {
+            margin: 0;
+        }
+
+        .field-error {
+            margin-top: 0.2rem;
+            color: #ff9b9b;
+            font-size: 0.9rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: #cfe3ff;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.55rem 0.65rem;
+            border: 1px solid rgba(104, 137, 197, 0.25);
+            border-radius: 8px;
+            background: rgba(9, 21, 49, 0.85);
+            color: #f2f7ff;
+            box-sizing: border-box;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <main style="min-height: 100vh; margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, #0b1b3f 0%, #081433 46%, #07112a 100%); color: #f2f7ff; padding: 2rem 1.5rem;">
-        <section style="max-width: 900px; margin: 0 auto;">
-            <header style="margin-bottom:1rem;">
-                <h1 style="margin:0 0 0.4rem; font-size:1.6rem; font-weight:700;">Modifier une entreprise</h1>
-                <p style="margin:0; color:#9cafcb;">Mettez a jour les informations de l'entreprise.</p>
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">Modifier une entreprise</h1>
+                <p class="app-subtitle">Mettez à jour les informations de l'entreprise.</p>
             </header>
 
-            <div style="border-radius:14px; padding:1rem; background:rgba(8,20,47,0.9); border:1px solid rgba(104,137,197,0.08); box-shadow:0 8px 24px rgba(3,10,24,0.45);">
+            <div class="app-card">
                 {{ form_start(form) }}
-                    <div style="display:grid; gap:0.85rem; margin-bottom:0.8rem;">
+                    <div class="form-stack">
                         <div>
-                            {{ form_label(form.nomEntreprise, 'Nom de l\'entreprise', {'label_attr': {'style': 'display:block; margin-bottom:0.35rem; color:#cfe3ff;'}}) }}
-                            {{ form_widget(form.nomEntreprise, {'attr': {'style': 'width:100%; padding:0.55rem 0.65rem; border:1px solid rgba(104,137,197,0.25); border-radius:8px; background:rgba(9,21,49,0.85); color:#f2f7ff;'}}) }}
-                            <div style="margin-top:0.2rem; color:#ff9b9b; font-size:0.9rem;">{{ form_errors(form.nomEntreprise) }}</div>
+                            {{ form_label(form.nomEntreprise, 'Nom de l\'entreprise', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.nomEntreprise, {'attr': {'class': 'form-input'}}) }}
+                            <div class="field-error">{{ form_errors(form.nomEntreprise) }}</div>
                         </div>
 
                         <div>
-                            {{ form_label(form.adresseEntreprise, 'Adresse', {'label_attr': {'style': 'display:block; margin-bottom:0.35rem; color:#cfe3ff;'}}) }}
-                            {{ form_widget(form.adresseEntreprise, {'attr': {'style': 'width:100%; padding:0.55rem 0.65rem; border:1px solid rgba(104,137,197,0.25); border-radius:8px; background:rgba(9,21,49,0.85); color:#f2f7ff;'}}) }}
-                            <div style="margin-top:0.2rem; color:#ff9b9b; font-size:0.9rem;">{{ form_errors(form.adresseEntreprise) }}</div>
+                            {{ form_label(form.adresseEntreprise, 'Adresse', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.adresseEntreprise, {'attr': {'class': 'form-input'}}) }}
+                            <div class="field-error">{{ form_errors(form.adresseEntreprise) }}</div>
                         </div>
 
                         <div>
-                            {{ form_label(form.cpentreprise, 'Code postal', {'label_attr': {'style': 'display:block; margin-bottom:0.35rem; color:#cfe3ff;'}}) }}
-                            {{ form_widget(form.cpentreprise, {'attr': {'style': 'width:100%; padding:0.55rem 0.65rem; border:1px solid rgba(104,137,197,0.25); border-radius:8px; background:rgba(9,21,49,0.85); color:#f2f7ff;'}}) }}
-                            <div style="margin-top:0.2rem; color:#ff9b9b; font-size:0.9rem;">{{ form_errors(form.cpentreprise) }}</div>
+                            {{ form_label(form.cpentreprise, 'Code postal', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.cpentreprise, {'attr': {'class': 'form-input'}}) }}
+                            <div class="field-error">{{ form_errors(form.cpentreprise) }}</div>
                         </div>
 
                         <div>
-                            {{ form_label(form.villeEntreprise, 'Ville', {'label_attr': {'style': 'display:block; margin-bottom:0.35rem; color:#cfe3ff;'}}) }}
-                            {{ form_widget(form.villeEntreprise, {'attr': {'style': 'width:100%; padding:0.55rem 0.65rem; border:1px solid rgba(104,137,197,0.25); border-radius:8px; background:rgba(9,21,49,0.85); color:#f2f7ff;'}}) }}
-                            <div style="margin-top:0.2rem; color:#ff9b9b; font-size:0.9rem;">{{ form_errors(form.villeEntreprise) }}</div>
+                            {{ form_label(form.villeEntreprise, 'Ville', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.villeEntreprise, {'attr': {'class': 'form-input'}}) }}
+                            <div class="field-error">{{ form_errors(form.villeEntreprise) }}</div>
                         </div>
                     </div>
 
                     {{ form_rest(form) }}
-                    <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-                        <button type="submit" style="background:#2b69c9; color:#fff; padding:0.5rem 0.9rem; border-radius:8px; border:0;">Enregistrer</button>
-                        <a href="{{ path('app_entreprise_index') }}" style="align-self:center; color:#9cafcb; text-decoration:none;">Annuler</a>
+                    <div class="form-actions">
+                        <button type="submit" class="app-button-primary">Enregistrer</button>
+                        <a href="{{ path('app_entreprise_index') }}" class="app-link">Annuler</a>
                         {{ include('entreprise/_delete_form.html.twig') }}
                     </div>
                 {{ form_end(form) }}
