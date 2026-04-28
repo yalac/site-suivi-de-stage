@@ -4,6 +4,211 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <style>
+            :root {
+                --app-bg-top: #0b1b3f;
+                --app-bg-mid: #081433;
+                --app-bg-bottom: #07112a;
+                --app-surface: rgba(8, 20, 47, 0.9);
+                --app-surface-border: rgba(104, 137, 197, 0.12);
+                --app-surface-border-strong: rgba(104, 137, 197, 0.5);
+                --app-text: #f2f7ff;
+                --app-text-soft: #9cafcb;
+                --app-text-faint: #cfe3ff;
+                --app-primary: #2b69c9;
+                --app-primary-hover: #5ca3f0;
+                --app-danger: #ff7b7b;
+                --app-shadow: 0 8px 24px rgba(3, 10, 24, 0.5);
+                --app-radius: 14px;
+            }
+
+            html, body {
+                min-height: 100%;
+                margin: 0;
+                padding: 0;
+                background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, var(--app-bg-top) 0%, var(--app-bg-mid) 46%, var(--app-bg-bottom) 100%);
+                color: var(--app-text);
+            }
+
+            body {
+                min-height: 100vh;
+                font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif;
+                margin: 0;
+                display: flex;
+            }
+
+            .app-page {
+                min-height: 100vh;
+                padding: 2rem 1.5rem;
+                box-sizing: border-box;
+            }
+
+            .app-container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .app-header {
+                margin-bottom: 1rem;
+            }
+
+            .app-title {
+                margin: 0 0 0.4rem;
+                font-size: clamp(1.6rem, 3vw, 2.2rem);
+                font-weight: 700;
+            }
+
+            .app-subtitle {
+                margin: 0;
+                color: var(--app-text-soft);
+                font-size: 0.98rem;
+            }
+
+            .app-card {
+                border-radius: var(--app-radius);
+                padding: 1rem;
+                background: var(--app-surface);
+                border: 1px solid var(--app-surface-border);
+                box-shadow: var(--app-shadow);
+            }
+
+            .app-section-actions {
+                display: flex;
+                gap: 0.75rem;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .app-button,
+            .app-button-primary,
+            .app-button-secondary,
+            .app-button-danger {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.5rem 0.9rem;
+                border-radius: 8px;
+                text-decoration: none;
+                border: 0;
+                cursor: pointer;
+                font: inherit;
+            }
+
+            .app-button-primary {
+                background: var(--app-primary);
+                color: #fff;
+            }
+
+            .app-button-secondary {
+                background: transparent;
+                color: var(--app-text-soft);
+            }
+
+            .app-button-danger {
+                background: transparent;
+                color: var(--app-danger);
+            }
+
+            .app-table {
+                width: 100%;
+                border-collapse: collapse;
+                color: inherit;
+            }
+
+            .app-table th,
+            .app-table td {
+                padding: 0.75rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                text-align: center;
+            }
+
+            .app-table th {
+                color: var(--app-text-soft);
+                font-weight: 600;
+                font-size: 0.95rem;
+            }
+
+            .app-muted {
+                color: var(--app-text-soft);
+            }
+
+            .app-link {
+                color: var(--app-text-soft);
+                text-decoration: none;
+            }
+
+            /* Sidebar layout */
+            .app-shell {
+                display: flex;
+                width: 100%;
+                min-height: 100vh;
+            }
+
+            aside.app-sidebar {
+                width: 260px;
+                background: linear-gradient(180deg, rgba(13, 33, 65, 0.95), rgba(3, 13, 32, 0.95));
+                border-right: 1px solid rgba(82, 110, 161, 0.06);
+                padding: 18px 16px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .app-sidebar .logo {
+                display: block;
+                width: 100%;
+                border-radius: 10px;
+                overflow: hidden;
+                background: rgba(255,255,255,0.03);
+                padding: 8px;
+            }
+
+            .app-sidebar .nav {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 6px;
+            }
+
+            .app-sidebar .nav a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 14px;
+                border-radius: 10px;
+                color: var(--app-text-faint);
+                text-decoration: none;
+                font-weight: 600;
+                transition: background 0.12s ease;
+            }
+
+            .app-sidebar .nav a .icon {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                border-radius: 6px;
+                background: rgba(255,255,255,0.06);
+                flex: 0 0 20px;
+            }
+
+            .app-sidebar .nav a:hover {
+                background: rgba(92,163,240,0.12);
+            }
+
+            .app-sidebar .nav a.active {
+                background: #4da1ff;
+                color: #fff;
+                box-shadow: 0 8px 18px rgba(46,100,200,0.18);
+            }
+
+            .app-main {
+                flex: 1 1 auto;
+                padding: 18px 22px;
+                box-sizing: border-box;
+                min-height: 100vh;
+            }
+        </style>
         {% block stylesheets %}
         {% endblock %}
 
@@ -11,6 +216,76 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% set current_route = app.request is defined ? app.request.attributes.get('_route') : null %}
+        {% set is_auth_page = current_route in ['app_login', 'app_register'] %}
+
+        {% if is_auth_page %}
+            {{ block('body') }}
+        {% else %}
+            <div class="app-shell">
+                <aside class="app-sidebar">
+                    <a href="{{ path('app_home') }}" class="logo">
+                        <img src="/images/logo-chataigneraie.png" alt="Logo" style="width:100%; display:block;" />
+                    </a>
+
+                    <nav class="nav">
+                        <a href="{{ path('app_home') }}" class="{{ current_route == 'app_home' ? 'active' : '' }}">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M3 13.5L12 5l9 8.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-6.5z" fill="currentColor"/>
+                                </svg>
+                            </span>
+                            <span>Tableau de bord</span>
+                        </a>
+                        <a href="{{ path('app_users') }}" class="{{ current_route starts with 'app_eleve' or current_route == 'app_users' ? 'active' : '' }}">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a6 6 0 0 1 16 0" fill="currentColor"/>
+                                </svg>
+                            </span>
+                            <span>Utilisateurs</span>
+                        </a>
+                        <a href="{{ path('app_entreprise_index') }}" class="{{ current_route starts with 'app_entreprise' ? 'active' : '' }}">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M3 21h18V7L12 2 3 7v14zM7 10h10v9H7v-9z" fill="currentColor"/>
+                                </svg>
+                            </span>
+                            <span>Entreprises</span>
+                        </a>
+                        <a href="{{ path('app_internships') }}" class="{{ current_route starts with 'app_internship' or current_route == 'app_internships' ? 'active' : '' }}">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4v14h16V6zm-10 0V4h4v2h-4z" fill="currentColor"/>
+                                </svg>
+                            </span>
+                            <span>Stages</span>
+                        </a>
+                        <a href="{{ path('app_followup_visits') }}" class="{{ current_route == 'app_followup_visits' ? 'active' : '' }}">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M9 11h6v2H9v-2zm0-4h6v2H9V7z" fill="currentColor"/>
+                                    <path d="M19 3H5a2 2 0 0 0-2 2v14l4-3h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" fill="currentColor" opacity="0.9"/>
+                                </svg>
+                            </span>
+                            <span>Suivi &amp; Visite</span>
+                        </a>
+                        <a href="{{ path('app_history') }}" class="{{ current_route == 'app_history' ? 'active' : '' }}">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M13 3a9 9 0 1 0 8.97 8H20a7 7 0 1 1-7-7v4l5-5-5-5v4z" fill="currentColor"/>
+                                    <path d="M12 8v5l4 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                </svg>
+                            </span>
+                            <span>Historique</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <div class="app-main">
+                    {{ block('body') }}
+                </div>
+            </div>
+        {% endif %}
     </body>
 </html>

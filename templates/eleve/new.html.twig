@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un utilisateur{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .form-with-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .form-with-actions .unified-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(104, 137, 197, 0.06);
+            margin-top: 0.5rem;
+        }
+
+        .form-with-actions .unified-actions button[type="submit"] {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <h1 class="app-title">Créer un utilisateur</h1>
+                <p class="app-subtitle">Remplir le formulaire pour ajouter un élève.</p>
+            </header>
+
+            <section class="app-card">
+                <div class="form-with-actions">
+                    {{ include('eleve/_form.html.twig', {'button_label': 'Créer'}) }}
+                    <div class="unified-actions app-section-actions">
+                        <button type="submit" form="user-form-edit" class="app-button-primary">Créer</button>
+                        <a class="app-link" href="{{ path('app_users') }}">Retour à la liste</a>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+{% endblock %}
