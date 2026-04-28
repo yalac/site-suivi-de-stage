@@ -34,4 +34,21 @@ class StageRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Retourne les stages terminés (historique) à la date donnée (ou aujourd'hui si null)
+     * Un stage est terminé si dateFinStage < date
+     */
+    public function findFinished(\DateTimeInterface $date = null): array
+    {
+        $date = $date ?? new \DateTimeImmutable('today');
+
+        $qb = $this->createQueryBuilder('s')
+            ->andWhere('s.dateFinStage IS NOT NULL AND s.dateFinStage < :date')
+            ->setParameter('date', $date, Types::DATE_IMMUTABLE)
+            ->orderBy('s.dateFinStage', 'DESC')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\StageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -11,8 +12,13 @@ class HistoryController extends AbstractController
 {
     #[Route('/historique', name: 'app_history')]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(): Response
+    public function index(StageRepository $stageRepository): Response
     {
-        return $this->render('home/history.html.twig');
+        $finishedStages = $stageRepository->findFinished();
+
+        return $this->render('home/history.html.twig', [
+            'stages' => $finishedStages,
+        ]);
     }
 }
+
