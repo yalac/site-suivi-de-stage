@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Entreprise;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EntrepriseType extends AbstractType
@@ -16,6 +18,9 @@ class EntrepriseType extends AbstractType
             ->add('adresseEntreprise')
             ->add('cpentreprise')
             ->add('villeEntreprise')
+            ->add('telephoneEntreprise', TelType::class)
+            ->add('tuteurEntreprise')
+            ->add('mailEntreprise', EmailType::class)
         ;
     }
 
