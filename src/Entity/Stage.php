@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\StageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StageRepository::class)]
@@ -30,17 +28,6 @@ class Stage
     #[ORM\ManyToOne(targetEntity: Entreprise::class)]
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
-
-    /**
-     * @var Collection<int, Activite>
-     */
-    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'stageActivite', orphanRemoval: true)]
-    private Collection $activites;
-
-    public function __construct()
-    {
-        $this->activites = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -99,35 +86,6 @@ class Stage
     public function setEntrepriseStage(?Entreprise $entrepriseStage): static
     {
         $this->entrepriseStage = $entrepriseStage;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Activite>
-     */
-    public function getActivites(): Collection
-    {
-        return $this->activites;
-    }
-
-    public function addActivite(Activite $activite): static
-    {
-        if (!$this->activites->contains($activite)) {
-            $this->activites->add($activite);
-            $activite->setStageActivite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivite(Activite $activite): static
-    {
-        if ($this->activites->removeElement($activite)) {
-            if ($activite->getStageActivite() === $this) {
-                $activite->setStageActivite(null);
-            }
-        }
-
         return $this;
     }
 
