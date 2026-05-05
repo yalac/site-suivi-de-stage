@@ -3,6 +3,100 @@
 {% block title %}Tableau de bord{% endblock %}
 
 {% block stylesheets %}
+    <style>
+        .app-subtitle {
+            margin: 0;
+            color: var(--app-text-soft);
+            font-size: 0.98rem;
+        }
+
+        .app-welcome {
+            margin: 0.5rem 0 0;
+            color: var(--app-text-soft);
+            font-size: 0.95rem;
+        }
+
+        .app-card {
+            margin-top: 3rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: stretch;
+            flex-wrap: wrap;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .page-nombreEtudiants,
+        .page-nombreEntreprises,
+        .page-nombreStages {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.5rem;
+            border-radius: var(--app-radius);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-nombreEtudiants {
+            background: linear-gradient(135deg, rgba(43, 105, 201, 0.15), rgba(43, 105, 201, 0.05));
+            border-color: rgba(43, 105, 201, 0.3);
+        }
+
+        .page-nombreEtudiants .app-card-title {
+            color: rgba(92, 163, 240, 0.9);
+        }
+
+        .page-nombreEtudiants .app-card-value {
+            color: rgba(92, 163, 240, 1);
+        }
+
+        .page-nombreEntreprises {
+            background: linear-gradient(135deg, rgba(32, 150, 100, 0.15), rgba(32, 150, 100, 0.05));
+            border-color: rgba(32, 150, 100, 0.3);
+        }
+
+        .page-nombreEntreprises .app-card-title {
+            color: rgba(76, 175, 130, 0.9);
+        }
+
+        .page-nombreEntreprises .app-card-value {
+            color: rgba(76, 175, 130, 1);
+        }
+
+        .page-nombreStages {
+            background: linear-gradient(135deg, rgba(139, 115, 85, 0.15), rgba(139, 115, 85, 0.05));
+            border-color: rgba(184, 134, 11, 0.3);
+        }
+
+        .page-nombreStages .app-card-title {
+            color: rgba(218, 165, 32, 0.9);
+        }
+
+        .page-nombreStages .app-card-value {
+            color: rgba(218, 165, 32, 1);
+        }
+
+        .app-card-title {
+            margin: 0 0 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .app-card-value {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -10,8 +104,26 @@
         <section class="app-container">
             <header class="app-header">
                 <h1 class="app-title">Tableau de bord</h1>
-                <p class="app-subtitle">Suivi des stages - BTS SIO La Chataigneraie</p>
+                <h2 class="app-subtitle">Suivi des stages - BTS SIO La Chataigneraie</h2>
+                <p class="app-welcome">Bienvenue {{ utilisateur.prenomUtilisateur }} {{ utilisateur.nomUtilisateur }} ~ {{role.nomRole}}</p>
             </header>
+
+            <div class="app-card">
+                <div class="page-nombreEtudiants">
+                    <h3 class="app-card-title">Nombre d'étudiants</h3>
+                    <p class="app-card-value">{{eleves | length}}</p>
+                </div>
+
+                <div class="page-nombreEntreprises">
+                    <h3 class="app-card-title">Nombre d'entreprises</h3>
+                    <p class="app-card-value">{{entreprises | length}}</p>
+                </div>
+
+                <div class="page-nombreStages">
+                    <h3 class="app-card-title">Nombre de stages</h3>
+                    <p class="app-card-value">{{stages | length}}</p>
+                </div>
+            </div>
         </section>
     </main>
 {% endblock %}
