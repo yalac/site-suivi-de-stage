@@ -18,15 +18,15 @@ class StageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les stages en cours à la date donnée (ou aujourd'hui si null)
-     * Un stage est en cours si dateDebutStage <= date AND (dateFinStage IS NULL OR dateFinStage >= date)
+     * Retourne les stages non-archivés et non-terminés (incluant les futurs)
+     * Un stage est affiché s'il n'est pas archivé et si dateFinStage n'est pas passée
      */
     public function findCurrent(\DateTimeInterface $date = null): array
     {
         $date = $date ?? new \DateTimeImmutable('today');
 
         $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.dateDebutStage IS NULL OR s.dateDebutStage <= :date')
+            ->andWhere('s.isArchived = false')
             ->andWhere('s.dateFinStage IS NULL OR s.dateFinStage >= :date')
             ->setParameter('date', $date, Types::DATE_IMMUTABLE)
             ->orderBy('s.dateDebutStage', 'ASC')
@@ -37,14 +37,14 @@ class StageRepository extends ServiceEntityRepository
 
     /**
      * Retourne les stages terminés (historique) à la date donnée (ou aujourd'hui si null)
-     * Un stage est terminé si dateFinStage < date
+     * Un stage est terminé si dateFinStage < date OU s'il est archivé
      */
     public function findFinished(\DateTimeInterface $date = null): array
     {
         $date = $date ?? new \DateTimeImmutable('today');
 
         $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.dateFinStage IS NOT NULL AND s.dateFinStage < :date')
+            ->andWhere('s.isArchived = true OR (s.dateFinStage IS NOT NULL AND s.dateFinStage < :date)')
             ->setParameter('date', $date, Types::DATE_IMMUTABLE)
             ->orderBy('s.dateFinStage', 'DESC')
         ;

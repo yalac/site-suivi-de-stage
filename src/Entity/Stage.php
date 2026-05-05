@@ -35,6 +35,9 @@ class Stage
     #[ORM\JoinColumn(name: 'eleve_principal_stage_id', nullable: true)]
     private ?Eleve $elevePrincipalStage = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isArchived = false;
+
     /**
      * @var Collection<int, Activite>
      */
@@ -121,6 +124,17 @@ class Stage
     public function setElevePrincipalStage(?Eleve $elevePrincipalStage): static
     {
         $this->elevePrincipalStage = $elevePrincipalStage;
+        return $this;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setArchived(bool $isArchived): static
+    {
+        $this->isArchived = $isArchived;
         return $this;
     }
 
