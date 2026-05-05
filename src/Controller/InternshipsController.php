@@ -19,7 +19,7 @@ class InternshipsController extends AbstractController
 		$stages = $stageRepository->findCurrent();
 		$allStages = $stageRepository->findAll();
 
-		return $this->render('home/internships.html.twig', [
+		return $this->render('stage/stage.html.twig', [
 			'stages' => $stages,
 			'allStages' => $allStages,
 		]);
@@ -39,7 +39,7 @@ class InternshipsController extends AbstractController
 			return $this->redirectToRoute('app_internships');
 		}
 
-		return $this->render('home/internships_new.html.twig', [
+		return $this->render('stage/stage_new.html.twig', [
 			'form' => $form->createView(),
 		]);
 	}
@@ -47,7 +47,7 @@ class InternshipsController extends AbstractController
 	#[Route('/stages/{id}', name: 'app_stage_show', methods: ['GET'])]
 	public function show(Stage $stage): Response
 	{
-		return $this->render('home/internships_show.html.twig', [
+		return $this->render('stage/stage_show.html.twig', [
 			'stage' => $stage,
 		]);
 	}
@@ -64,7 +64,7 @@ class InternshipsController extends AbstractController
 			return $this->redirectToRoute('app_internships');
 		}
 
-		return $this->render('home/internships_edit.html.twig', [
+		return $this->render('stage/stage_edit.html.twig', [
 			'form' => $form->createView(),
 			'stage' => $stage,
 		]);
