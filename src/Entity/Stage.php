@@ -37,9 +37,16 @@ class Stage
     #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'stageActivite', orphanRemoval: true)]
     private Collection $activites;
 
+    /**
+     * @var Collection<int, Eleve>
+     */
+    #[ORM\OneToMany(targetEntity: Eleve::class, mappedBy: 'stageEleve')]
+    private Collection $eleves;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
+        $this->eleves = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,6 +132,35 @@ class Stage
         if ($this->activites->removeElement($activite)) {
             if ($activite->getStageActivite() === $this) {
                 $activite->setStageActivite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Eleve>
+     */
+    public function getEleves(): Collection
+    {
+        return $this->eleves;
+    }
+
+    public function addEleve(Eleve $eleve): static
+    {
+        if (!$this->eleves->contains($eleve)) {
+            $this->eleves->add($eleve);
+            $eleve->setStageEleve($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEleve(Eleve $eleve): static
+    {
+        if ($this->eleves->removeElement($eleve)) {
+            if ($eleve->getStageEleve() === $this) {
+                $eleve->setStageEleve(null);
             }
         }
 
