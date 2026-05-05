@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un élève{% endblock %}
+{% block title %}Créer un utilisateur{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -38,13 +38,13 @@
     <main class="app-page">
         <section class="app-container">
             <header class="page-header app-header">
-                <h1 class="app-title">Créer un élève</h1>
-                <p class="app-subtitle">Remplir le formulaire pour ajouter un élève.</p>
+                <h1 class="app-title">Créer un utilisateur</h1>
+                <p class="app-subtitle">Remplir le formulaire pour ajouter un utilisateur.</p>
             </header>
 
             <section class="app-card">
                 <div class="form-with-actions">
-                    {{ include('eleve/_form.html.twig', {'button_label': 'Créer'}) }}
+                    {{ include('utilisateur/_form.html.twig', {'button_label': 'Créer'}) }}
                     <div class="unified-actions app-section-actions">
                         <button type="submit" form="user-form-edit" class="app-button-primary">Créer</button>
                         <a class="app-link" href="{{ path('app_users') }}">Retour à la liste</a>
