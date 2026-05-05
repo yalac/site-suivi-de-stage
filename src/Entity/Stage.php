@@ -29,6 +29,30 @@ class Stage
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
 
+    #[ORM\ManyToOne(targetEntity: Eleve::class)]
+    #[ORM\JoinColumn(name: 'eleve_principal_stage_id', nullable: true)]
+    private ?Eleve $elevePrincipalStage = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isArchived = false;
+
+    #[ORM\Column(name: 'prof_referent', length: 150, nullable: true)]
+    private ?string $profReferent = null;
+
+    #[ORM\Column(name: 'prof_visite', length: 150, nullable: true)]
+    private ?string $profVisite = null;
+
+    /**
+     * @var Collection<int, Eleve>
+     */
+    #[ORM\OneToMany(targetEntity: Eleve::class, mappedBy: 'stageEleve')]
+    private Collection $eleves;
+
+    public function __construct()
+    {
+        $this->eleves = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +110,79 @@ class Stage
     public function setEntrepriseStage(?Entreprise $entrepriseStage): static
     {
         $this->entrepriseStage = $entrepriseStage;
+        return $this;
+    }
+
+    public function getElevePrincipalStage(): ?Eleve
+    {
+        return $this->elevePrincipalStage;
+    }
+
+    public function setElevePrincipalStage(?Eleve $elevePrincipalStage): static
+    {
+        $this->elevePrincipalStage = $elevePrincipalStage;
+        return $this;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setArchived(bool $isArchived): static
+    {
+        $this->isArchived = $isArchived;
+        return $this;
+    }
+
+    public function getProfReferent(): ?string
+    {
+        return $this->profReferent;
+    }
+
+    public function setProfReferent(?string $profReferent): static
+    {
+        $this->profReferent = $profReferent;
+        return $this;
+    }
+
+    public function getProfVisite(): ?string
+    {
+        return $this->profVisite;
+    }
+
+    public function setProfVisite(?string $profVisite): static
+    {
+        $this->profVisite = $profVisite;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Eleve>
+     */
+    public function getEleves(): Collection
+    {
+        return $this->eleves;
+    }
+
+    public function addEleve(Eleve $eleve): static
+    {
+        if (!$this->eleves->contains($eleve)) {
+            $this->eleves->add($eleve);
+            $eleve->setStageEleve($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEleve(Eleve $eleve): static
+    {
+        if ($this->eleves->removeElement($eleve)) {
+            if ($eleve->getStageEleve() === $this) {
+                $eleve->setStageEleve(null);
+            }
+        }
+
         return $this;
     }
 

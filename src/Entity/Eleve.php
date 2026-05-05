@@ -39,15 +39,8 @@ class Eleve
     #[ORM\JoinColumn(name: 'stage_eleve_id', nullable: true)]
     private ?Stage $stageEleve = null;
 
-    /**
-     * @var Collection<int, Utilisateur>
-     */
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'eleves')]
-    private Collection $utilisateurs;
-
     public function __construct()
     {
-        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,28 +122,6 @@ class Eleve
     public function setStageEleve(?Stage $stageEleve): static
     {
         $this->stageEleve = $stageEleve;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Utilisateur>
-     */
-    public function getUtilisateurs(): Collection
-    {
-        return $this->utilisateurs;
-    }
-
-    public function addUtilisateur(Utilisateur $utilisateur): static
-    {
-        if (!$this->utilisateurs->contains($utilisateur)) {
-            $this->utilisateurs->add($utilisateur);
-        }
-        return $this;
-    }
-
-    public function removeUtilisateur(Utilisateur $utilisateur): static
-    {
-        $this->utilisateurs->removeElement($utilisateur);
         return $this;
     }
 }

@@ -45,13 +45,6 @@ class EleveType extends AbstractType
                 'label' => 'Promotion',
                 'placeholder' => 'Sélectionner une promotion'
             ])
-            ->add('stageEleve', EntityType::class, [
-                'class' => Stage::class,
-                'choice_label' => function (Stage $stage) { return (string) $stage; },
-                'label' => 'Stage',
-                'placeholder' => 'Sélectionner un stage',
-                'required' => false
-            ])
             ->add('utilisateurs', EntityType::class, [
                 'class' => Utilisateur::class,
                 'choice_label' => function (Utilisateur $utilisateur) { return (string) $utilisateur; },

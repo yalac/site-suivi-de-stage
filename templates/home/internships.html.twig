@@ -82,13 +82,17 @@
                         {% for stage in stages %}
                             <tr>
                                 <td>{{ stage.id }}</td>
-                                <td>N/A</td>
+                                <td>{{ stage.elevePrincipalStage ? stage.elevePrincipalStage.prenomEleve ~ ' ' ~ stage.elevePrincipalStage.nomEleve : '—' }}</td>
                                 <td>{{ stage.entrepriseStage.nomEntreprise }}</td>
                                 <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</td>
                                 <td>{{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</td>
                                 <td class="table-actions">
                                     <a class="app-link" href="{{ path('app_stage_show', {'id': stage.id}) }}">Voir</a>
                                     <a class="app-link" href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier</a>
+                                    <form method="post" action="{{ path('app_stage_archive', {'id': stage.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ stage.id) }}">
+                                        <button type="submit" class="app-link" onclick="return confirm('Archiver ce stage ?');">Archiver</button>
+                                    </form>
                                     <form method="post" action="{{ path('app_stage_delete', {'id': stage.id}) }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stage.id) }}">
                                         <button type="submit" class="app-button-danger" onclick="return confirm('Supprimer ce stage ?');">Supprimer</button>

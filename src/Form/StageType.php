@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class StageType extends AbstractType
 {
@@ -39,6 +40,24 @@ class StageType extends AbstractType
                 'choice_label' => 'nomEntreprise',
                 'placeholder' => 'Choisir une entreprise',
                 'label' => 'Entreprise',
+            ])
+            ->add('eleves', EntityType::class, [
+                'class' => Eleve::class,
+                'choice_label' => function ($eleve) {
+                    return $eleve->getPrenomEleve() . ' ' . $eleve->getNomEleve();
+                },
+                'placeholder' => 'Choisir un élève',
+                'label' => 'Élève',
+                'property_path' => 'elevePrincipalStage',
+                'required' => false,
+            ])
+            ->add('profReferent', TextType::class, [
+                'label' => 'Prof référent',
+                'required' => false,
+            ])
+            ->add('profVisite', TextType::class, [
+                'label' => 'Prof de visite',
+                'required' => false,
             ])
         ;
     }
