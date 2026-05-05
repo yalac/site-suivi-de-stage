@@ -22,10 +22,4 @@ final class Version20260505072637 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE stage ADD is_archived TINYINT DEFAULT 0 NOT NULL');
     }
-
-    public function down(Schema $schema): void
-    {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE stage DROP is_archived');
-    }
 }
