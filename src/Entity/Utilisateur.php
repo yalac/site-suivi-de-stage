@@ -26,8 +26,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'prenom_utilisateur', length: 100)]
     private ?string $prenomUtilisateur = null;
 
-    #[ORM\Column(name: 'mdputilisateur', length: 255)]
-    private ?string $mdputilisateur = null;
+    #[ORM\Column(name: 'mdp_utilisateur', length: 255)]
+    private ?string $mdpUtilisateur = null;
 
     #[ORM\Column(name: 'email_utilisateur', length: 200)]
     private ?string $emailUtilisateur = null;
@@ -69,12 +69,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getMdpUtilisateur(): ?string
     {
-        return $this->mdputilisateur;
+        return $this->mdpUtilisateur;
     }
 
-    public function setMdpUtilisateur(string $mdputilisateur): static
+    public function setMdpUtilisateur(string $mdpUtilisateur): static
     {
-        $this->mdputilisateur = $mdputilisateur;
+        $this->mdpUtilisateur = $mdpUtilisateur;
         return $this;
     }
 
@@ -142,7 +142,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return $this->mdputilisateur ?? '';
+        return $this->mdpUtilisateur ?? '';
     }
 
     /**
