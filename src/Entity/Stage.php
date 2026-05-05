@@ -46,7 +46,6 @@ class Stage
 
     public function __construct()
     {
-        $this->activites = new ArrayCollection();
         $this->eleves = new ArrayCollection();
     }
 
