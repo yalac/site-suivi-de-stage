@@ -31,6 +31,10 @@ class Stage
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
 
+    #[ORM\ManyToOne(targetEntity: Eleve::class)]
+    #[ORM\JoinColumn(name: 'eleve_principal_stage_id', nullable: true)]
+    private ?Eleve $elevePrincipalStage = null;
+
     /**
      * @var Collection<int, Activite>
      */
@@ -106,6 +110,17 @@ class Stage
     public function setEntrepriseStage(?Entreprise $entrepriseStage): static
     {
         $this->entrepriseStage = $entrepriseStage;
+        return $this;
+    }
+
+    public function getElevePrincipalStage(): ?Eleve
+    {
+        return $this->elevePrincipalStage;
+    }
+
+    public function setElevePrincipalStage(?Eleve $elevePrincipalStage): static
+    {
+        $this->elevePrincipalStage = $elevePrincipalStage;
         return $this;
     }
 
