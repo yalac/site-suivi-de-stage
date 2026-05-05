@@ -39,12 +39,6 @@ class Stage
     private bool $isArchived = false;
 
     /**
-     * @var Collection<int, Activite>
-     */
-    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'stageActivite', orphanRemoval: true)]
-    private Collection $activites;
-
-    /**
      * @var Collection<int, Eleve>
      */
     #[ORM\OneToMany(targetEntity: Eleve::class, mappedBy: 'stageEleve')]
@@ -52,7 +46,6 @@ class Stage
 
     public function __construct()
     {
-        $this->activites = new ArrayCollection();
         $this->eleves = new ArrayCollection();
     }
 
@@ -135,35 +128,6 @@ class Stage
     public function setArchived(bool $isArchived): static
     {
         $this->isArchived = $isArchived;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Activite>
-     */
-    public function getActivites(): Collection
-    {
-        return $this->activites;
-    }
-
-    public function addActivite(Activite $activite): static
-    {
-        if (!$this->activites->contains($activite)) {
-            $this->activites->add($activite);
-            $activite->setStageActivite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivite(Activite $activite): static
-    {
-        if ($this->activites->removeElement($activite)) {
-            if ($activite->getStageActivite() === $this) {
-                $activite->setStageActivite(null);
-            }
-        }
-
         return $this;
     }
 
