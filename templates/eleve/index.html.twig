@@ -58,6 +58,7 @@
 
                 <div class="page-actions">
                     <a class="app-button-primary" href="{{ path('app_eleve_new') }}">Créer un nouvel élève</a>
+                    <a class="app-button-primary" href="{{ path('app_utilisateur_new') }}">Créer un nouvel utilisateur</a>
                 </div>
             </header>
 
@@ -93,6 +94,36 @@
                             {% else %}
                                 <tr>
                                     <td colspan="5" class="empty app-muted">Aucun élève trouvé</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table-left">
+                           <thead>
+                                <tr>
+                                    <th>Nom de l'utilisateur</th>
+                                    <th>Prénom de l'utilisateur</th>
+                                    <th>Email de l'utilisateur</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for utilisateur in utilisateurs %}
+                                <tr>
+                                    <td>{{ utilisateur.nomUtilisateur }}</td>
+                                    <td>{{ utilisateur.prenomUtilisateur }}</td>
+                                    <td>{{ utilisateur.emailUtilisateur }}</td>
+                                    <td>
+                                        <a href="{{ path('app_utilisateur_show', {'id': utilisateur.id}) }}">Détail</a>
+                                        <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">Modifier</a>
+                                        <a class="app-button-danger" href="{{ path('app_utilisateur_delete', {'id': utilisateur.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce utilisateur ?')">Supprimer</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="empty app-muted">Aucun utilisateur trouvé</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

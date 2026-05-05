@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un élève{% endblock %}
+{% block title %}Modifier l'utilisateur{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -18,7 +18,7 @@
             gap: 0;
         }
 
-        .form-with-actions .unified-actions {
+        .unified-actions {
             display: flex;
             gap: 0.75rem;
             align-items: center;
@@ -28,26 +28,32 @@
             margin-top: 0.5rem;
         }
 
-        .form-with-actions .unified-actions button[type="submit"] {
+        .unified-actions .app-button-primary {
             margin: 0;
+        }
+
+        .danger-form button {
+            padding: 0;
         }
     </style>
 {% endblock %}
+
 
 {% block body %}
     <main class="app-page">
         <section class="app-container">
             <header class="page-header app-header">
-                <h1 class="app-title">Créer un élève</h1>
-                <p class="app-subtitle">Remplir le formulaire pour ajouter un élève.</p>
+                <h1 class="app-title">Modifier l'utilisateur</h1>
+                <p class="app-subtitle">Mettre à jour les informations de l'utilisateur.</p>
             </header>
 
             <section class="app-card">
                 <div class="form-with-actions">
-                    {{ include('eleve/_form.html.twig', {'button_label': 'Créer'}) }}
+                    {{ include('utilisateur/_form.html.twig', {'button_label': 'Enregistrer'}) }}
                     <div class="unified-actions app-section-actions">
-                        <button type="submit" form="user-form-edit" class="app-button-primary">Créer</button>
+                        <button type="submit" form="user-form-edit" class="app-button-primary">Enregistrer</button>
                         <a class="app-link" href="{{ path('app_users') }}">Retour à la liste</a>
+                        <div class="danger-form">{{ include('utilisateur/_delete_form.html.twig') }}</div>
                     </div>
                 </div>
             </section>

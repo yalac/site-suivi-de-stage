@@ -42,8 +42,7 @@ class Eleve
     /**
      * @var Collection<int, Utilisateur>
      */
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'eleves')]
-    #[ORM\JoinTable(name: 'utilisateur_eleve')]
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'eleves')]
     private Collection $utilisateurs;
 
     public function __construct()
