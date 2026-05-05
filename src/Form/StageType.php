@@ -40,6 +40,16 @@ class StageType extends AbstractType
                 'placeholder' => 'Choisir une entreprise',
                 'label' => 'Entreprise',
             ])
+            ->add('eleves', EntityType::class, [
+                'class' => Eleve::class,
+                'choice_label' => function ($eleve) {
+                    return $eleve->getPrenomEleve() . ' ' . $eleve->getNomEleve();
+                },
+                'label' => 'Élèves',
+                'multiple' => true,
+                'required' => false,
+                'placeholder' => 'Choisir des élèves',
+            ])
         ;
     }
 
