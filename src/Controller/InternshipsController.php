@@ -70,6 +70,17 @@ class InternshipsController extends AbstractController
 		]);
 	}
 
+	#[Route('/stages/{id}/archive', name: 'app_stage_archive', methods: ['POST'])]
+	public function archive(Request $request, Stage $stage, EntityManagerInterface $em): Response
+	{
+		if ($this->isCsrfTokenValid('archive'.$stage->getId(), $request->request->get('_token'))) {
+			$stage->setArchived(true);
+			$em->flush();
+		}
+
+		return $this->redirectToRoute('app_internships');
+	}
+
 	#[Route('/stages/{id}', name: 'app_stage_delete', methods: ['POST'])]
 	public function delete(Request $request, Stage $stage, EntityManagerInterface $em): Response
 	{

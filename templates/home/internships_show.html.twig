@@ -46,7 +46,7 @@
 
             <div class="app-card">
                 <ul class="details-list">
-                    <li><strong>Élève:</strong> N/A</li>
+                    <li><strong>Élève:</strong> <td>{{ stage.elevePrincipalStage ? stage.elevePrincipalStage.prenomEleve ~ ' ' ~ stage.elevePrincipalStage.nomEleve : '—' }}</td></li>
                     <li><strong>Entreprise:</strong> {{ stage.entrepriseStage.nomEntreprise }}</li>
                     <li><strong>Date début:</strong> {{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</li>
                     <li><strong>Date fin:</strong> {{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</li>
