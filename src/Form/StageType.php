@@ -45,10 +45,10 @@ class StageType extends AbstractType
                 'choice_label' => function ($eleve) {
                     return $eleve->getPrenomEleve() . ' ' . $eleve->getNomEleve();
                 },
-                'label' => 'Élèves',
-                'multiple' => true,
+                'placeholder' => 'Choisir un élève',
+                'label' => 'Élève',
+                'property_path' => 'elevePrincipalStage',
                 'required' => false,
-                'placeholder' => 'Choisir des élèves',
             ])
         ;
     }
