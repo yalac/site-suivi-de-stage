@@ -5,7 +5,15 @@
 {% block stylesheets %}
     <style>
         .page-header {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .page-header-content {
+            flex: 1;
         }
 
         .page-header p {
@@ -29,28 +37,6 @@
             overflow: auto;
         }
 
-        .table-left {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table-left th {
-            text-align: left;
-        }
-
-        .table-left td,
-        .table-left th {
-            padding: 0.6rem 0.8rem;
-        }
-
-        .table-left thead th {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .table-left tbody tr {
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
         .table-actions a {
             margin-right: 0.6rem;
         }
@@ -65,14 +51,16 @@
     <main class="app-page">
         <section class="app-container">
             <header class="page-header app-header">
-                <h1 class="app-title">Entreprises</h1>
-                <p class="app-subtitle">Liste des entreprises enregistrées et actions rapides.</p>
+                <div class="page-header-content">
+                    <h1 class="app-title">Entreprises</h1>
+                    <p class="app-subtitle">Liste des entreprises enregistrées et actions rapides.</p>
+                </div>
+                <a href="{{ path('app_entreprise_new') }}" class="app-button-primary">Créer une entreprise</a>
             </header>
 
             <div class="app-card">
                 <div class="page-actions">
                     <p class="app-muted">Afficher toutes les entreprises enregistrées dans la base.</p>
-                    <a href="{{ path('app_entreprise_new') }}" class="app-button-primary">Créer une entreprise</a>
                 </div>
 
                 {% if entreprises is empty %}
@@ -82,22 +70,24 @@
                     <table class="table-left">
                         <thead>
                             <tr style="text-align:left; color:#cfe3ff;">
-                                <th>ID</th>
                                 <th>Nom</th>
                                 <th>Adresse</th>
-                                <th>Code postal</th>
                                 <th>Ville</th>
+                                <th>Tuteur</th>
+                                <th>Téléphone</th>
+                                <th>Mail</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for entreprise in entreprises %}
                             <tr>
-                                <td>{{ entreprise.id }}</td>
                                 <td>{{ entreprise.nomEntreprise }}</td>
                                 <td>{{ entreprise.adresseEntreprise }}</td>
-                                <td>{{ entreprise.cpentreprise }}</td>
-                                <td>{{ entreprise.villeEntreprise }}</td>
+                                <td>{{ entreprise.villeEntreprise }} ({{ entreprise.cpentreprise }})</td>
+                                <td>{{ entreprise.tuteurEntreprise }}</td>
+                                <td>{{ entreprise.telephoneEntreprise }}</td>
+                                <td>{{ entreprise.mailEntreprise }}</td>
                                 <td class="table-actions">
                                     <a class="app-link" href="{{ path('app_entreprise_show', {'id': entreprise.id}) }}">Voir</a>
                                     <a class="app-link" href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}">Modifier</a>

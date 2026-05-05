@@ -109,23 +109,35 @@
                 color: var(--app-danger);
             }
 
-            .app-table {
+            .app-table,
+            .table-left {
                 width: 100%;
                 border-collapse: collapse;
                 color: inherit;
             }
 
             .app-table th,
-            .app-table td {
+            .app-table td,
+            .table-left th,
+            .table-left td {
                 padding: 0.75rem;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-                text-align: center;
+                text-align: left;
             }
 
-            .app-table th {
+            .app-table th,
+            .table-left th {
                 color: var(--app-text-soft);
                 font-weight: 600;
                 font-size: 0.95rem;
+            }
+
+            .table-left th {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            }
+
+            .table-left tbody tr {
+                border-top: 1px solid rgba(255, 255, 255, 0.02);
             }
 
             .app-muted {

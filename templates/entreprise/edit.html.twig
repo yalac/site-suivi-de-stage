@@ -17,6 +17,12 @@
             gap: 0.85rem;
         }
 
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+        }
+
         .form-actions {
             display: flex;
             gap: 0.6rem;
@@ -76,16 +82,38 @@
                             <div class="field-error">{{ form_errors(form.adresseEntreprise) }}</div>
                         </div>
 
-                        <div>
-                            {{ form_label(form.cpentreprise, 'Code postal', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.cpentreprise, {'attr': {'class': 'form-input'}}) }}
-                            <div class="field-error">{{ form_errors(form.cpentreprise) }}</div>
+                        <div class="form-row">
+                            <div>
+                                {{ form_label(form.villeEntreprise, 'Ville', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.villeEntreprise, {'attr': {'class': 'form-input'}}) }}
+                                <div class="field-error">{{ form_errors(form.villeEntreprise) }}</div>
+                            </div>
+
+                            <div>
+                                {{ form_label(form.cpentreprise, 'Code postal', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.cpentreprise, {'attr': {'class': 'form-input'}}) }}
+                                <div class="field-error">{{ form_errors(form.cpentreprise) }}</div>
+                            </div>
                         </div>
 
                         <div>
-                            {{ form_label(form.villeEntreprise, 'Ville', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.villeEntreprise, {'attr': {'class': 'form-input'}}) }}
-                            <div class="field-error">{{ form_errors(form.villeEntreprise) }}</div>
+                            {{ form_label(form.tuteurEntreprise, 'Tuteur', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.tuteurEntreprise, {'attr': {'class': 'form-input'}}) }}
+                            <div class="field-error">{{ form_errors(form.tuteurEntreprise) }}</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div>
+                                {{ form_label(form.telephoneEntreprise, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.telephoneEntreprise, {'attr': {'class': 'form-input', 'inputmode': 'tel'}}) }}
+                                <div class="field-error">{{ form_errors(form.telephoneEntreprise) }}</div>
+                            </div>
+
+                            <div>
+                                {{ form_label(form.mailEntreprise, 'Mail', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.mailEntreprise, {'attr': {'class': 'form-input', 'inputmode': 'email'}}) }}
+                                <div class="field-error">{{ form_errors(form.mailEntreprise) }}</div>
+                            </div>
                         </div>
                     </div>
 

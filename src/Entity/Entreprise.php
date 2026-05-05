@@ -25,6 +25,15 @@ class Entreprise
     #[ORM\Column(name: 'ville_entreprise', length: 200)]
     private ?string $villeEntreprise = null;
 
+    #[ORM\Column(name: 'tuteur_entreprise', length: 150)]
+    private ?string $tuteurEntreprise = null;
+
+    #[ORM\Column(name: 'telephone_entreprise', length: 20)]
+    private ?string $telephoneEntreprise = null;
+
+    #[ORM\Column(name: 'mail_entreprise', length: 200)]
+    private ?string $mailEntreprise = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +80,42 @@ class Entreprise
     public function setVilleEntreprise(string $villeEntreprise): static
     {
         $this->villeEntreprise = $villeEntreprise;
+
+        return $this;
+    }
+
+    public function getTuteurEntreprise(): ?string
+    {
+        return $this->tuteurEntreprise;
+    }
+
+    public function setTuteurEntreprise(string $tuteurEntreprise): static
+    {
+        $this->tuteurEntreprise = $tuteurEntreprise;
+
+        return $this;
+    }
+
+    public function getTelephoneEntreprise(): ?string
+    {
+        return $this->telephoneEntreprise;
+    }
+
+    public function setTelephoneEntreprise(string $telephoneEntreprise): static
+    {
+        $this->telephoneEntreprise = $telephoneEntreprise;
+
+        return $this;
+    }
+
+    public function getMailEntreprise(): ?string
+    {
+        return $this->mailEntreprise;
+    }
+
+    public function setMailEntreprise(string $mailEntreprise): static
+    {
+        $this->mailEntreprise = $mailEntreprise;
 
         return $this;
     }

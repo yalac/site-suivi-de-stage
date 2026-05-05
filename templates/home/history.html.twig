@@ -2,44 +2,91 @@
 
 {% block title %}Historique des stages{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .page-header-content {
+            flex: 1;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .page-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+
+        .page-actions p {
+            margin: 0;
+        }
+
+        .table-wrap {
+            overflow: auto;
+        }
+
+        .table-actions a {
+            margin-right: 0.6rem;
+        }
+
+        .table-actions form {
+            display: inline;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <main style="min-height: 100vh; margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: radial-gradient(circle at 18% -5%, rgba(60, 100, 196, 0.32), transparent 38%), radial-gradient(circle at 88% 8%, rgba(40, 141, 211, 0.24), transparent 32%), linear-gradient(165deg, #0b1b3f 0%, #081433 46%, #07112a 100%); color: #f2f7ff; padding: 2rem 1.5rem;">
-        <section style="max-width: 1200px; margin: 0 auto;">
-            <header style="margin-bottom: 1.2rem;">
-                <h1 style="margin: 0 0 0.4rem; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700;">Historique des stages</h1>
-                <p style="margin: 0; color: #9cafcb; font-size: 0.98rem;">Liste des stages terminés et archivés.</p>
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <div class="page-header-content">
+                    <h1 class="app-title">Historique des stages</h1>
+                    <p class="app-subtitle">Liste des stages terminés et archivés.</p>
+                </div>
             </header>
 
-            <div style="border-radius: 14px; padding: 1rem; background: rgba(8, 20, 47, 0.9); border: 1px solid rgba(104, 137, 197, 0.12); box-shadow: 0 8px 24px rgba(3,10,24,0.5);">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; gap:1rem; flex-wrap:wrap;">
-                    <div style="color:#9cafcb; font-size:0.95rem;">Consultation de tous les stages terminés.</div>
+            <section class="app-card">
+                <div class="page-actions">
+                    <p class="app-muted">Consultation de tous les stages terminés.</p>
                 </div>
 
                 {% if stages is empty %}
-                    <p style="color:#9cafcb;">Aucun stage terminé.</p>
+                    <p class="app-muted">Aucun stage terminé.</p>
                 {% else %}
-                    <div style="overflow:auto;">
-                    <table style="width:100%; border-collapse:collapse;">
+                    <div class="table-wrap">
+                    <table class="table-left">
                         <thead>
-                            <tr style="text-align:left; color:#cfe3ff;">
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">ID</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Élève</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Entreprise</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Date début</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Date fin</th>
-                                <th style="padding:0.6rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.04);">Actions</th>
+                            <tr>
+                                <th>ID</th>
+                                <th>Élève</th>
+                                <th>Entreprise</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for stage in stages %}
-                            <tr style="border-top:1px solid rgba(255,255,255,0.02);">
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.id }}</td>
-                                <td style="padding:0.6rem 0.8rem;">N/A</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.entrepriseStage.nomEntreprise }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</td>
-                                <td style="padding:0.6rem 0.8rem;">{{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</td>
-                                <td style="padding:0.6rem 0.8rem;">
-                                    <a href="{{ path('app_stage_show', {'id': stage.id}) }}" style="color:#9cafcb; text-decoration:none; margin-right:0.6rem;">Voir</a>
+                            <tr>
+                                <td>{{ stage.id }}</td>
+                                <td>N/A</td>
+                                <td>{{ stage.entrepriseStage.nomEntreprise }}</td>
+                                <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</td>
+                                <td>{{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</td>
+                                <td class="table-actions">
+                                    <a class="app-link" href="{{ path('app_stage_show', {'id': stage.id}) }}">Voir</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -47,7 +94,7 @@
                     </table>
                     </div>
                 {% endif %}
-            </div>
+            </section>
         </section>
     </main>
 

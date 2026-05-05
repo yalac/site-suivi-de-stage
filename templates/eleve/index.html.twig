@@ -4,34 +4,34 @@
 
 {% block stylesheets %}
     <style>
-        .page-shell {
-            min-height: 100vh;
-        }
-
         .page-header {
+            margin-bottom: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .page-title {
-            margin: 0;
-        }
-
-        .page-subtitle {
-            margin: 0;
         }
 
         .page-actions {
-            margin-top: 0.15rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
         }
 
         .page-actions .app-button-primary {
             white-space: nowrap;
         }
 
+            .page-actions p {
+                margin: 0;
+            }
+
+            .table-wrap {
+                overflow: auto;
+            }
         .actions a {
             margin: 0 0.4rem;
         }
@@ -41,6 +41,9 @@
             text-align: center;
         }
 
+        .table-actions {
+            white-space: nowrap;
+        }
     </style>
 {% endblock %}
 
@@ -49,8 +52,8 @@
         <section class="app-container">
             <header class="page-header app-header">
                 <div>
-                    <h1 class="page-title app-title">Utilisateurs</h1>
-                    <p class="page-subtitle app-subtitle">Liste des élèves et gestion des comptes</p>
+                    <h1 class="app-title">Utilisateurs</h1>
+                    <p class="app-subtitle">Liste des élèves et gestion des comptes</p>
                 </div>
 
                 <div class="page-actions">
@@ -59,36 +62,42 @@
             </header>
 
             <section class="app-card">
-                <table class="app-table">
-                    <thead>
-                        <tr>
-                            <th width="150">Nom</th>
-                            <th width="150">Prenom</th>
-                            <th width="150">Option</th>
-                            <th width="250">Promotion</th>
-                            <th width="250">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for eleve in eleves %}
-                        <tr>
-                            <td>{{ eleve.nomEleve }}</td>
-                            <td>{{ eleve.prenomEleve }}</td>
-                            <td>{{ eleve.optionEleve.nomOption }}</td>
-                            <td>{{ eleve.promotionEleve.classePromotion }} - {{ eleve.promotionEleve.anneePromotion }}</td>
-                            <td class="actions">
-                                <a class="app-link" href="{{ path('app_eleve_show', {'id': eleve.id}) }}">Détail</a>
-                                <a class="app-link" href="{{ path('app_eleve_edit', {'id': eleve.id}) }}">Modifier</a>
-                                <a class="app-button-danger" href="{{ path('app_eleve_delete', {'id': eleve.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="empty app-muted">Aucun élève trouvé</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                <div class="page-actions">
+                        <p class="app-muted">Afficher tous les utilisateurs enregistrés dans la base.</p>
+                </div>
+
+                    <div class="table-wrap">
+                        <table class="table-left">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Option</th>
+                                    <th>Promotion</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for eleve in eleves %}
+                                <tr>
+                                    <td>{{ eleve.nomEleve }}</td>
+                                    <td>{{ eleve.prenomEleve }}</td>
+                                    <td>{{ eleve.optionEleve.nomOption }}</td>
+                                    <td>{{ eleve.promotionEleve.classePromotion }} - {{ eleve.promotionEleve.anneePromotion }}</td>
+                                    <td class="actions">
+                                        <a class="app-link" href="{{ path('app_eleve_show', {'id': eleve.id}) }}">Détail</a>
+                                        <a class="app-link" href="{{ path('app_eleve_edit', {'id': eleve.id}) }}">Modifier</a>
+                                        <a class="app-button-danger" href="{{ path('app_eleve_delete', {'id': eleve.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="empty app-muted">Aucun élève trouvé</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
             </section>
         </section>
     </main>
