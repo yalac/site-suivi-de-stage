@@ -36,16 +36,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(name: 'role_utilisateur_id', nullable: false)]
     private ?Role $roleUtilisateur = null;
 
-    /**
-     * @var Collection<int, Eleve>
-     */
-    #[ORM\ManyToMany(targetEntity: Eleve::class, inversedBy: 'utilisateurs')]
-    #[ORM\JoinTable(name: 'utilisateur_eleve')]
-    private Collection $eleves;
-
     public function __construct()
     {
-        $this->eleves = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,28 +97,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoleUtilisateur(?Role $roleUtilisateur): static
     {
         $this->roleUtilisateur = $roleUtilisateur;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Eleve>
-     */
-    public function getEleves(): Collection
-    {
-        return $this->eleves;
-    }
-
-    public function addEleve(Eleve $eleve): static
-    {
-        if (!$this->eleves->contains($eleve)) {
-            $this->eleves->add($eleve);
-        }
-        return $this;
-    }
-
-    public function removeEleve(Eleve $eleve): static
-    {
-        $this->eleves->removeElement($eleve);
         return $this;
     }
 
