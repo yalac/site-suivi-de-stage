@@ -55,7 +55,7 @@
                     <h1 class="app-title">Entreprises</h1>
                     <p class="app-subtitle">Liste des entreprises enregistrées et actions rapides.</p>
                 </div>
-                <a href="{{ path('app_entreprise_new') }}" class="app-button-primary">Créer une entreprise</a>
+                <a href="{{ path('app_entreprise_new') }}" class="app-button-primary">+ Nouvelle entreprise</a>
             </header>
 
             <div class="app-card">
@@ -89,7 +89,6 @@
                                 <td>{{ entreprise.telephoneEntreprise }}</td>
                                 <td>{{ entreprise.mailEntreprise }}</td>
                                 <td class="table-actions">
-                                    <a class="app-link" href="{{ path('app_entreprise_show', {'id': entreprise.id}) }}">Voir</a>
                                     <a class="app-link" href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}">Modifier</a>
                                     <form method="post" action="{{ path('app_entreprise_delete', {'id': entreprise.id}) }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entreprise.id) }}">
