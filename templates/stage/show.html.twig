@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du stage{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem 0;
+            color: #cfe3ff;
+        }
+
+        .details-list li {
+            padding: 0.4rem 0;
+        }
+
+        .stage-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .stage-actions .app-button-primary {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">Détails du stage #{{ stage.id }}</h1>
+                <p class="app-subtitle">Informations complètes du stage.</p>
+            </header>
+
+            <div class="app-card">
+                <ul class="details-list">
+                    <li><strong>Entreprise:</strong> {{ stage.entrepriseStage.nomEntreprise }}</li>
+                    <li><strong>Date début:</strong> {{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</li>
+                    <li><strong>Date fin:</strong> {{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</li>
+                </ul>
+
+                <div class="stage-actions">
+                    <a href="{{ path('app_stage_edit', {'id': stage.id}) }}" class="app-button-primary">Modifier</a>
+                    <a href="{{ path('app_stage') }}" class="app-link">Retour</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

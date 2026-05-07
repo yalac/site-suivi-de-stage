@@ -204,12 +204,6 @@
                     <div class="feedback feedback-error">Identifiants incorrects. Veuillez vérifier votre email et votre mot de passe.</div>
                 {% endif %}
 
-                {% if app.user %}
-                    <div class="feedback feedback-info">
-                        Connecte en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">deconnexion</a>
-                    </div>
-                {% endif %}
-
                 <div class="input-group">
                     <label for="username">Identifiant</label>
                     <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" placeholder="Identifiant" required autofocus>

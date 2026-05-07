@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le stage{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .form-stack {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 0.8rem;
+        }
+
+        .form-actions .app-button-primary {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">Modifier le stage</h1>
+                <p class="app-subtitle">Mettez à jour les informations du stage.</p>
+            </header>
+
+            <div class="app-card">
+                {{ form_start(form) }}
+                    <div class="form-stack">{{ form_widget(form) }}</div>
+                    <div class="form-actions">
+                        <button type="submit" class="app-button-primary">Enregistrer</button>
+                        <a href="{{ path('app_stage') }}" class="app-link">Annuler</a>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

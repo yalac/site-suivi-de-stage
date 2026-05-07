@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StageRepository::class)]
@@ -29,18 +31,8 @@ class Stage
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
 
-    #[ORM\ManyToOne(targetEntity: Eleve::class)]
-    #[ORM\JoinColumn(name: 'eleve_principal_stage_id', nullable: true)]
-    private ?Eleve $elevePrincipalStage = null;
-
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $isArchived = false;
-
-    #[ORM\Column(name: 'prof_referent', length: 150, nullable: true)]
-    private ?string $profReferent = null;
-
-    #[ORM\Column(name: 'prof_visite', length: 150, nullable: true)]
-    private ?string $profVisite = null;
+    private bool $archive = false;
 
     /**
      * @var Collection<int, Eleve>
@@ -113,47 +105,14 @@ class Stage
         return $this;
     }
 
-    public function getElevePrincipalStage(): ?Eleve
+    public function isArchive(): bool
     {
-        return $this->elevePrincipalStage;
+        return $this->archive;
     }
 
-    public function setElevePrincipalStage(?Eleve $elevePrincipalStage): static
+    public function setArchive(bool $archive): static
     {
-        $this->elevePrincipalStage = $elevePrincipalStage;
-        return $this;
-    }
-
-    public function isArchived(): bool
-    {
-        return $this->isArchived;
-    }
-
-    public function setArchived(bool $isArchived): static
-    {
-        $this->isArchived = $isArchived;
-        return $this;
-    }
-
-    public function getProfReferent(): ?string
-    {
-        return $this->profReferent;
-    }
-
-    public function setProfReferent(?string $profReferent): static
-    {
-        $this->profReferent = $profReferent;
-        return $this;
-    }
-
-    public function getProfVisite(): ?string
-    {
-        return $this->profVisite;
-    }
-
-    public function setProfVisite(?string $profVisite): static
-    {
-        $this->profVisite = $profVisite;
+        $this->archive = $archive;
         return $this;
     }
 
