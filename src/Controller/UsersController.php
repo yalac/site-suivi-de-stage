@@ -130,7 +130,9 @@ final class UsersController extends AbstractController
     #[Route('/Utilisateur/{id}/edit', name: 'app_utilisateur_edit', methods: ['GET', 'POST'])]
     public function editUtilisateur(Request $request, Utilisateur $utilisateur, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UtilisateurType::class, $utilisateur);
+        $form = $this->createForm(UtilisateurType::class, $utilisateur, [
+            'show_password' => false,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

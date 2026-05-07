@@ -27,16 +27,6 @@ class UtilisateurType extends AbstractType
                     ),
                 ],
             ])
-            ->add('mdpUtilisateur', PasswordType::class, [
-                'label' => 'Mot de passe',
-                'mapped' => false,
-                'hash_property_path' => 'mdpUtilisateur',
-                'constraints' => [
-                    new NotBlank(
-                        message: 'Entrez un mot de passe',
-                    ),
-                ],
-            ])
             ->add('roleUtilisateur', EntityType::class, [
                 'class' => Role::class,
                 'choice_label' => function (Role $role) { return (strtolower((string) $role->getNomRole())); },
@@ -45,12 +35,28 @@ class UtilisateurType extends AbstractType
             ])
             
         ;
+
+        if ($options['show_password']) {
+            $builder->add('mdpUtilisateur', PasswordType::class, [
+                'label' => 'Mot de passe (Attention définitif)',
+                'mapped' => false,
+                'hash_property_path' => 'mdpUtilisateur',
+                'constraints' => [
+                    new NotBlank(
+                        message: 'Entrez un mot de passe',
+                    ),
+                ],
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Utilisateur::class,
+            'show_password' => true,
         ]);
+
+        $resolver->setAllowedTypes('show_password', 'bool');
     }
 }
