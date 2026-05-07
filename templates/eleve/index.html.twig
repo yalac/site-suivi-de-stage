@@ -86,9 +86,8 @@
                                     <td>{{ eleve.optionEleve.nomOption }}</td>
                                     <td>{{ eleve.promotionEleve.classePromotion }} - {{ eleve.promotionEleve.anneePromotion }}</td>
                                     <td class="actions">
-                                        <a class="app-link" href="{{ path('app_eleve_show', {'id': eleve.id}) }}">Détail</a>
                                         <a class="app-link" href="{{ path('app_eleve_edit', {'id': eleve.id}) }}">Modifier</a>
-                                        <a class="app-button-danger" href="{{ path('app_eleve_delete', {'id': eleve.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">Supprimer</a>
+                                        <span class="app-button-danger">{{ include('eleve/_delete_form.html.twig') }}</span>
                                     </td>
                                 </tr>
                             {% else %}
@@ -123,10 +122,9 @@
                                     <td>{{ utilisateur.nomUtilisateur }}</td>
                                     <td>{{ utilisateur.prenomUtilisateur }}</td>
                                     <td>{{ utilisateur.emailUtilisateur }}</td>
-                                    <td>
-                                        <a href="{{ path('app_utilisateur_show', {'id': utilisateur.id}) }}">Détail</a>
-                                        <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">Modifier</a>
-                                        <a class="app-button-danger" href="{{ path('app_utilisateur_delete', {'id': utilisateur.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce utilisateur ?')">Supprimer</a>
+                                    <td class="actions">
+                                        <a class="app-link" href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">Modifier</a>
+                                        <span class="app-button-danger">{{ include('utilisateur/_delete_form.html.twig') }}</span>
                                     </td>
                                 </tr>
                             {% else %}

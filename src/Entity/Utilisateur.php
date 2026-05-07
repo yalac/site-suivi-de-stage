@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -12,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\Table(name: 'utilisateur')]
-#[UniqueEntity(fields: ['emailUtilisateur'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['emailUtilisateur'], message: 'Un compte avec cet email existe déjà')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -36,16 +34,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(name: 'role_utilisateur_id', nullable: false)]
     private ?Role $roleUtilisateur = null;
 
-    /**
-     * @var Collection<int, Eleve>
-     */
-    #[ORM\ManyToMany(targetEntity: Eleve::class, inversedBy: 'utilisateurs')]
-    #[ORM\JoinTable(name: 'utilisateur_eleve')]
-    private Collection $eleves;
-
     public function __construct()
     {
-        $this->eleves = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,28 +95,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoleUtilisateur(?Role $roleUtilisateur): static
     {
         $this->roleUtilisateur = $roleUtilisateur;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Eleve>
-     */
-    public function getEleves(): Collection
-    {
-        return $this->eleves;
-    }
-
-    public function addEleve(Eleve $eleve): static
-    {
-        if (!$this->eleves->contains($eleve)) {
-            $this->eleves->add($eleve);
-        }
-        return $this;
-    }
-
-    public function removeEleve(Eleve $eleve): static
-    {
-        $this->eleves->removeElement($eleve);
         return $this;
     }
 

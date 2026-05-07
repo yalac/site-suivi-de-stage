@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stages en cours{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .page-header-content {
+            flex: 1;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .page-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+
+        .page-actions p {
+            margin: 0;
+        }
+
+        .table-wrap {
+            overflow: auto;
+        }
+
+        .table-actions a {
+            margin-right: 0.6rem;
+        }
+
+        .table-actions form {
+            display: inline;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <div class="page-header-content">
+                    <h1 class="app-title">Stages en cours</h1>
+                    <p class="app-subtitle">Liste des stages actifs et actions rapides.</p>
+                </div>
+                <a href="{{ path('app_stage_new') }}" class="app-button-primary">Créer un stage</a>
+            </header>
+
+            <div class="app-card">
+                <div class="page-actions">
+                    <p class="app-muted">Afficher les stages en cours (date du jour utilisée pour filtrer).</p>
+                </div>
+
+                {% if stages is empty %}
+                    <p class="app-muted">Aucun stage en cours.</p>
+                {% else %}
+                    <div class="table-wrap">
+                    <table class="table-left">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Élève</th>
+                                <th>Entreprise</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for stage in stages %}
+                            <tr>
+                                <td>{{ stage.id }}</td>
+                                <td>{{ stage.elevePrincipalStage ? stage.elevePrincipalStage.prenomEleve ~ ' ' ~ stage.elevePrincipalStage.nomEleve : '—' }}</td>
+                                <td>{{ stage.entrepriseStage.nomEntreprise }}</td>
+                                <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</td>
+                                <td>{{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</td>
+                                <td class="table-actions">
+                                    <a class="app-link" href="{{ path('app_stage_show', {'id': stage.id}) }}">Voir</a>
+                                    <a class="app-link" href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier</a>
+                                    <form method="post" action="{{ path('app_stage_archive', {'id': stage.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ stage.id) }}">
+                                        <button type="submit" class="app-link" onclick="return confirm('Archiver ce stage ?');">Archiver</button>
+                                    </form>
+                                    <form method="post" action="{{ path('app_stage_delete', {'id': stage.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stage.id) }}">
+                                        <button type="submit" class="app-button-danger" onclick="return confirm('Supprimer ce stage ?');">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

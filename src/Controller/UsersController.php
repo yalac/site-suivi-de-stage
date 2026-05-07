@@ -13,15 +13,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class UsersController extends AbstractController
 {
     #[Route('/utilisateurs', name: 'app_users')]
-    #[IsGranted('ROLE_ADMIN')]
     #[Route(name: 'app_eleve_index', methods: ['GET'])]
     public function indexEleve(EleveRepository $eleveRepository, UtilisateurRepository $utilisateurRepository): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_access_denied');
+        }
+
         return $this->render('eleve/index.html.twig', [
             'eleves' => $eleveRepository->findAll(),
             'utilisateurs' => $utilisateurRepository->findAll(),
@@ -41,7 +43,7 @@ final class UsersController extends AbstractController
             $entityManager->persist($eleve);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_users', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('eleve/new.html.twig', [
@@ -106,7 +108,7 @@ final class UsersController extends AbstractController
             $entityManager->persist($utilisateur);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_utilisateur_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_users', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('utilisateur/new.html.twig', [
@@ -153,5 +155,11 @@ final class UsersController extends AbstractController
         }
 
         return $this->redirectToRoute('app_users', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/access-denied', name: 'app_access_denied')]
+    public function accessDenied(): Response
+    {
+        return $this->render('security/access_denied.html.twig');
     }
 }

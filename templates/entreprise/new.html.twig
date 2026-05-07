@@ -63,7 +63,7 @@
     <main class="app-page">
         <section class="app-container" style="max-width: 900px;">
             <header class="page-header app-header">
-                <h1 class="app-title">Créer une entreprise</h1>
+                <h1 class="app-title">Ajouter une nouvelle entreprise</h1>
                 <p class="app-subtitle">Remplissez le formulaire pour ajouter une nouvelle entreprise.</p>
             </header>
 
@@ -97,9 +97,23 @@
                         </div>
 
                         <div>
-                            {{ form_label(form.telephoneEntreprise, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.telephoneEntreprise, {'attr': {'class': 'form-input', 'inputmode': 'tel'}}) }}
-                            <div class="field-error">{{ form_errors(form.telephoneEntreprise) }}</div>
+                            {{ form_label(form.tuteurEntreprise, 'Tuteur', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.tuteurEntreprise, {'attr': {'class': 'form-input'}}) }}
+                            <div class="field-error">{{ form_errors(form.tuteurEntreprise) }}</div>
+                        </div>
+
+                        <div class="form-row"> 
+                            <div>
+                                {{ form_label(form.telephoneEntreprise, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.telephoneEntreprise, {'attr': {'class': 'form-input', 'inputmode': 'tel'}}) }}
+                                <div class="field-error">{{ form_errors(form.telephoneEntreprise) }}</div>
+                            </div>
+
+                            <div>
+                                {{ form_label(form.mailEntreprise, 'Mail', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.mailEntreprise, {'attr': {'class': 'form-input', 'inputmode': 'email'}}) }}
+                                <div class="field-error">{{ form_errors(form.mailEntreprise) }}</div>
+                            </div>
                         </div>
                     </div>
 

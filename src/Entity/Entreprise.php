@@ -119,4 +119,10 @@ class Entreprise
 
         return $this;
     }
+
+    /** Fonction */
+    public function getEntreprise(): string
+    {
+        return $this->mdputilisateur ?? '';
+    }
 }
