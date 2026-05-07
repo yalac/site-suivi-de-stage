@@ -11,10 +11,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class HistoryController extends AbstractController
 {
     #[Route('/historique', name: 'app_history')]
-    #[IsGranted('ROLE_ADMIN')]
     public function index(StageRepository $stageRepository): Response
     {
         $finishedStages = $stageRepository->findFinished();
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_access_denied');
+        }
 
         return $this->render('home/history.html.twig', [
             'stages' => $finishedStages,

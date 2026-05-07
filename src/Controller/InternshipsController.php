@@ -19,6 +19,10 @@ class InternshipsController extends AbstractController
 		$stages = $stageRepository->findCurrent();
 		$allStages = $stageRepository->findAll();
 
+		if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_access_denied');
+        }
+
 		return $this->render('stage/stage.html.twig', [
 			'stages' => $stages,
 			'allStages' => $allStages,

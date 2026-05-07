@@ -39,7 +39,7 @@ class UtilisateurType extends AbstractType
             ])
             ->add('roleUtilisateur', EntityType::class, [
                 'class' => Role::class,
-                'choice_label' => function (Role $role) { return (string) $role->getNomRole(); },
+                'choice_label' => function (Role $role) { return (strtolower((string) $role->getNomRole())); },
                 'label' => 'Rôle',
                 'placeholder' => 'Sélectionner un rôle'
             ])
