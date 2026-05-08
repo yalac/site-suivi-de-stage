@@ -110,9 +110,10 @@
                         <table class="table-left">
                            <thead>
                                 <tr>
-                                    <th>Nom de l'utilisateur</th>
-                                    <th>Prénom de l'utilisateur</th>
-                                    <th>Email de l'utilisateur</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Email</th>
+                                    <th>Rôle</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -122,6 +123,7 @@
                                     <td>{{ utilisateur.nomUtilisateur }}</td>
                                     <td>{{ utilisateur.prenomUtilisateur }}</td>
                                     <td>{{ utilisateur.emailUtilisateur }}</td>
+                                    <td>{{ utilisateur.roleUtilisateur.nomRole|lower }}</td>
                                     <td class="actions">
                                         <a class="app-link" href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">Modifier</a>
                                         <span class="app-button-danger">{{ include('utilisateur/_delete_form.html.twig') }}</span>
