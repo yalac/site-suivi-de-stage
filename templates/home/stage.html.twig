@@ -74,10 +74,10 @@
                                 <th width="10%" style="font-weight: bold; font-size: 20px;">Professeur référent</th>
                                 <th width="10%" style="font-weight: bold; font-size: 20px;">Professeur visite</th>
                                 <th width="10%" style="font-weight: bold; font-size: 20px;">Entreprise</th>
-                                <th width="15%" style="font-weight: bold; font-size: 20px;">Remarque</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Remarque</th>
                                 <th width="10%" style="font-weight: bold; font-size: 20px;">Date</th>
                                 <th width="10%" style="font-weight: bold; font-size: 20px;">Durée en jours</th>
-                                <th width="25%" style="font-weight: bold; font-size: 20px;">Actions</th>
+                                <th width="30%" style="font-weight: bold; font-size: 20px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,10 +92,6 @@
                                 <td>{{ stage.dateFinStage and stage.dateDebutStage ? ((stage.dateFinStage|date('U')) - (stage.dateDebutStage|date('U'))) / 86400 : '—' }}</td>
                                 <td class="table-actions">
                                     <a class="app-link" href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier</a>
-                                    <form method="post" action="{{ path('app_stage_archive', {'id': stage.id}) }}">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ stage.id) }}">
-                                        <button type="submit" class="app-link" onclick="return confirm('Archiver ce stage ?');">Archiver</button>
-                                    </form>
                                     <form method="post" action="{{ path('app_stage_delete', {'id': stage.id}) }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stage.id) }}">
                                         <button type="submit" class="app-button-danger" onclick="return confirm('Supprimer ce stage ?');">Supprimer</button>

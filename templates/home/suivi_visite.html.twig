@@ -11,51 +11,69 @@
         .page-header p {
             margin: 0;
         }
+
+        .visit-table td,
+        .visit-table th {
+            vertical-align: middle;
+        }
+
+        .comment-preview {
+            max-width: 280px;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        .comment-action {
+            color: var(--app-warning);
+        }
     </style>
 {% endblock %}
 
 {% block body %}
     <main class="app-page">
-        <section class="app-container" style="max-width: 900px;">
+        <section class="app-container">
             <header class="page-header app-header">
                 <h1 class="app-title">Suivi et visites</h1>
-                <p class="app-subtitle">Liste et vue consolidée pour l'organisation du suivi et des visites de stage.</p>
+                <p class="app-subtitle">Liste de tous les stages avec leur statut</p>
             </header>
 
             <section class="app-card">
-                <h3>Résultats</h3>
-                <p>Vue complète des stages avec tous les statuts</p>
-                <div class="app-table-container">
-                    <table class="app-table">
+                <h3>Listes des stages</h3>
+                <div class="app-table-container" style="overflow-x: auto;">
+                    <table class="app-table visit-table">
                         <thead>
                             <tr>
                                 <th>Étudiant</th>
                                 <th>Filière</th>
                                 <th>Entreprise</th>
                                 <th>Période</th>
-                                <th>Prof. Suivi</th>
-                                <th>Prof. Visite</th>
+                                <th>Prof. référent</th>
+                                <th>Prof. visite</th>
+                                <th>Commentaire</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for eleve in eleves %}
+                            {% for stage in stages %}
                                 <tr>
-                                    <td>{{ eleve.prenomEleve }} {{ eleve.nomEleve }}</td>
-                                    <td>{{ eleve.optionEleve is not null ? eleve.optionEleve.nomOption : 'N/A' }}</td>
-                                    <td>{{ eleve.stageEleve is not null and eleve.stageEleve.entrepriseStage is not null ? eleve.stageEleve.entrepriseStage.nomEntreprise : 'N/A' }}</td>
+                                    <td>{{ stage.eleveStage ? stage.eleveStage.prenomEleve ~ ' ' ~ stage.eleveStage.nomEleve : 'N/A' }}</td>
+                                    <td>{{ stage.eleveStage and stage.eleveStage.optionEleve is not null ? stage.eleveStage.optionEleve.nomOption : 'N/A' }}</td>
+                                    <td>{{ stage.entrepriseStage is not null ? stage.entrepriseStage.nomEntreprise : 'N/A' }}</td>
                                     <td>
-                                        {% if eleve.stageEleve is not null and eleve.stageEleve.dateDebutStage and eleve.stageEleve.dateFinStage %}
-                                            {{ eleve.stageEleve.dateDebutStage|date('d/m/Y') }} - {{ eleve.stageEleve.dateFinStage|date('d/m/Y') }}
+                                        {% if stage.dateDebutStage and stage.dateFinStage %}
+                                            {{ stage.dateDebutStage|date('d/m/Y') }} - {{ stage.dateFinStage|date('d/m/Y') }}
                                         {% else %}
                                             N/A
                                         {% endif %}
                                     </td>
-                                    <td>{{ eleve.stageEleve?.profReferent ?? 'N/A' }}</td>
-                                    <td>{{ eleve.stageEleve?.profVisite ?? 'N/A' }}</td>
+                                    <td>{{ stage.profReferent ?: 'N/A' }}</td>
+                                    <td>{{ stage.profVisite ?: 'N/A' }}</td>
+                                    <td class="comment-preview">{{ stage.commentaire ?: 'N/A' }}</td>
+                                    <td><a class="app-link comment-action" href="{{ path('app_suivi_visite_comment', {'id': stage.id}) }}">Modifier</a></td>
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="6" style="text-align: center;">Aucun élève trouvé</td>
+                                    <td colspan="8" style="text-align: center;">Aucun stage trouvé</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

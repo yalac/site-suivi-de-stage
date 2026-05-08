@@ -36,8 +36,8 @@ class Stage
     #[ORM\Column(name: 'prof_visite', length: 150, nullable: true)]
     private ?string $profVisite = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $archive = false;
+    #[ORM\Column(name: 'commentaire', type: 'text', nullable: true)]
+    private ?string $commentaire = null;
 
     public function getId(): ?int
     {
@@ -121,14 +121,14 @@ class Stage
         return $this;
     }
 
-    public function isArchive(): bool
+    public function getCommentaire(): ?string
     {
-        return $this->archive;
+        return $this->commentaire;
     }
 
-    public function setArchive(bool $archive): static
+    public function setCommentaire(?string $commentaire): static
     {
-        $this->archive = $archive;
+        $this->commentaire = $commentaire;
         return $this;
     }
 

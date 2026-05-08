@@ -17,6 +17,7 @@
                 --app-text-faint: #cfe3ff;
                 --app-primary: #2b69c9;
                 --app-primary-hover: #5ca3f0;
+                --app-warning: #ffd25c;
                 --app-danger: #ff7b7b;
                 --app-shadow: 0 8px 24px rgba(3, 10, 24, 0.5);
                 --app-radius: 14px;
@@ -76,6 +77,7 @@
             .app-button,
             .app-button-primary,
             .app-button-secondary,
+            .app-button-warning,
             .app-button-danger {
                 display: inline-flex;
                 align-items: center;
@@ -96,6 +98,11 @@
             .app-button-secondary {
                 background: transparent;
                 color: var(--app-text-soft);
+            }
+
+            .app-button-warning {
+                background: transparent;
+                color: var(--app-warning);
             }
 
             .app-button-danger {
