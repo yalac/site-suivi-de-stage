@@ -70,7 +70,6 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Élève</th>
                                 <th>Entreprise</th>
                                 <th>Date début</th>
                                 <th>Date fin</th>
@@ -81,7 +80,6 @@
                         {% for stage in stages %}
                             <tr>
                                 <td>{{ stage.id }}</td>
-                                <td>{{ stage.elevePrincipalStage ? stage.elevePrincipalStage.prenomEleve ~ ' ' ~ stage.elevePrincipalStage.nomEleve : '—' }}</td>
                                 <td>{{ stage.entrepriseStage.nomEntreprise }}</td>
                                 <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</td>
                                 <td>{{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</td>

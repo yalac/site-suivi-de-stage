@@ -34,8 +34,15 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(name: 'role_utilisateur_id', nullable: false)]
     private ?Role $roleUtilisateur = null;
 
+    /**
+     * @var Collection<int, Eleve>
+     */
+    #[ORM\ManyToMany(targetEntity: Eleve::class, mappedBy: 'utilisateurs')]
+    private Collection $eleves;
+
     public function __construct()
     {
+        $this->eleves = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +157,33 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Eleve>
+     */
+    public function getEleves(): Collection
+    {
+        return $this->eleves;
+    }
+
+    public function addEleve(Eleve $eleve): static
+    {
+        if (!$this->eleves->contains($eleve)) {
+            $this->eleves->add($eleve);
+            $eleve->addUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEleve(Eleve $eleve): static
+    {
+        if ($this->eleves->removeElement($eleve)) {
+            $eleve->removeUtilisateur($this);
+        }
+
+        return $this;
     }
 
     public function __toString(): string

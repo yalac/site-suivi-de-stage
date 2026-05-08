@@ -11,9 +11,9 @@ use App\Entity\Stage;
 use App\Form\StageType;
 use App\Repository\StageRepository;
 
-class InternshipsController extends AbstractController
+class StageController extends AbstractController
 {
-	#[Route('/stages', name: 'app_internships')]
+	#[Route('/stages', name: 'app_stage')]
 	public function index(StageRepository $stageRepository): Response
 	{
 		$stages = $stageRepository->findCurrent();
@@ -40,10 +40,10 @@ class InternshipsController extends AbstractController
 			$em->persist($stage);
 			$em->flush();
 
-			return $this->redirectToRoute('app_internships');
+			return $this->redirectToRoute('app_stage');
 		}
 
-		return $this->render('stage/stage_new.html.twig', [
+		return $this->render('stage/new.html.twig', [
 			'form' => $form->createView(),
 		]);
 	}
@@ -51,7 +51,7 @@ class InternshipsController extends AbstractController
 	#[Route('/stages/{id}', name: 'app_stage_show', methods: ['GET'])]
 	public function show(Stage $stage): Response
 	{
-		return $this->render('stage/stage_show.html.twig', [
+		return $this->render('stage/show.html.twig', [
 			'stage' => $stage,
 		]);
 	}
@@ -65,10 +65,10 @@ class InternshipsController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em->flush();
 
-			return $this->redirectToRoute('app_internships');
+			return $this->redirectToRoute('app_stage');
 		}
 
-		return $this->render('stage/stage_edit.html.twig', [
+		return $this->render('stage/edit.html.twig', [
 			'form' => $form->createView(),
 			'stage' => $stage,
 		]);
@@ -78,11 +78,11 @@ class InternshipsController extends AbstractController
 	public function archive(Request $request, Stage $stage, EntityManagerInterface $em): Response
 	{
 		if ($this->isCsrfTokenValid('archive'.$stage->getId(), $request->request->get('_token'))) {
-			$stage->setArchived(true);
+			$stage->setArchive(true);
 			$em->flush();
 		}
 
-		return $this->redirectToRoute('app_internships');
+		return $this->redirectToRoute('app_stage');
 	}
 
 	#[Route('/stages/{id}', name: 'app_stage_delete', methods: ['POST'])]
@@ -93,7 +93,7 @@ class InternshipsController extends AbstractController
 			$em->flush();
 		}
 
-		return $this->redirectToRoute('app_internships');
+		return $this->redirectToRoute('app_stage');
 	}
 }
 

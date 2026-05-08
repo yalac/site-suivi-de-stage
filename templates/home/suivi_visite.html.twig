@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suivi et visites{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">Suivi et visites</h1>
+                <p class="app-subtitle">Liste et vue consolidée pour l'organisation du suivi et des visites de stage.</p>
+            </header>
+
+            <section class="app-card">
+                <h3>Résultats</h3>
+                <p>Vue complète des stages avec tous les statuts</p>
+                <div class="app-table-container">
+                    <table class="app-table">
+                        <thead>
+                            <tr>
+                                <th>Étudiant</th>
+                                <th>Filière</th>
+                                <th>Entreprise</th>
+                                <th>Période</th>
+                                <th>Prof. Suivi</th>
+                                <th>Prof. Visite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for eleve in eleves %}
+                                <tr>
+                                    <td>{{ eleve.prenomEleve }} {{ eleve.nomEleve }}</td>
+                                    <td>{{ eleve.optionEleve is not null ? eleve.optionEleve.nomOption : 'N/A' }}</td>
+                                    <td>{{ eleve.stageEleve is not null and eleve.stageEleve.entrepriseStage is not null ? eleve.stageEleve.entrepriseStage.nomEntreprise : 'N/A' }}</td>
+                                    <td>
+                                        {% if eleve.stageEleve is not null and eleve.stageEleve.dateDebutStage and eleve.stageEleve.dateFinStage %}
+                                            {{ eleve.stageEleve.dateDebutStage|date('d/m/Y') }} - {{ eleve.stageEleve.dateFinStage|date('d/m/Y') }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ eleve.profReferent ?? 'N/A' }}</td>
+                                    <td>{{ eleve.profVisite ?? 'N/A' }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" style="text-align: center;">Aucun élève trouvé</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+{% endblock %}

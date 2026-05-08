@@ -26,7 +26,7 @@ class StageRepository extends ServiceEntityRepository
         $date = $date ?? new \DateTimeImmutable('today');
 
         $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.isArchived = false')
+            ->andWhere('s.archive = false')
             ->andWhere('s.dateFinStage IS NULL OR s.dateFinStage >= :date')
             ->setParameter('date', $date, Types::DATE_IMMUTABLE)
             ->orderBy('s.dateDebutStage', 'ASC')
@@ -44,7 +44,7 @@ class StageRepository extends ServiceEntityRepository
         $date = $date ?? new \DateTimeImmutable('today');
 
         $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.isArchived = true OR (s.dateFinStage IS NOT NULL AND s.dateFinStage < :date)')
+            ->andWhere('s.archive = true OR (s.dateFinStage IS NOT NULL AND s.dateFinStage < :date)')
             ->setParameter('date', $date, Types::DATE_IMMUTABLE)
             ->orderBy('s.dateFinStage', 'DESC')
         ;
