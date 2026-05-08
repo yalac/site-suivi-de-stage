@@ -92,17 +92,27 @@
         min-height: 120px !important;
         padding: 0.5rem !important;
     }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.85rem;
+    }
 </style>
 
 {{ form_start(form, {attr: {id: 'user-form-edit', novalidate: 'novalidate'}}) }}
 <div class="user-form">
-        {{ form_row(form.nomUtilisateur) }}
-        {{ form_row(form.prenomUtilisateur) }}
+        <div class="form-row">
+            {{ form_row(form.nomUtilisateur) }}
+            {{ form_row(form.prenomUtilisateur) }}
+        </div>
         {{ form_row(form.emailUtilisateur) }}
-    {% if form.mdpUtilisateur is defined %}
-        {{ form_row(form.mdpUtilisateur) }}
-    {% endif %}
-        {{ form_row(form.roleUtilisateur) }}
+        <div class="form-row">
+            {% if form.mdpUtilisateur is defined %}
+                {{ form_row(form.mdpUtilisateur) }}
+            {% endif %}
+                {{ form_row(form.roleUtilisateur) }}
+        </div>
         {{ form_rest(form) }}
 </div>
     {{ form_end(form) }}
