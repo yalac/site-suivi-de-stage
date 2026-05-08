@@ -2,6 +2,8 @@
 
 Ce projet est une application Symfony permettant de gérer le suivi de stage. Ce README explique comment installer le projet en local, configurer la base de données, importer les données fournies et accéder au site.
 
+La documentation utilisateur complète est disponible ici : [DOCUMENT_UTILISATEUR.md](DOCUMENT_UTILISATEUR.md).
+
 ## 1. Prérequis
 
 Avant de commencer, il faut disposer de :
