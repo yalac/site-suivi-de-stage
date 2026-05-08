@@ -1,3 +1,93 @@
-http://localhost:8000/login
-http://localhost:8000/
-http://localhost:8000/activites
+URL principales du site et destination
+
+1. http://localhost:8000/
+   - Page de connexion.
+   - Si l'utilisateur est deja connecte, redirection vers http://localhost:8000/dashboard.
+
+2. http://localhost:8000/dashboard
+   - Tableau de bord apres connexion.
+   - Redirection vers http://localhost:8000/access-denied si l'utilisateur n'a pas le role admin pour certains acces.
+
+3. http://localhost:8000/utilisateurs
+   - Liste des eleves et des utilisateurs.
+   - Redirection vers http://localhost:8000/access-denied si l'utilisateur n'est pas admin.
+
+4. http://localhost:8000/newEleve
+   - Creation d'un eleve.
+   - Redirection vers http://localhost:8000/utilisateurs apres enregistrement.
+
+5. http://localhost:8000/Eleve/{id}
+   - Fiche d'un eleve.
+
+6. http://localhost:8000/Eleve/{id}/edit
+   - Edition d'un eleve.
+   - Redirection vers http://localhost:8000/utilisateurs apres modification.
+
+7. http://localhost:8000/newUtilisateur
+   - Creation d'un utilisateur.
+   - Redirection vers http://localhost:8000/utilisateurs apres enregistrement.
+
+8. http://localhost:8000/Utilisateur/{id}
+   - Fiche d'un utilisateur.
+
+9. http://localhost:8000/Utilisateur/{id}/edit
+   - Edition d'un utilisateur.
+   - Redirection vers http://localhost:8000/utilisateurs apres modification.
+
+10. http://localhost:8000/entreprise
+	- Liste des entreprises.
+	- Redirection vers http://localhost:8000/access-denied si l'utilisateur n'est pas admin.
+
+11. http://localhost:8000/entreprise/new
+	- Creation d'une entreprise.
+	- Redirection vers http://localhost:8000/entreprise apres enregistrement.
+
+12. http://localhost:8000/entreprise/{id}
+	- Fiche d'une entreprise.
+
+13. http://localhost:8000/entreprise/{id}/edit
+	- Edition d'une entreprise.
+	- Redirection vers http://localhost:8000/entreprise apres modification.
+
+14. http://localhost:8000/stages
+	- Liste des stages.
+	- Redirection vers http://localhost:8000/access-denied si l'utilisateur n'est pas admin.
+
+15. http://localhost:8000/stages/new
+	- Creation d'un stage.
+	- Redirection vers http://localhost:8000/stages apres enregistrement.
+
+16. http://localhost:8000/stages/{id}
+	- Fiche d'un stage.
+
+17. http://localhost:8000/stages/{id}/edit
+	- Edition d'un stage.
+	- Redirection vers http://localhost:8000/stages apres modification.
+
+18. http://localhost:8000/suivi-visites
+	- Liste des stages a suivre pour la visite.
+
+19. http://localhost:8000/suivi-visites/{id}/commentaire
+	- Consultation ou modification du commentaire d'un stage.
+	- Redirection vers http://localhost:8000/suivi-visites apres sauvegarde.
+
+20. http://localhost:8000/historique
+	- Historique des actions.
+	- Redirection vers http://localhost:8000/access-denied si l'utilisateur n'est pas admin.
+
+21. http://localhost:8000/historique/{type}/{id}/supprimer
+	- Suppression d'une entree d'historique.
+	- Redirection vers http://localhost:8000/historique apres action.
+
+22. http://localhost:8000/historique/tout-supprimer
+	- Suppression de tout l'historique.
+	- Redirection vers http://localhost:8000/historique apres action.
+
+23. http://localhost:8000/access-denied
+	- Page affichee quand l'utilisateur n'a pas les droits necessaires.
+
+24. http://localhost:8000/logout
+	- Deconnexion de l'utilisateur.
+	- La requete est interceptée par Symfony, il n'y a pas de page affichee par le controleur.
+
+Remarque : les URLs avec {id} sont dynamiques et changent selon l'identifiant de l'element.

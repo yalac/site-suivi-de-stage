@@ -1,110 +1,487 @@
 # Document utilisateur - Site de suivi de stage
 
-## 1. Objectif de l'application
+## 1. Présentation
 
-Le **Site de suivi de stage** permet de gerer les comptes utilisateurs de la plateforme:
+Le **Site de suivi de stage** est une application web Symfony qui permet de gérer :
 
-- creation d'un compte via un formulaire d'inscription,
-- authentification via une page de connexion,
-- deconnexion securisee.
+- les élèves,
+- les entreprises d'accueil,
+- les stages,
+- le suivi des visites,
+- l'historique des modifications.
 
-Ce document explique comment utiliser ces fonctionnalites cote utilisateur.
+Cette documentation explique comment se connecter, naviguer dans l'application et utiliser les principales fonctionnalités.
 
-## 2. Prerequis
+## 2. Accès à l'application
 
-Pour utiliser l'application, il faut:
+### Adresse du site
 
-- acceder a l'URL du site (fournie par votre etablissement ou votre administrateur),
-- disposer d'un compte existant ou pouvoir en creer un,
-- utiliser un navigateur web recent (Chrome, Firefox, Edge, etc.).
+En local, le site est généralement accessible à l'adresse :
 
-## 3. Acces a l'application
+- `http://localhost:8000/`
 
-### Page de connexion
+Cette adresse ouvre la page de connexion.
 
-- URL: `/login`
-- Champs demandes:
-  - **Identifiant**: votre adresse e-mail,
-  - **Mot de passe**: le mot de passe de votre compte.
+### Pré-requis
 
-### Page d'inscription
+Pour utiliser l'application, il faut :
 
-- URL: `/register`
-- Permet de creer un nouveau compte utilisateur.
+- un compte utilisateur déjà créé,
+- un navigateur récent,
+- une connexion au serveur de l'application et à la base de données.
 
-## 4. Creer un compte (inscription)
+### Connexion
 
-Sur la page `/register`, completer les champs suivants:
+La page de connexion permet de saisir :
 
-1. `nom`
-2. `prenom`
-3. `email`
-4. `role` (selection dans la liste)
-5. `password`
-6. case d'acceptation des conditions
+- l'adresse e-mail,
+- le mot de passe.
 
-Regles de validation:
+Si l'utilisateur est déjà connecté et ouvre la page de connexion, il est redirigé vers le tableau de bord.
 
-- l'e-mail est obligatoire et doit etre valide,
-- l'e-mail doit etre unique (un seul compte par adresse e-mail),
-- le mot de passe est obligatoire,
-- le mot de passe doit contenir au moins 6 caracteres,
-- la case d'acceptation doit etre cochee.
+### Déconnexion
 
-Une fois le formulaire valide:
+La déconnexion se fait via le lien présent dans le menu de l'application.
 
-- le compte est cree,
-- le mot de passe est chiffre automatiquement,
-- vous etes redirige vers la page de connexion.
+## 3. Connexion et droits d'accès
 
-## 5. Se connecter
+L'application utilise plusieurs niveaux d'accès.
 
-Sur la page `/login`:
+- Les pages de consultation et de suivi peuvent être accessibles selon le rôle de l'utilisateur.
+- Les pages d'administration, comme la gestion des utilisateurs, des entreprises, des stages et de l'historique, sont réservées aux administrateurs.
+- Si l'utilisateur n'a pas les droits nécessaires, il est redirigé vers la page **Accès refusé**.
 
-1. saisir votre adresse e-mail,
-2. saisir votre mot de passe,
-3. cliquer sur **Se connecter**.
+## 4. Navigation générale
 
-Si les identifiants sont corrects, la session est ouverte.
+Une fois connecté, l'utilisateur accède à un menu principal contenant généralement :
 
-Si les identifiants sont incorrects, un message d'erreur s'affiche:
+- **Tableau de bord**,
+- **Utilisateurs**,
+- **Entreprises**,
+- **Stages**,
+- **Suivi des visites**,
+- **Historique**,
+- **Déconnexion**.
 
-- "Identifiants incorrects. Veuillez verifier votre email et votre mot de passe."
+Le tableau de bord centralise les informations principales du suivi de stage.
 
-## 6. Se deconnecter
+## 5. Tableau de bord
 
-La deconnexion est disponible via la route `/logout` (utilisee par le lien de deconnexion quand l'utilisateur est connecte).
+### URL
 
-## 7. Gestion des roles
+- `/dashboard`
 
-Lors de l'inscription, un role est selectionne depuis la base de donnees.
+### Rôle de la page
 
-- Chaque utilisateur recoit automatiquement `ROLE_USER`.
-- Le role choisi en base est ajoute aux roles de l'utilisateur (exemple: `ROLE_ADMIN`, `ROLE_PROF`, etc. selon les donnees configurees).
+Le tableau de bord affiche une vue d'ensemble de l'application, avec notamment :
 
-## 8. Messages et erreurs frequentes
+- le nombre d'entreprises,
+- le nombre de stages,
+- des raccourcis vers les différentes sections.
 
-- **"There is already an account with this email"**:
-  - cette adresse e-mail est deja utilisee.
-- **"Veuillez saisir une adresse e-mail valide."**:
-  - le format de l'e-mail est invalide.
-- **"Your password should be at least 6 characters"**:
-  - le mot de passe est trop court.
-- **"You should agree to our terms."**:
-  - la case d'acceptation n'a pas ete cochee.
+### Utilisation
 
-## 9. Limites actuelles
+Cette page sert de point d'entrée après la connexion. Elle permet de repérer rapidement l'état général des données de suivi.
 
-Dans la version actuelle:
+## 6. Gestion des utilisateurs
 
-- pas de fonctionnalite "mot de passe oublie",
-- pas de page metier supplementaire exposee (hors inscription/connexion),
-- pas de gestion utilisateur en self-service (modification profil/mot de passe) visible dans l'interface.
+### URL principale
 
-## 10. Support
+- `/utilisateurs`
 
-En cas de probleme d'acces:
+### Accès
 
-- verifier vos identifiants,
-- verifier que votre compte existe,
-- contacter l'administrateur de la plateforme ou le responsable pedagogique.
+Cette section est réservée aux administrateurs.
+
+### Contenu de la page
+
+La page affiche :
+
+- la liste des élèves,
+- la liste des utilisateurs,
+- des actions pour consulter, modifier ou supprimer les fiches.
+
+### Actions possibles
+
+Depuis cette section, un administrateur peut :
+
+- créer un élève,
+- consulter la fiche d'un élève,
+- modifier un élève,
+- supprimer un élève,
+- créer un utilisateur,
+- consulter la fiche d'un utilisateur,
+- modifier un utilisateur,
+- supprimer un utilisateur.
+
+### Création d'un élève
+
+#### URL
+
+- `/newEleve`
+
+#### Champs à renseigner
+
+- nom,
+- prénom,
+- option,
+- promotion.
+
+#### Règles
+
+- l'option et la promotion doivent être choisies dans les listes proposées,
+- les champs nom et prénom sont obligatoires.
+
+### Fiche d'un élève
+
+#### URL
+
+- `/Eleve/{id}`
+
+Cette page affiche les informations de l'élève sélectionné.
+
+### Modification d'un élève
+
+#### URL
+
+- `/Eleve/{id}/edit`
+
+Permet de mettre à jour les informations de l'élève.
+
+### Suppression d'un élève
+
+#### URL
+
+- `/Eleve/{id}`
+
+La suppression se fait via un formulaire de confirmation.
+
+Si l'élève est déjà lié à un stage, la suppression peut être refusée.
+
+### Création d'un utilisateur
+
+#### URL
+
+- `/newUtilisateur`
+
+#### Champs à renseigner
+
+- nom,
+- prénom,
+- adresse e-mail,
+- rôle,
+- mot de passe lors de la création.
+
+#### Règles
+
+- l'adresse e-mail doit être valide,
+- le rôle doit être sélectionné dans la liste,
+- le mot de passe est obligatoire lors de la création,
+- le mot de passe est chiffré avant enregistrement.
+
+### Fiche d'un utilisateur
+
+#### URL
+
+- `/Utilisateur/{id}`
+
+Cette page affiche les informations du compte utilisateur.
+
+### Modification d'un utilisateur
+
+#### URL
+
+- `/Utilisateur/{id}/edit`
+
+Permet de modifier les informations du compte.
+
+Lors d'une modification, le mot de passe peut ne pas être demandé selon le formulaire utilisé.
+
+### Suppression d'un utilisateur
+
+#### URL
+
+- `/Utilisateur/{id}`
+
+La suppression se fait via un formulaire avec validation.
+
+### Gestion des rôles
+
+Les rôles sont sélectionnés depuis la base de données. Ils servent à définir les droits d'accès dans l'application.
+
+## 7. Gestion des entreprises
+
+### URL principale
+
+- `/entreprise`
+
+### Accès
+
+Cette section est réservée aux administrateurs.
+
+### Contenu de la page
+
+La page affiche la liste des entreprises enregistrées.
+
+### Actions possibles
+
+Depuis cette section, un administrateur peut :
+
+- créer une entreprise,
+- consulter une entreprise,
+- modifier une entreprise,
+- supprimer une entreprise.
+
+### Création d'une entreprise
+
+#### URL
+
+- `/entreprise/new`
+
+#### Champs à renseigner
+
+- nom de l'entreprise,
+- adresse,
+- ville,
+- code postal,
+- tuteur,
+- téléphone,
+- adresse e-mail.
+
+#### Règles
+
+- le code postal doit être un nombre,
+- l'adresse e-mail doit être valide,
+- les champs obligatoires doivent être renseignés.
+
+### Fiche d'une entreprise
+
+#### URL
+
+- `/entreprise/{id}`
+
+Cette page affiche les informations détaillées de l'entreprise.
+
+### Modification d'une entreprise
+
+#### URL
+
+- `/entreprise/{id}/edit`
+
+Permet de corriger ou mettre à jour les coordonnées de l'entreprise.
+
+### Suppression d'une entreprise
+
+#### URL
+
+- `/entreprise/{id}`
+
+La suppression est refusée si l'entreprise est déjà associée à un stage.
+
+## 8. Gestion des stages
+
+### URL principale
+
+- `/stages`
+
+### Accès
+
+Cette section est réservée aux administrateurs.
+
+### Contenu de la page
+
+La page liste les stages enregistrés dans l'application.
+
+### Actions possibles
+
+Depuis cette section, un administrateur peut :
+
+- créer un stage,
+- consulter un stage,
+- modifier un stage,
+- supprimer un stage.
+
+### Création d'un stage
+
+#### URL
+
+- `/stages/new`
+
+#### Champs à renseigner
+
+- élève,
+- date de début,
+- date de fin,
+- description courte,
+- entreprise,
+- professeur référent,
+- professeur de visite.
+
+#### Règles importantes
+
+- un élève ne peut pas avoir plusieurs stages en même temps dans la sélection proposée,
+- l'élève, l'entreprise et les dates doivent être renseignés,
+- les professeurs sont choisis dans une liste prédéfinie.
+
+### Fiche d'un stage
+
+#### URL
+
+- `/stages/{id}`
+
+Cette page présente les détails du stage.
+
+### Modification d'un stage
+
+#### URL
+
+- `/stages/{id}/edit`
+
+Permet de modifier les informations du stage.
+
+### Suppression d'un stage
+
+#### URL
+
+- `/stages/{id}`
+
+La suppression se fait via un formulaire de confirmation.
+
+## 9. Suivi des visites
+
+### URL principale
+
+- `/suivi-visites`
+
+### Rôle de la page
+
+Cette section affiche les stages avec leur commentaire de visite.
+
+### Utilisation
+
+L'utilisateur peut :
+
+- consulter la liste des stages suivis,
+- ouvrir la page de commentaire d'un stage,
+- ajouter ou modifier un commentaire de visite.
+
+### Commentaire d'un stage
+
+#### URL
+
+- `/suivi-visites/{id}/commentaire`
+
+#### Fonctionnement
+
+- ouvrir la page du stage,
+- saisir ou modifier le commentaire,
+- enregistrer.
+
+Si le commentaire est laissé vide, il peut être supprimé.
+
+## 10. Historique des modifications
+
+### URL principale
+
+- `/historique`
+
+### Accès
+
+Cette section est réservée aux administrateurs.
+
+### Rôle de la page
+
+L'historique affiche les actions enregistrées dans l'application, par exemple :
+
+- création,
+- modification,
+- suppression.
+
+Les entrées peuvent concerner :
+
+- les stages,
+- les élèves,
+- les utilisateurs,
+- les entreprises.
+
+### Utilisation
+
+L'administrateur peut :
+
+- consulter les modifications,
+- supprimer une entrée d'historique,
+- supprimer tout l'historique.
+
+### Suppression d'une entrée
+
+#### URL
+
+- `/historique/{type}/{id}/supprimer`
+
+### Suppression complète
+
+#### URL
+
+- `/historique/tout-supprimer`
+
+## 11. Page accès refusé
+
+### URL
+
+- `/access-denied`
+
+Cette page s'affiche lorsqu'un utilisateur tente d'accéder à une fonctionnalité réservée à un autre rôle.
+
+## 12. Déconnexion
+
+### URL
+
+- `/logout`
+
+Cette URL permet de fermer la session de l'utilisateur.
+
+La déconnexion est gérée par Symfony et ne renvoie pas vers une page de contenu spécifique.
+
+## 13. Messages et validations fréquents
+
+### Connexion
+
+Si l'adresse e-mail ou le mot de passe est incorrect, un message d'erreur de connexion s'affiche.
+
+### Formulaire entreprise
+
+- l'e-mail doit être valide,
+- le code postal doit contenir une valeur numérique.
+
+### Formulaire utilisateur
+
+- l'e-mail doit être valide,
+- le rôle doit être sélectionné,
+- le mot de passe est obligatoire lors de la création.
+
+### Formulaire stage
+
+- un élève déjà utilisé pour un stage peut être refusé dans la liste,
+- l'entreprise doit être sélectionnée,
+- les dates doivent être renseignées correctement.
+
+## 14. Résumé des pages principales
+
+- `/` ou `/login` : connexion,
+- `/dashboard` : tableau de bord,
+- `/utilisateurs` : gestion des élèves et des utilisateurs,
+- `/entreprise` : gestion des entreprises,
+- `/stages` : gestion des stages,
+- `/suivi-visites` : suivi des visites,
+- `/historique` : historique des modifications,
+- `/access-denied` : accès refusé,
+- `/logout` : déconnexion.
+
+## 15. Support
+
+En cas de difficulté :
+
+- vérifier que le serveur est bien démarré,
+- vérifier vos identifiants,
+- vérifier que votre compte possède les bons droits,
+- contacter l'administrateur de l'application si nécessaire.
