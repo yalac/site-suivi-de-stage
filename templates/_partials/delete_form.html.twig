@@ -1,0 +1,10 @@
+<form
+    method="post"
+    action="{{ path(route_name, route_params|default({})) }}"
+    class="inline-delete-form"
+    data-confirm="{{ confirm_message|default('Êtes-vous sûr de vouloir supprimer cet élément ?')|e('html_attr') }}"
+    onsubmit="return confirm(this.dataset.confirm);"
+>
+    <input type="hidden" name="_token" value="{{ csrf_token(csrf_token_id) }}">
+    <button type="submit" class="app-button-danger">{{ button_label|default('Supprimer') }}</button>
+</form>

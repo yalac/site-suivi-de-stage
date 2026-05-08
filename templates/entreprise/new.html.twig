@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle entreprise{% endblock %}
+{% block title %}Créer une entreprise{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -11,120 +11,25 @@
         .page-header p {
             margin: 0;
         }
-
-        .form-stack {
-            display: grid;
-            gap: 0.85rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.85rem;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-top: 0.8rem;
-        }
-
-        .form-actions .app-button-primary {
-            margin: 0;
-        }
-
-        .field-error {
-            margin-top: 0.2rem;
-            color: #ff9b9b;
-            font-size: 0.9rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.35rem;
-            color: #cfe3ff;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.55rem 0.65rem;
-            border: 1px solid rgba(104, 137, 197, 0.25);
-            border-radius: 8px;
-            background: rgba(9, 21, 49, 0.85);
-            color: #f2f7ff;
-            box-sizing: border-box;
-        }
     </style>
 {% endblock %}
 
 {% block body %}
     <main class="app-page">
-        <section class="app-container" style="max-width: 900px;">
+        <section class="app-container">
             <header class="page-header app-header">
-                <h1 class="app-title">Ajouter une nouvelle entreprise</h1>
-                <p class="app-subtitle">Remplissez le formulaire pour ajouter une nouvelle entreprise.</p>
+                <h1 class="app-title">Créer une entreprise</h1>
+                <p class="app-subtitle">Remplir le formulaire pour ajouter une entreprise.</p>
             </header>
 
-            <div class="app-card">
-                {{ form_start(form) }}
-                    <div class="form-stack">
-                        <div>
-                            {{ form_label(form.nomEntreprise, 'Nom de l\'entreprise', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.nomEntreprise, {'attr': {'class': 'form-input'}}) }}
-                            <div class="field-error">{{ form_errors(form.nomEntreprise) }}</div>
-                        </div>
-
-                        <div>
-                            {{ form_label(form.adresseEntreprise, 'Adresse', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.adresseEntreprise, {'attr': {'class': 'form-input'}}) }}
-                            <div class="field-error">{{ form_errors(form.adresseEntreprise) }}</div>
-                        </div>
-
-                        <div class="form-row">
-                            <div>
-                                {{ form_label(form.villeEntreprise, 'Ville', {'label_attr': {'class': 'form-label'}}) }}
-                                {{ form_widget(form.villeEntreprise, {'attr': {'class': 'form-input'}}) }}
-                                <div class="field-error">{{ form_errors(form.villeEntreprise) }}</div>
-                            </div>
-
-                            <div>
-                                {{ form_label(form.cpentreprise, 'Code postal', {'label_attr': {'class': 'form-label'}}) }}
-                                {{ form_widget(form.cpentreprise, {'attr': {'class': 'form-input'}}) }}
-                                <div class="field-error">{{ form_errors(form.cpentreprise) }}</div>
-                            </div>
-                        </div>
-
-                        <div>
-                            {{ form_label(form.tuteurEntreprise, 'Tuteur', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.tuteurEntreprise, {'attr': {'class': 'form-input'}}) }}
-                            <div class="field-error">{{ form_errors(form.tuteurEntreprise) }}</div>
-                        </div>
-
-                        <div class="form-row"> 
-                            <div>
-                                {{ form_label(form.telephoneEntreprise, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
-                                {{ form_widget(form.telephoneEntreprise, {'attr': {'class': 'form-input', 'inputmode': 'tel'}}) }}
-                                <div class="field-error">{{ form_errors(form.telephoneEntreprise) }}</div>
-                            </div>
-
-                            <div>
-                                {{ form_label(form.mailEntreprise, 'Mail', {'label_attr': {'class': 'form-label'}}) }}
-                                {{ form_widget(form.mailEntreprise, {'attr': {'class': 'form-input', 'inputmode': 'email'}}) }}
-                                <div class="field-error">{{ form_errors(form.mailEntreprise) }}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{ form_rest(form) }}
-                    <div class="form-actions">
-                        <button type="submit" class="app-button-primary">Enregistrer</button>
-                        <a href="{{ path('app_entreprise_index') }}" class="app-link">Annuler</a>
-                    </div>
-                {{ form_end(form) }}
-            </div>
+            <section class="app-card">
+                {{ include('entreprise/_form.html.twig', {'button_label': 'Créer'}) }}
+                {{ include('_partials/form_actions.html.twig', {
+                    form_id: 'entreprise-form',
+                    submit_label: 'Créer',
+                    cancel_route: 'app_entreprise_index',
+                }) }}
+            </section>
         </section>
     </main>
-
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail entreprise{% endblock %}
+{% block title %}Entreprise{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -20,71 +20,74 @@
 
         .details-table th,
         .details-table td {
-            padding: 0.7rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: left;
             vertical-align: top;
         }
 
         .details-table th {
-            width: 35%;
-            text-align: left;
+            width: 32%;
         }
 
-        .stage-actions {
-            display: flex;
-            gap: 0.6rem;
-            align-items: center;
-            flex-wrap: wrap;
+        .action-row {
+            margin-top: 0.25rem;
         }
 
-        .stage-actions .app-button-primary {
-            margin: 0;
+        .danger-form button {
+            padding: 0;
         }
     </style>
 {% endblock %}
 
 {% block body %}
     <main class="app-page">
-        <section class="app-container" style="max-width: 900px;">
+        <section class="app-container">
             <header class="page-header app-header">
                 <h1 class="app-title">Détail de l'entreprise</h1>
                 <p class="app-subtitle">Informations complètes de l'entreprise sélectionnée.</p>
             </header>
 
-            <div class="app-card">
-                <div style="overflow:auto; margin-bottom:1rem;">
-                    <table class="details-table">
-                        <tbody>
-                            <tr>
-                                <th>ID</th>
-                                <td>{{ entreprise.id }}</td>
-                            </tr>
-                            <tr>
-                                <th>Nom</th>
-                                <td>{{ entreprise.nomEntreprise }}</td>
-                            </tr>
-                            <tr>
-                                <th>Adresse</th>
-                                <td>{{ entreprise.adresseEntreprise }}</td>
-                            </tr>
-                            <tr>
-                                <th>Code postal</th>
-                                <td>{{ entreprise.cpentreprise }}</td>
-                            </tr>
-                            <tr>
-                                <th>Ville</th>
-                                <td>{{ entreprise.villeEntreprise }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <section class="app-card">
+                <table class="details-table app-table">
+                    <tbody>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ entreprise.nomEntreprise }}</td>
+                        </tr>
+                        <tr>
+                            <th>Adresse</th>
+                            <td>{{ entreprise.adresseEntreprise }}</td>
+                        </tr>
+                        <tr>
+                            <th>Code postal</th>
+                            <td>{{ entreprise.cpEntreprise }}</td>
+                        </tr>
+                        <tr>
+                            <th>Ville</th>
+                            <td>{{ entreprise.villeEntreprise }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tuteur</th>
+                            <td>{{ entreprise.tuteurEntreprise }}</td>
+                        </tr>
+                        <tr>
+                            <th>Téléphone</th>
+                            <td>{{ entreprise.telephoneEntreprise }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ entreprise.mailEntreprise }}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                <div class="stage-actions">
-                    <a href="{{ path('app_entreprise_index') }}" class="app-link">Retour à la liste</a>
-                    <a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}" class="app-button-primary">Modifier</a>
-                    {{ include('entreprise/_delete_form.html.twig') }}
+                <div class="action-row app-section-actions">
+                    <a class="app-link" href="{{ path('app_entreprise_index') }}">Retour à la liste</a>
+                    <a class="app-button-primary" href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}">Modifier</a>
+                    <div class="danger-form">{{ include('entreprise/_delete_form.html.twig') }}</div>
                 </div>
-            </div>
+            </section>
         </section>
     </main>
 {% endblock %}

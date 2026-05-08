@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commentaire de stage{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .comment-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .comment-form label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--app-text-faint);
+            font-weight: 600;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 0.9rem;
+            border-radius: 10px;
+            border: 1px solid var(--app-surface-border-strong);
+            background: rgba(9, 21, 49, 0.85);
+            color: var(--app-text);
+            font: inherit;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--app-primary-hover);
+            box-shadow: 0 0 0 3px rgba(92, 163, 240, 0.16);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container" style="max-width: 900px;">
+            <header class="page-header app-header">
+                <h1 class="app-title">Modifier le commentaire</h1>
+                <p class="app-subtitle">
+                    {{ stage.eleveStage ? stage.eleveStage.prenomEleve ~ ' ' ~ stage.eleveStage.nomEleve : 'Stage' }}
+                </p>
+            </header>
+
+            <section class="app-card">
+                <form method="post" class="comment-form">
+                    <div>
+                        <label for="commentaire">Commentaire</label>
+                        <textarea id="commentaire" name="commentaire" placeholder="Remerciement OK/NOK, Bilan OK/NOK, Attestation OK/NOK">{{ stage.commentaire }}</textarea>
+                    </div>
+
+                    <input type="hidden" name="_token" value="{{ csrf_token('comment' ~ stage.id) }}">
+
+                    <div class="app-section-actions">
+                        <button type="submit" class="app-button-primary">Enregistrer</button>
+                        <a class="app-link" href="{{ path('app_suivi_visite') }}">Annuler</a>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </main>
+{% endblock %}

@@ -53,30 +53,27 @@
             <header class="page-header app-header">
                 <div class="page-header-content">
                     <h1 class="app-title">Entreprises</h1>
-                    <p class="app-subtitle">Liste des entreprises enregistrées et actions rapides.</p>
+                    <p class="app-subtitle">Liste des entreprises enregistrées</p>
                 </div>
-                <a href="{{ path('app_entreprise_new') }}" class="app-button-primary">+ Nouvelle entreprise</a>
+                <a href="{{ path('app_entreprise_new') }}" class="app-button-primary">Ajouter une entreprise</a>
             </header>
 
             <div class="app-card">
                 <div class="page-actions">
-                    <p class="app-muted">Afficher toutes les entreprises enregistrées dans la base.</p>
+                    <p class="app-muted">Listes des entreprises ({{ entreprises|length }})</p>
                 </div>
 
-                {% if entreprises is empty %}
-                    <p class="app-muted">Aucune entreprise enregistrée.</p>
-                {% else %}
-                    <div class="table-wrap">
+                <div class="table-wrap">
                     <table class="table-left">
                         <thead>
                             <tr style="text-align:left; color:#cfe3ff;">
-                                <th>Nom</th>
-                                <th>Adresse</th>
-                                <th>Ville</th>
-                                <th>Tuteur</th>
-                                <th>Téléphone</th>
-                                <th>Mail</th>
-                                <th>Actions</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Nom</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Adresse</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Ville</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Tuteur</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Téléphone</th>
+                                <th width="18%" style="font-weight: bold; font-size: 20px;">Mail</th>
+                                <th width="20%" style="font-weight: bold; font-size: 20px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,7 +81,7 @@
                             <tr>
                                 <td>{{ entreprise.nomEntreprise }}</td>
                                 <td>{{ entreprise.adresseEntreprise }}</td>
-                                <td>{{ entreprise.villeEntreprise }} ({{ entreprise.cpentreprise }})</td>
+                                <td>{{ entreprise.villeEntreprise }} ({{ entreprise.cpEntreprise }})</td>
                                 <td>{{ entreprise.tuteurEntreprise }}</td>
                                 <td>{{ entreprise.telephoneEntreprise }}</td>
                                 <td>{{ entreprise.mailEntreprise }}</td>
@@ -99,8 +96,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                    </div>
-                {% endif %}
+                </div>
             </div>
         </section>
     </main>

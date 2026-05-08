@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le stage{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            margin: 0;
+        }
+
+        .danger-form button {
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="app-page">
+        <section class="app-container">
+            <header class="page-header app-header">
+                <h1 class="app-title">Modifier le stage</h1>
+                <p class="app-subtitle">Mettre à jour les informations du stage.</p>
+            </header>
+
+            <section class="app-card">
+                {{ include('stage/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+                {{ include('_partials/form_actions.html.twig', {
+                    form_id: 'stage-form',
+                    submit_label: 'Enregistrer',
+                    cancel_route: 'app_stage',
+                    delete_partial: 'stage/_delete_form.html.twig',
+                    delete_context: {'stage': stage},
+                }) }}
+            </section>
+        </section>
+    </main>
+{% endblock %}

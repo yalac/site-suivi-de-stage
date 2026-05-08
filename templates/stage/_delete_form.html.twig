@@ -1,0 +1,6 @@
+{{ include('_partials/delete_form.html.twig', {
+    route_name: 'app_stage_delete',
+    route_params: {'id': stage.id},
+    csrf_token_id: 'delete' ~ stage.id,
+    confirm_message: 'Êtes-vous sûr de vouloir supprimer ce stage ?',
+}) }}

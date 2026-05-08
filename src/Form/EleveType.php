@@ -25,15 +25,15 @@ class EleveType extends AbstractType
             ])
             ->add('optionEleve', EntityType::class, [
                 'class' => Option::class,
-                'choice_label' => function (Option $option) { return (string) $option; },
+                'choice_label' => static fn (Option $option): string => (string) $option,
                 'label' => 'Option',
-                'placeholder' => 'Sélectionner une option'
+                'placeholder' => 'Sélectionner une option',
             ])
             ->add('promotionEleve', EntityType::class, [
                 'class' => Promotion::class,
-                'choice_label' => function (Promotion $promotion) { return (string) $promotion; },
+                'choice_label' => static fn (Promotion $promotion): string => (string) $promotion,
                 'label' => 'Promotion',
-                'placeholder' => 'Sélectionner une promotion'
+                'placeholder' => 'Sélectionner une promotion',
             ])
         ;
     }

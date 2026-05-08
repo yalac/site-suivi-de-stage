@@ -52,16 +52,20 @@
                 <table class="details-table app-table">
                     <tbody>
                         <tr>
-                            <th>NomUtilisateur</th>
+                            <th>Nom</th>
                             <td>{{ utilisateur.nomUtilisateur }}</td>
                         </tr>
                         <tr>
-                            <th>PrenomUtilisateur</th>
+                            <th>Prénom</th>
                             <td>{{ utilisateur.prenomUtilisateur }}</td>
                         </tr>
                         <tr>
-                            <th>EmailUtilisateur</th>
+                            <th>Email</th>
                             <td>{{ utilisateur.emailUtilisateur }}</td>
+                        </tr>
+                        <tr>
+                            <th>Rôle</th>
+                            <td>{{ utilisateur.roleUtilisateur ? utilisateur.roleUtilisateur.nomRole : 'N/A' }}</td>
                         </tr>
                     </tbody>
                 </table>

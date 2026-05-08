@@ -17,38 +17,46 @@ class StageRepository extends ServiceEntityRepository
         parent::__construct($registry, Stage::class);
     }
 
-    /**
-     * Retourne les stages non-archivés et non-terminés (incluant les futurs)
-     * Un stage est affiché s'il n'est pas archivé et si dateFinStage n'est pas passée
-     */
-    public function findCurrent(\DateTimeInterface $date = null): array
+    public function findCurrent(?\DateTimeInterface $date = null): array
     {
         $date = $date ?? new \DateTimeImmutable('today');
 
-        $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.isArchived = false')
+        return $this->createQueryBuilder('s')
             ->andWhere('s.dateFinStage IS NULL OR s.dateFinStage >= :date')
             ->setParameter('date', $date, Types::DATE_IMMUTABLE)
             ->orderBy('s.dateDebutStage', 'ASC')
-        ;
-
-        return $qb->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
     }
 
-    /**
-     * Retourne les stages terminés (historique) à la date donnée (ou aujourd'hui si null)
-     * Un stage est terminé si dateFinStage < date OU s'il est archivé
-     */
-    public function findFinished(\DateTimeInterface $date = null): array
+    public function findFinished(?\DateTimeInterface $date = null): array
     {
         $date = $date ?? new \DateTimeImmutable('today');
 
-        $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.isArchived = true OR (s.dateFinStage IS NOT NULL AND s.dateFinStage < :date)')
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.dateFinStage IS NOT NULL AND s.dateFinStage < :date')
             ->setParameter('date', $date, Types::DATE_IMMUTABLE)
             ->orderBy('s.dateFinStage', 'DESC')
-        ;
+            ->getQuery()
+            ->getResult();
+    }
 
-        return $qb->getQuery()->getResult();
+    public function findWithEleve(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.eleveStage', 'e')
+            ->addSelect('e')
+            ->orderBy('s.dateDebutStage', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllOrdered(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.dateDebutStage', 'DESC')
+            ->addOrderBy('s.dateFinStage', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

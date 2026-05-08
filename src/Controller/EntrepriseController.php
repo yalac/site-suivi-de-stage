@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\AdminAccessTrait;
 use App\Entity\Entreprise;
 use App\Form\EntrepriseType;
 use App\Repository\EntrepriseRepository;
+use App\Repository\StageRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,11 +17,13 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/entreprise')]
 final class EntrepriseController extends AbstractController
 {
+    use AdminAccessTrait;
+
     #[Route(name: 'app_entreprise_index', methods: ['GET'])]
     public function index(EntrepriseRepository $entrepriseRepository): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_access_denied');
+        if ($response = $this->redirectIfNotAdmin()) {
+            return $response;
         }
 
         return $this->render('home/entreprises.html.twig', [
@@ -37,7 +42,7 @@ final class EntrepriseController extends AbstractController
             $entityManager->persist($entreprise);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_entreprise_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToEntrepriseIndex();
         }
 
         return $this->render('entreprise/new.html.twig', [
@@ -63,7 +68,7 @@ final class EntrepriseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_entreprise_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToEntrepriseIndex();
         }
 
         return $this->render('entreprise/edit.html.twig', [
@@ -73,13 +78,28 @@ final class EntrepriseController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_entreprise_delete', methods: ['POST'])]
-    public function delete(Request $request, Entreprise $entreprise, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Entreprise $entreprise, EntityManagerInterface $entityManager, StageRepository $stageRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$entreprise->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($entreprise);
-            $entityManager->flush();
+            if ($stageRepository->findOneBy(['entrepriseStage' => $entreprise]) !== null) {
+                $this->addFlash('warning', 'Impossible de supprimer cette entreprise : un stage correspond déjà à cette entreprise.');
+
+                return $this->redirectToEntrepriseIndex();
+            }
+
+            try {
+                $entityManager->remove($entreprise);
+                $entityManager->flush();
+            } catch (ForeignKeyConstraintViolationException) {
+                $this->addFlash('warning', 'Impossible de supprimer cette entreprise : un stage correspond déjà à cette entreprise.');
+            }
         }
 
-        return $this->redirectToRoute('app_entreprise_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToEntrepriseIndex();
+    }
+
+    private function redirectToEntrepriseIndex(): Response
+    {
+        return $this->redirectToRoute('app_entreprise_index');
     }
 }

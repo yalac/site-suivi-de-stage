@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\StageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StageRepository::class)]
@@ -24,19 +22,13 @@ class Stage
     #[ORM\Column(name: 'date_fin_stage', type: 'date', nullable: true)]
     private ?\DateTimeInterface $dateFinStage = null;
 
-    #[ORM\Column(name: 'duree_stage', nullable: true)]
-    private ?int $dureeStage = null;
-
     #[ORM\ManyToOne(targetEntity: Entreprise::class)]
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
 
-    #[ORM\ManyToOne(targetEntity: Eleve::class)]
-    #[ORM\JoinColumn(name: 'eleve_principal_stage_id', nullable: true)]
-    private ?Eleve $elevePrincipalStage = null;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $isArchived = false;
+    #[ORM\OneToOne(targetEntity: Eleve::class, inversedBy: 'stageEleve')]
+    #[ORM\JoinColumn(name: 'eleve_stage_id', nullable: true)]
+    private ?Eleve $eleveStage = null;
 
     #[ORM\Column(name: 'prof_referent', length: 150, nullable: true)]
     private ?string $profReferent = null;
@@ -44,16 +36,8 @@ class Stage
     #[ORM\Column(name: 'prof_visite', length: 150, nullable: true)]
     private ?string $profVisite = null;
 
-    /**
-     * @var Collection<int, Eleve>
-     */
-    #[ORM\OneToMany(targetEntity: Eleve::class, mappedBy: 'stageEleve')]
-    private Collection $eleves;
-
-    public function __construct()
-    {
-        $this->eleves = new ArrayCollection();
-    }
+    #[ORM\Column(name: 'commentaire', type: 'text', nullable: true)]
+    private ?string $commentaire = null;
 
     public function getId(): ?int
     {
@@ -93,17 +77,6 @@ class Stage
         return $this;
     }
 
-    public function getDureeStage(): ?int
-    {
-        return $this->dureeStage;
-    }
-
-    public function setDureeStage(?int $dureeStage): static
-    {
-        $this->dureeStage = $dureeStage;
-        return $this;
-    }
-
     public function getEntrepriseStage(): ?Entreprise
     {
         return $this->entrepriseStage;
@@ -115,25 +88,14 @@ class Stage
         return $this;
     }
 
-    public function getElevePrincipalStage(): ?Eleve
+    public function getEleveStage(): ?Eleve
     {
-        return $this->elevePrincipalStage;
+        return $this->eleveStage;
     }
 
-    public function setElevePrincipalStage(?Eleve $elevePrincipalStage): static
+    public function setEleveStage(?Eleve $eleveStage): static
     {
-        $this->elevePrincipalStage = $elevePrincipalStage;
-        return $this;
-    }
-
-    public function isArchived(): bool
-    {
-        return $this->isArchived;
-    }
-
-    public function setArchived(bool $isArchived): static
-    {
-        $this->isArchived = $isArchived;
+        $this->eleveStage = $eleveStage;
         return $this;
     }
 
@@ -159,32 +121,14 @@ class Stage
         return $this;
     }
 
-    /**
-     * @return Collection<int, Eleve>
-     */
-    public function getEleves(): Collection
+    public function getCommentaire(): ?string
     {
-        return $this->eleves;
+        return $this->commentaire;
     }
 
-    public function addEleve(Eleve $eleve): static
+    public function setCommentaire(?string $commentaire): static
     {
-        if (!$this->eleves->contains($eleve)) {
-            $this->eleves->add($eleve);
-            $eleve->setStageEleve($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEleve(Eleve $eleve): static
-    {
-        if ($this->eleves->removeElement($eleve)) {
-            if ($eleve->getStageEleve() === $this) {
-                $eleve->setStageEleve(null);
-            }
-        }
-
+        $this->commentaire = $commentaire;
         return $this;
     }
 

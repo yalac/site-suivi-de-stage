@@ -1,0 +1,7 @@
+<div class="unified-actions app-section-actions">
+    <button type="submit" form="{{ form_id }}" class="app-button-primary">{{ submit_label }}</button>
+    <a class="app-link" href="{{ path(cancel_route) }}">{{ cancel_label|default('Annuler') }}</a>
+    {% if delete_partial is defined and delete_partial %}
+        <div class="danger-form">{{ include(delete_partial, delete_context|default({})) }}</div>
+    {% endif %}
+</div>

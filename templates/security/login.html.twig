@@ -197,17 +197,11 @@
 
         <section class="login-card app-card" style="border-radius: 18px; padding: 1.7rem;">
             <h2 class="card-title">Connexion</h2>
-            <p class="card-caption">Accedez au site de suivi de stages</p>
+            <p class="card-caption">Accédez au site de suivi de stages</p>
 
             <form method="post">
                 {% if error %}
                     <div class="feedback feedback-error">Identifiants incorrects. Veuillez vérifier votre email et votre mot de passe.</div>
-                {% endif %}
-
-                {% if app.user %}
-                    <div class="feedback feedback-info">
-                        Connecte en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">deconnexion</a>
-                    </div>
                 {% endif %}
 
                 <div class="input-group">

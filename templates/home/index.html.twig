@@ -105,23 +105,23 @@
             <header class="app-header">
                 <h1 class="app-title">Tableau de bord</h1>
                 <h2 class="app-subtitle">Suivi des stages - BTS SIO La Chataigneraie</h2>
-                <p class="app-welcome">Bienvenue {{ utilisateur.prenomUtilisateur }} {{ utilisateur.nomUtilisateur }} ~ {{role.nomRole}}</p>
+                <p class="app-welcome">Bienvenue {{ utilisateur.prenomUtilisateur }} {{ utilisateur.nomUtilisateur }} - {{ role.nomRole }}</p>
             </header>
 
             <div class="app-card">
                 <div class="page-nombreEtudiants">
                     <h3 class="app-card-title">Nombre d'étudiants</h3>
-                    <p class="app-card-value">{{eleves | length}}</p>
+                    <p class="app-card-value">{{ eleves|length }}</p>
                 </div>
 
                 <div class="page-nombreEntreprises">
                     <h3 class="app-card-title">Nombre d'entreprises</h3>
-                    <p class="app-card-value">{{entreprises | length}}</p>
+                    <p class="app-card-value">{{ entreprises|length }}</p>
                 </div>
 
                 <div class="page-nombreStages">
                     <h3 class="app-card-title">Nombre de stages</h3>
-                    <p class="app-card-value">{{stages | length}}</p>
+                    <p class="app-card-value">{{ stages|length }}</p>
                 </div>
             </div>
         </section>

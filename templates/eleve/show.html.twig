@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Utilisateur{% endblock %}
+{% block title %}Élève{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -44,17 +44,13 @@
     <main class="app-page">
         <section class="app-container">
             <header class="page-header app-header">
-                <h1 class="app-title">Détail de l'utilisateur</h1>
+                <h1 class="app-title">Détail de l'élève</h1>
                 <p class="app-subtitle">Informations complètes de l'élève sélectionné.</p>
             </header>
 
             <section class="app-card">
                 <table class="details-table app-table">
                     <tbody>
-                        <tr>
-                            <th>Id</th>
-                            <td>{{ eleve.id }}</td>
-                        </tr>
                         <tr>
                             <th>Nom</th>
                             <td>{{ eleve.nomEleve }}</td>
@@ -64,12 +60,12 @@
                             <td>{{ eleve.prenomEleve }}</td>
                         </tr>
                         <tr>
-                            <th>Professeur référent</th>
-                            <td>{{ eleve.profReferent }}</td>
+                            <th>Option</th>
+                            <td>{{ eleve.optionEleve ? eleve.optionEleve.nomOption : 'N/A' }}</td>
                         </tr>
                         <tr>
-                            <th>Professeur visite</th>
-                            <td>{{ eleve.profVisite }}</td>
+                            <th>Promotion</th>
+                            <td>{{ eleve.promotionEleve ? eleve.promotionEleve.classePromotion ~ ' - ' ~ eleve.promotionEleve.anneePromotion : 'N/A' }}</td>
                         </tr>
                     </tbody>
                 </table>

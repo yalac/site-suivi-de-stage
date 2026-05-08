@@ -29,11 +29,10 @@ class UtilisateurType extends AbstractType
             ])
             ->add('roleUtilisateur', EntityType::class, [
                 'class' => Role::class,
-                'choice_label' => function (Role $role) { return (strtolower((string) $role->getNomRole())); },
+                'choice_label' => static fn (Role $role): string => strtolower((string) $role->getNomRole()),
                 'label' => 'Rôle',
-                'placeholder' => 'Sélectionner un rôle'
+                'placeholder' => 'Sélectionner un rôle',
             ])
-            
         ;
 
         if ($options['show_password']) {

@@ -1,0 +1,120 @@
+<style>
+    .user-form {
+        display: grid;
+        gap: 1.2rem;
+    }
+
+    .user-form .form-group {
+        display: grid;
+        gap: 0.4rem;
+    }
+
+    .user-form label {
+        color: #cfe3ff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: block;
+    }
+
+    .user-form input[type="text"],
+    .user-form input[type="date"],
+    .user-form textarea,
+    .user-form select {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid rgba(104, 137, 197, 0.25);
+        background: rgba(9, 21, 49, 0.85);
+        color: #f2f7ff;
+        font-size: 0.95rem;
+        font-family: inherit;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .user-form input[type="text"]:focus,
+    .user-form input[type="date"]:focus,
+    .user-form textarea:focus,
+    .user-form select:focus {
+        border-color: rgba(129, 173, 245, 0.6);
+        box-shadow: 0 0 0 3px rgba(80, 141, 239, 0.15);
+        outline: none;
+    }
+
+    .user-form textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .user-form .form-check {
+        display: flex;
+        gap: 0.5rem;
+        align-items: flex-start;
+        color: #d5e0f3;
+        margin-top: 0.3rem;
+    }
+
+    .user-form .form-check input[type="checkbox"] {
+        margin-top: 0.2rem;
+        accent-color: #5ca3f0;
+    }
+
+    .user-form button[type="submit"] {
+        background: linear-gradient(180deg, #5ca3f0 0%, #2b69c9 100%);
+        color: #fff;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        border: 0;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+        display: inline-block;
+        margin: 0;
+    }
+
+    .user-form button[type=\"submit\"]:hover {
+        background: linear-gradient(180deg, #68adf7 0%, #3c7fd6 100%);
+        box-shadow: 0 8px 16px rgba(39, 97, 178, 0.3);
+        transform: translateY(-1px);
+    }
+
+
+    .user-form .form-error {
+        color: #ff9b9b;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+    .select-multiple {
+        min-height: 120px !important;
+        padding: 0.5rem !important;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.85rem;
+    }
+</style>
+
+{{ form_start(form, {attr: {id: 'stage-form', novalidate: 'novalidate'}}) }}
+<div class="user-form">
+        <div class="form-row">
+            {{ form_row(form.dateDebutStage) }}
+            {{ form_row(form.dateFinStage) }}
+        </div>
+        <div class="form-row">
+            {{ form_row(form.entrepriseStage) }}
+        </div>
+        <div class="form-row">
+            {{ form_row(form.eleveStage) }}
+        </div>
+        <div class="form-row">
+            {{ form_row(form.profReferent) }}
+            {{ form_row(form.profVisite) }}
+        </div>
+        {{ form_row(form.descriptifStage) }}
+        {{ form_rest(form) }}
+</div>
+    {{ form_end(form) }}
