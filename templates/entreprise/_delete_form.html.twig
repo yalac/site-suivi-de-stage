@@ -1,4 +1,6 @@
-<form method="post" action="{{ path('app_entreprise_delete', {'id': entreprise.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette entreprise ?');" style="display:inline; margin:0;">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entreprise.id) }}">
-    <button type="submit" style="background:transparent; color:#ff7b7b; border:0; padding:0; cursor:pointer;">Supprimer</button>
-</form>
+{{ include('_partials/delete_form.html.twig', {
+    route_name: 'app_entreprise_delete',
+    route_params: {'id': entreprise.id},
+    csrf_token_id: 'delete' ~ entreprise.id,
+    confirm_message: 'Êtes-vous sûr de vouloir supprimer cette entreprise ?',
+}) }}

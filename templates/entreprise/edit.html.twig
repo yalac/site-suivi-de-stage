@@ -12,26 +12,6 @@
             margin: 0;
         }
 
-        .form-with-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        .unified-actions {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-            flex-wrap: wrap;
-            padding-top: 0.75rem;
-            border-top: 1px solid rgba(104, 137, 197, 0.06);
-            margin-top: 0.5rem;
-        }
-
-        .unified-actions .app-button-primary {
-            margin: 0;
-        }
-
         .danger-form button {
             padding: 0;
         }
@@ -47,14 +27,14 @@
             </header>
 
             <section class="app-card">
-                <div class="form-with-actions">
-                    {{ include('entreprise/_form.html.twig', {'button_label': 'Enregistrer'}) }}
-                    <div class="unified-actions app-section-actions">
-                        <button type="submit" form="user-form-edit" class="app-button-primary">Enregistrer</button>
-                        <a class="app-link" href="{{ path('app_entreprise_index') }}">Annuler</a>
-                        <div class="danger-form">{{ include('entreprise/_delete_form.html.twig') }}</div>
-                    </div>
-                </div>
+                {{ include('entreprise/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+                {{ include('_partials/form_actions.html.twig', {
+                    form_id: 'entreprise-form',
+                    submit_label: 'Enregistrer',
+                    cancel_route: 'app_entreprise_index',
+                    delete_partial: 'entreprise/_delete_form.html.twig',
+                    delete_context: {'entreprise': entreprise},
+                }) }}
             </section>
         </section>
     </main>

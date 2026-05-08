@@ -19,9 +19,6 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
         parent::__construct($registry, Utilisateur::class);
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $hashedPassword): void
     {
         if (!$user instanceof Utilisateur) {
@@ -33,45 +30,17 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * Return full names of users whose Role.nomRole = 'PROF'
-     * @return string[]
-     */
     public function findProfFullNames(): array
     {
-        $qb = $this->createQueryBuilder('utilisateur')
+        $rows = $this->createQueryBuilder('utilisateur')
             ->select("CONCAT(utilisateur.prenomUtilisateur, ' ', utilisateur.nomUtilisateur) AS nomComplet")
             ->join('utilisateur.roleUtilisateur', 'role')
             ->where("UPPER(role.nomRole) = :prof")
             ->setParameter('prof', 'PROF')
-            ->orderBy('nomComplet', 'ASC');
+            ->orderBy('nomComplet', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
 
-        $rows = $qb->getQuery()->getScalarResult();
-        return array_map(fn($r) => $r['nomComplet'], $rows);
+        return array_map(static fn (array $row): string => $row['nomComplet'], $rows);
     }
-
-    //    /**
-    //     * @return Utilisateur[] Returns an array of Utilisateur objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Utilisateur
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

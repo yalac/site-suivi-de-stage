@@ -19,10 +19,6 @@ class HistoriqueUtilisateur
     #[ORM\JoinColumn(name: 'utilisateur_id', nullable: true, onDelete: 'SET NULL')]
     private ?Utilisateur $utilisateur = null;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
-    #[ORM\JoinColumn(name: 'auteur_id', nullable: true, onDelete: 'SET NULL')]
-    private ?Utilisateur $auteur = null;
-
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $dateModification = null;
 
@@ -51,17 +47,6 @@ class HistoriqueUtilisateur
     public function setUtilisateur(?Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-        return $this;
-    }
-
-    public function getAuteur(): ?Utilisateur
-    {
-        return $this->auteur;
-    }
-
-    public function setAuteur(?Utilisateur $auteur): static
-    {
-        $this->auteur = $auteur;
         return $this;
     }
 

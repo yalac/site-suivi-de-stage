@@ -53,15 +53,15 @@
                     <tbody>
                         <tr>
                             <th>Étudiant</th>
-                            <td>{{ stage.eleveStage?.nomEleve ? stage.eleveStage.prenomEleve ~ ' ' ~ stage.eleveStage.nomEleve : 'N/A' }}</td>
+                            <td>{{ stage.eleveStage ? stage.eleveStage.prenomEleve ~ ' ' ~ stage.eleveStage.nomEleve : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Professeur référent</th>
-                            <td>{{ stage.eleveStage?.stageEleve?.profReferent ?? 'N/A' }}</td>
+                            <td>{{ stage.profReferent ?: 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Professeur visite</th>
-                            <td>{{ stage.eleveStage?.stageEleve?.profVisite ?? 'N/A' }}</td>
+                            <td>{{ stage.profVisite ?: 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Entreprise</th>
@@ -69,16 +69,21 @@
                         </tr>
                         <tr>
                             <th>Date</th>
-                            <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('d/m/Y') : 'N/A' }} - {{ stage.dateFinStage ? stage.dateFinStage|date('d/m/Y') : 'N/A' }} (durée : {{ stage.dateFinStage ? stage.dateFinStage.diff(stage.dateDebutStage).days : 'N/A' }} jours)</td>
+                            <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('d/m/Y') : 'N/A' }} - {{ stage.dateFinStage ? stage.dateFinStage|date('d/m/Y') : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Remarque</th>
-                            <td>{{ stage.descriptifStage }}</td>
+                            <td>{{ stage.descriptifStage ?: 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Commentaire</th>
+                            <td>{{ stage.commentaire ?: 'N/A' }}</td>
+                        </tr>
                     </tbody>
                 </table>
 
                 <div class="action-row app-section-actions">
-                    <a class="app-link" href="{{ path('app_history', {'id': stage.id}) }}">Retour</a>
+                    <a class="app-link" href="{{ path('app_stage') }}">Retour à la liste</a>
                     <div class="danger-form">{{ include('stage/_delete_form.html.twig') }}</div>
                 </div>
             </section>

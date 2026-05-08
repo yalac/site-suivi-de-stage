@@ -74,6 +74,115 @@
                 flex-wrap: wrap;
             }
 
+            .unified-actions {
+                margin-top: 1rem;
+            }
+
+            .app-flashes {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+                z-index: 1100;
+            }
+
+            .app-flashes.has-modal {
+                background: rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(4px);
+                pointer-events: auto;
+            }
+
+            .app-flash {
+                padding: 0.95rem 1.1rem;
+                border-radius: 14px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.04);
+                color: var(--app-text);
+                box-shadow: 0 18px 42px rgba(0, 0, 0, 0.36);
+                backdrop-filter: blur(8px);
+                text-align: center;
+                pointer-events: auto;
+                display: none;
+            }
+
+            .app-flash.app-flash-info,
+            .app-flash.app-flash-success {
+                display: none;
+            }
+
+            .app-modal {
+                background: linear-gradient(135deg, rgba(11, 27, 63, 0.98), rgba(7, 17, 42, 0.98));
+                border: 1px solid rgba(104, 137, 197, 0.25);
+                border-radius: 16px;
+                padding: 2rem;
+                max-width: 480px;
+                width: calc(100vw - 2rem);
+                box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(8px);
+                pointer-events: auto;
+                z-index: 1101;
+            }
+
+            .app-modal-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin: 0 0 1rem;
+                color: var(--app-text);
+            }
+
+            .app-modal-message {
+                font-size: 0.95rem;
+                margin: 0 0 1.5rem;
+                color: var(--app-text-soft);
+                line-height: 1.5;
+            }
+
+            .app-modal-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.65rem 1.5rem;
+                border-radius: 8px;
+                border: 0;
+                cursor: pointer;
+                font: inherit;
+                font-weight: 600;
+                background: var(--app-primary);
+                color: #fff;
+                transition: background 0.2s ease;
+                width: 100%;
+            }
+
+            .app-modal-button:hover {
+                background: var(--app-primary-hover);
+            }
+
+            .app-flash-success {
+                border-color: rgba(76, 175, 80, 0.35);
+                background: rgba(76, 175, 80, 0.12);
+            }
+
+            .app-flash-warning {
+                border-color: rgba(255, 210, 92, 0.35);
+                background: rgba(255, 210, 92, 0.12);
+            }
+
+            .app-flash-error,
+            .app-flash-danger {
+                border-color: rgba(255, 123, 123, 0.35);
+                background: rgba(255, 123, 123, 0.12);
+            }
+
+            .app-flash-info {
+                border-color: rgba(92, 163, 240, 0.35);
+                background: rgba(92, 163, 240, 0.12);
+            }
+
             .app-button,
             .app-button-primary,
             .app-button-secondary,
@@ -263,13 +372,68 @@
         {% endblock %}
 
         {% block javascripts %}
+            <script>
+                // Initialiser les modals de flash messages (warning/danger)
+                document.addEventListener('DOMContentLoaded', function() {
+                    const flashes = document.querySelector('.app-flashes');
+                    if (!flashes) return;
+
+                    const warningFlashes = document.querySelectorAll('.app-flash[data-type]');
+                    if (warningFlashes.length === 0) return;
+
+                    flashes.classList.add('has-modal');
+
+                    warningFlashes.forEach((flashEl) => {
+                        const message = flashEl.textContent;
+                        const type = flashEl.getAttribute('data-type');
+                        const title = type === 'warning' ? 'Attention' : 'Erreur';
+
+                        const modal = document.createElement('div');
+                        modal.className = 'app-modal';
+                        modal.innerHTML = `
+                            <h2 class="app-modal-title">${title}</h2>
+                            <p class="app-modal-message">${message}</p>
+                            <button class="app-modal-button">OK</button>
+                        `;
+
+                        modal.querySelector('.app-modal-button').addEventListener('click', () => {
+                            modal.remove();
+                            if (document.querySelectorAll('.app-flash[data-type]').length === 0) {
+                                flashes.classList.remove('has-modal');
+                            }
+                        });
+
+                        flashes.appendChild(modal);
+                        flashEl.remove();
+                    });
+                });
+            </script>
         {% endblock %}
     </head>
     <body>
         {% set current_route = app.request is defined ? app.request.attributes.get('_route') : null %}
-        {% set is_auth_page = current_route in ['app_login', 'app_register'] %}
+        {% set is_auth_page = current_route in ['app_login'] %}
+
+        {% block flash_messages %}
+            {% if app.flashes is defined %}
+                <div class="app-flashes">
+                    {% for label, messages in app.flashes %}
+                        {% if label in ['warning', 'danger', 'error'] %}
+                            {% for message in messages %}
+                                <div class="app-flash app-flash-{{ label|lower }}" data-type="{{ label|lower }}">{{ message }}</div>
+                            {% endfor %}
+                        {% else %}
+                            {% for message in messages %}
+                                <div class="app-flash app-flash-{{ label|lower }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endblock %}
 
         {% if is_auth_page %}
+            {{ block('flash_messages') }}
             {{ block('body') }}
         {% else %}
             <div class="app-shell">
@@ -345,6 +509,7 @@
                 </aside>
 
                 <div class="app-main">
+                    {{ block('flash_messages') }}
                     {{ block('body') }}
                 </div>
             </div>

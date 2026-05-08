@@ -61,12 +61,12 @@ class Entreprise
         return $this;
     }
 
-    public function getCpentreprise(): ?int
+    public function getCpEntreprise(): ?int
     {
         return $this->cpentreprise;
     }
 
-    public function setCpentreprise(int $cpentreprise): static
+    public function setCpEntreprise(int $cpentreprise): static
     {
         $this->cpentreprise = $cpentreprise;
         return $this;
@@ -120,9 +120,8 @@ class Entreprise
         return $this;
     }
 
-    /** Fonction */
-    public function getEntreprise(): string
+    public function __toString(): string
     {
-        return $this->mdputilisateur ?? '';
+        return $this->nomEntreprise ?? '';
     }
 }

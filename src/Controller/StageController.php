@@ -2,51 +2,52 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Traits\AdminAccessTrait;
+use App\Repository\EleveRepository;
 use App\Entity\Stage;
 use App\Form\StageType;
 use App\Repository\StageRepository;
 use App\Repository\UtilisateurRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class StageController extends AbstractController
 {
+    use AdminAccessTrait;
+
 	#[Route('/stages', name: 'app_stage')]
 	public function index(StageRepository $stageRepository): Response
 	{
-		$stages = $stageRepository->findCurrent();
-		$allStages = $stageRepository->findAll();
+		if ($response = $this->redirectIfNotAdmin()) {
+			return $response;
+		}
 
-		if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_access_denied');
-        }
+		$stages = $stageRepository->findAllOrdered();
 
 		return $this->render('home/stage.html.twig', [
 			'stages' => $stages,
-			'allStages' => $allStages,
 		]);
 	}
 
 	#[Route('/stages/new', name: 'app_stage_new', methods: ['GET','POST'])]
-	public function new(Request $request, EntityManagerInterface $em, UtilisateurRepository $utilisateurRepository): Response
+	public function new(Request $request, EntityManagerInterface $em, UtilisateurRepository $utilisateurRepository, EleveRepository $eleveRepository): Response
 	{
 		$stage = new Stage();
-		$profChoices = $utilisateurRepository->findProfFullNames();
-		$form = $this->createForm(StageType::class, $stage, ['prof_choices' => $profChoices]);
+		$form = $this->createStageForm($stage, $utilisateurRepository, $eleveRepository);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em->persist($stage);
 			$em->flush();
 
-			return $this->redirectToRoute('app_stage');
+			return $this->redirectToStageIndex();
 		}
 
 		return $this->render('stage/new.html.twig', [
-			'form' => $form->createView(),
+			'form' => $form,
 		]);
 	}
 
@@ -59,20 +60,19 @@ class StageController extends AbstractController
 	}
 
 	#[Route('/stages/{id}/edit', name: 'app_stage_edit', methods: ['GET','POST'])]
-	public function edit(Request $request, Stage $stage, EntityManagerInterface $em, UtilisateurRepository $utilisateurRepository): Response
+	public function edit(Request $request, Stage $stage, EntityManagerInterface $em, UtilisateurRepository $utilisateurRepository, EleveRepository $eleveRepository): Response
 	{
-		$profChoices = $utilisateurRepository->findProfFullNames();
-		$form = $this->createForm(StageType::class, $stage, ['prof_choices' => $profChoices]);
+		$form = $this->createStageForm($stage, $utilisateurRepository, $eleveRepository);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em->flush();
 
-			return $this->redirectToRoute('app_stage');
+			return $this->redirectToStageIndex();
 		}
 
 		return $this->render('stage/edit.html.twig', [
-			'form' => $form->createView(),
+			'form' => $form,
 			'stage' => $stage,
 		]);
 	}
@@ -85,6 +85,19 @@ class StageController extends AbstractController
 			$em->flush();
 		}
 
+		return $this->redirectToStageIndex();
+	}
+
+	private function createStageForm(Stage $stage, UtilisateurRepository $utilisateurRepository, EleveRepository $eleveRepository)
+	{
+		return $this->createForm(StageType::class, $stage, [
+			'prof_choices' => $utilisateurRepository->findProfFullNames(),
+			'eleve_query_builder' => $eleveRepository->createAvailableForStageQueryBuilder($stage->getEleveStage()),
+		]);
+	}
+
+	private function redirectToStageIndex(): Response
+	{
 		return $this->redirectToRoute('app_stage');
 	}
 }

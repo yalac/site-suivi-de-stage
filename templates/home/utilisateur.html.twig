@@ -51,9 +51,9 @@
     <main class="app-page">
         <section class="app-container">
             <header class="page-header app-header">
-                <div>
+                <div class="page-header-content">
                     <h1 class="app-title">Utilisateurs</h1>
-                    <p class="app-subtitle">Liste des utilisateurs et gestion des comptes</p>
+                    <p class="app-subtitle">Liste des élèves et gestion des comptes.</p>
                 </div>
 
                 <div class="page-actions">
@@ -64,7 +64,7 @@
 
             <section class="app-card">
                 <div class="page-actions">
-                        <p class="app-muted">Listes des élèves ({{ eleves|length }})</p>
+                    <p class="app-muted">Liste des élèves ({{ eleves|length }})</p>
                 </div>
 
                     <div class="table-wrap">
@@ -87,7 +87,7 @@
                                     <td>{{ eleve.promotionEleve.classePromotion }} - {{ eleve.promotionEleve.anneePromotion }}</td>
                                     <td class="actions">
                                         <a class="app-link" href="{{ path('app_eleve_edit', {'id': eleve.id}) }}">Modifier</a>
-                                        <span class="app-button-danger">{{ include('eleve/_delete_form.html.twig') }}</span>
+                                        {{ include('eleve/_delete_form.html.twig') }}
                                     </td>
                                 </tr>
                             {% else %}
@@ -102,7 +102,7 @@
                 <br />
                 <br />
                 <section class="app-card">
-                    <div>
+                    <div class="page-actions">
                         <p class="app-muted">Liste des professeurs et administrateurs ({{ utilisateurs|length }})</p>
                     </div>
 
@@ -126,7 +126,7 @@
                                     <td>{{ utilisateur.roleUtilisateur.nomRole|lower }}</td>
                                     <td class="actions">
                                         <a class="app-link" href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">Modifier</a>
-                                        <span class="app-button-danger">{{ include('utilisateur/_delete_form.html.twig') }}</span>
+                                        {{ include('utilisateur/_delete_form.html.twig') }}
                                     </td>
                                 </tr>
                             {% else %}

@@ -89,7 +89,7 @@ class HistoriqueListener
             return $value ? 'oui' : 'non';
         }
         if ($value instanceof \DateTimeInterface) {
-            return $value->format('Y-m-d H:i:s');
+            return $value->format('d-m-Y H:i:s');
         }
         if (is_object($value)) {
             return (string) $value;
@@ -105,6 +105,12 @@ class HistoriqueListener
 
     private function createStageHistory(Stage $stage, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueStage
     {
+        if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
+            $newValue = $this->describeStage($stage);
+        } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
+            $oldValue = $this->describeStage($stage);
+        }
+
         $historique = new HistoriqueStage();
         $historique->setStage($stage);
         $historique->setUtilisateur($this->getConnectedUser());
@@ -119,6 +125,12 @@ class HistoriqueListener
 
     private function createEleveHistory(Eleve $eleve, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueEleve
     {
+        if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
+            $newValue = $this->describeEleve($eleve);
+        } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
+            $oldValue = $this->describeEleve($eleve);
+        }
+
         $historique = new HistoriqueEleve();
         $historique->setEleve($eleve);
         $historique->setUtilisateur($this->getConnectedUser());
@@ -133,9 +145,14 @@ class HistoriqueListener
 
     private function createUtilisateurHistory(Utilisateur $utilisateur, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueUtilisateur
     {
+        if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
+            $newValue = $this->describeUtilisateur($utilisateur);
+        } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
+            $oldValue = $this->describeUtilisateur($utilisateur);
+        }
+
         $historique = new HistoriqueUtilisateur();
-        $historique->setUtilisateur($utilisateur);
-        $historique->setAuteur($this->getConnectedUser());
+        $historique->setUtilisateur($this->getConnectedUser());
         $historique->setDateModification(new \DateTimeImmutable());
         $historique->setTypeAction($typeAction);
         $historique->setChampModifie($field);
@@ -147,6 +164,12 @@ class HistoriqueListener
 
     private function createEntrepriseHistory(Entreprise $entreprise, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueEntreprise
     {
+        if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
+            $newValue = $this->describeEntreprise($entreprise);
+        } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
+            $oldValue = $this->describeEntreprise($entreprise);
+        }
+
         $historique = new HistoriqueEntreprise();
         $historique->setEntreprise($entreprise);
         $historique->setUtilisateur($this->getConnectedUser());
@@ -157,5 +180,56 @@ class HistoriqueListener
         $historique->setNouvelleValeur($this->convertValueToString($newValue));
 
         return $historique;
+    }
+
+    private function describeStage(Stage $stage): string
+    {
+        return $this->buildSnapshot([
+            'Élève: '.($stage->getEleveStage() ? $stage->getEleveStage()->getPrenomEleve().' '.$stage->getEleveStage()->getNomEleve() : 'Aucun'),
+            'Entreprise: '.($stage->getEntrepriseStage() ? $stage->getEntrepriseStage()->getNomEntreprise() : 'Aucune'),
+            'Début: '.($stage->getDateDebutStage()?->format('d/m/Y') ?? '—'),
+            'Fin: '.($stage->getDateFinStage()?->format('d/m/Y') ?? '—'),
+            'Référent: '.($stage->getProfReferent() ?? '—'),
+            'Visite: '.($stage->getProfVisite() ?? '—'),
+            'Description: '.($stage->getDescriptifStage() ?? '—'),
+        ]);
+    }
+
+    private function describeEleve(Eleve $eleve): string
+    {
+        return $this->buildSnapshot([
+            'Nom: '.($eleve->getNomEleve() ?? '—'),
+            'Prénom: '.($eleve->getPrenomEleve() ?? '—'),
+            'Option: '.($eleve->getOptionEleve() ? (string) $eleve->getOptionEleve() : '—'),
+            'Promotion: '.($eleve->getPromotionEleve() ? (string) $eleve->getPromotionEleve() : '—'),
+        ]);
+    }
+
+    private function describeUtilisateur(Utilisateur $utilisateur): string
+    {
+        return $this->buildSnapshot([
+            'Nom: '.($utilisateur->getNomUtilisateur() ?? '—'),
+            'Prénom: '.($utilisateur->getPrenomUtilisateur() ?? '—'),
+            'Email: '.($utilisateur->getEmailUtilisateur() ?? '—'),
+            'Rôle: '.($utilisateur->getRoleUtilisateur() ? (string) $utilisateur->getRoleUtilisateur() : '—'),
+        ]);
+    }
+
+    private function describeEntreprise(Entreprise $entreprise): string
+    {
+        return $this->buildSnapshot([
+            'Nom: '.($entreprise->getNomEntreprise() ?? '—'),
+            'Adresse: '.($entreprise->getAdresseEntreprise() ?? '—'),
+            'CP: '.($entreprise->getCpEntreprise() ?? '—'),
+            'Ville: '.($entreprise->getVilleEntreprise() ?? '—'),
+            'Tuteur: '.($entreprise->getTuteurEntreprise() ?? '—'),
+            'Téléphone: '.($entreprise->getTelephoneEntreprise() ?? '—'),
+            'Mail: '.($entreprise->getMailEntreprise() ?? '—'),
+        ]);
+    }
+
+    private function buildSnapshot(array $parts): string
+    {
+        return implode(' | ', array_values(array_filter($parts, static fn (?string $part): bool => $part !== null && $part !== '')));
     }
 }

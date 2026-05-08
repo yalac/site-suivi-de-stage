@@ -118,21 +118,25 @@
                                         {{ historique.typeAction }}
                                     </span>
                                 </td>
-                                <td>
-                                    {{ historique.actorLabel }}
-                                </td>
+                                <td>{{ historique.actorLabel }}</td>
                                 <td class="history-change">
                                     {% if historique.typeAction == 'modifié' %}
                                         <strong>{{ historique.champModifie }}:</strong> {{ historique.ancienneValeur ?: '∅' }} → {{ historique.nouvelleValeur ?: '∅' }}
+                                    {% elseif historique.typeAction == 'créé' %}
+                                        <strong>Création:</strong> ∅ → {{ historique.nouvelleValeur ?: '∅' }}
+                                    {% elseif historique.typeAction == 'supprimé' %}
+                                        <strong>Suppression:</strong> {{ historique.ancienneValeur ?: '∅' }} → ∅
                                     {% else %}
                                         -
                                     {% endif %}
                                 </td>
                                 <td class="table-actions">
-                                    <form method="post" action="{{ path('app_history_delete', {'type': historique.historyType, 'id': historique.id}) }}" onsubmit="return confirm('Supprimer cette entrée d\'historique ?');">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_history_' ~ historique.historyType ~ '_' ~ historique.id) }}">
-                                        <button type="submit" class="app-button-danger">Supprimer</button>
-                                    </form>
+                                    {{ include('_partials/delete_form.html.twig', {
+                                        route_name: 'app_history_delete',
+                                        route_params: {'type': historique.historyType, 'id': historique.id},
+                                        csrf_token_id: 'delete_history_' ~ historique.historyType ~ '_' ~ historique.id,
+                                        confirm_message: 'Supprimer cette entrée d\'historique ?',
+                                    }) }}
                                 </td>
                             </tr>
                         {% endfor %}

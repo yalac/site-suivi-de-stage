@@ -17,19 +17,21 @@ class StageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('eleveStage', EntityType::class, [
-            'class' => Eleve::class,
-            'choice_label' => fn(Eleve $eleve) => $eleve->getNomEleve() . ' ' . $eleve->getPrenomEleve(),
-            'placeholder' => 'Choisir un élève',
-            'label' => 'Élève',
-        ])
-        ->add('dateDebutStage', DateType::class, [
+            ->add('eleveStage', EntityType::class, [
+                'class' => Eleve::class,
+                'choice_label' => static fn (Eleve $eleve): string => $eleve->getNomEleve().' '.$eleve->getPrenomEleve(),
+                'placeholder' => 'Choisir un élève',
+                'label' => 'Élève',
+                'query_builder' => $options['eleve_query_builder'],
+                'invalid_message' => 'Cet élève a déjà un stage.',
+            ])
+            ->add('dateDebutStage', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de début'
+                'label' => 'Date de début',
             ])
             ->add('dateFinStage', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de fin'
+                'label' => 'Date de fin',
             ])
             ->add('descriptifStage', null, [
                 'label' => 'Petite description (Pas obligatoire)',
@@ -43,25 +45,17 @@ class StageType extends AbstractType
             ])
             ;
 
-        $profChoices = [];
-        if (!empty($options['prof_choices'])) {
-            $profChoices = array_combine($options['prof_choices'], $options['prof_choices']);
-        }
-
         $builder
-        ->add('profReferent', ChoiceType::class, [
-            'choices' => $profChoices,
-            'placeholder' => 'Choisir un professeur',
-            'mapped' => true,
-            'label' => 'Professeur référent',
-        ])
-        ->add('profVisite', ChoiceType::class, [
-            'choices' => $profChoices,
-            'placeholder' => 'Choisir un professeur',
-            'mapped' => true,
-            'label' => 'Professeur visite',
-        ]);
-        ;
+            ->add('profReferent', ChoiceType::class, [
+                'choices' => $this->buildProfChoices($options['prof_choices']),
+                'placeholder' => 'Choisir un professeur',
+                'label' => 'Professeur référent',
+            ])
+            ->add('profVisite', ChoiceType::class, [
+                'choices' => $this->buildProfChoices($options['prof_choices']),
+                'placeholder' => 'Choisir un professeur',
+                'label' => 'Professeur visite',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -69,6 +63,16 @@ class StageType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Stage::class,
             'prof_choices' => [],
+            'eleve_query_builder' => null,
         ]);
+    }
+
+    private function buildProfChoices(array $profChoices): array
+    {
+        if ($profChoices === []) {
+            return [];
+        }
+
+        return array_combine($profChoices, $profChoices);
     }
 }

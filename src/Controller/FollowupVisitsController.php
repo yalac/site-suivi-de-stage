@@ -25,18 +25,26 @@ class FollowupVisitsController extends AbstractController
     #[Route('/suivi-visites/{id}/commentaire', name: 'app_suivi_visite_comment', methods: ['GET', 'POST'])]
     public function comment(Request $request, Stage $stage, EntityManagerInterface $em): Response
     {
-        if ($request->isMethod('POST')) {
-            if ($this->isCsrfTokenValid('comment' . $stage->getId(), (string) $request->request->get('_token'))) {
-                $commentaire = trim((string) $request->request->get('commentaire', ''));
-                $stage->setCommentaire($commentaire === '' ? null : $commentaire);
-                $em->flush();
+        if ($request->isMethod('POST') && $this->isCsrfTokenValid('comment'.$stage->getId(), (string) $request->request->get('_token'))) {
+            $this->updateCommentaire($stage, (string) $request->request->get('commentaire', ''));
+            $em->flush();
 
-                return $this->redirectToRoute('app_suivi_visite');
-            }
+            return $this->redirectToFollowupVisits();
         }
 
         return $this->render('home/suivi_commentaire.html.twig', [
             'stage' => $stage,
         ]);
+    }
+
+    private function updateCommentaire(Stage $stage, string $commentaire): void
+    {
+        $commentaire = trim($commentaire);
+        $stage->setCommentaire($commentaire === '' ? null : $commentaire);
+    }
+
+    private function redirectToFollowupVisits(): Response
+    {
+        return $this->redirectToRoute('app_suivi_visite');
     }
 }

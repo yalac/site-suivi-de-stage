@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Utilisateur{% endblock %}
+{% block title %}Entreprise{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -44,8 +44,8 @@
     <main class="app-page">
         <section class="app-container">
             <header class="page-header app-header">
-                <h1 class="app-title">Détail de l'utilisateur</h1>
-                <p class="app-subtitle">Informations complètes de l'élève sélectionné.</p>
+                <h1 class="app-title">Détail de l'entreprise</h1>
+                <p class="app-subtitle">Informations complètes de l'entreprise sélectionnée.</p>
             </header>
 
             <section class="app-card">
@@ -83,7 +83,7 @@
                 </table>
 
                 <div class="action-row app-section-actions">
-                    <a class="app-link" href="{{ path('app_users') }}">Annuler</a>
+                    <a class="app-link" href="{{ path('app_entreprise_index') }}">Retour à la liste</a>
                     <a class="app-button-primary" href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}">Modifier</a>
                     <div class="danger-form">{{ include('entreprise/_delete_form.html.twig') }}</div>
                 </div>

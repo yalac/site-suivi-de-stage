@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\AdminAccessTrait;
 use App\Entity\HistoriqueEntreprise;
 use App\Entity\HistoriqueEleve;
 use App\Entity\HistoriqueStage;
@@ -19,6 +20,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HistoryController extends AbstractController
 {
+    use AdminAccessTrait;
+
     #[Route('/historique', name: 'app_history')]
     public function index(
         HistoriqueStageRepository $historiqueStageRepository,
@@ -27,8 +30,8 @@ class HistoryController extends AbstractController
         HistoriqueEleveRepository $historiqueEleveRepository,
     ): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_access_denied');
+        if ($response = $this->redirectIfNotAdmin()) {
+            return $response;
         }
 
         $historiques = array_merge(
@@ -38,8 +41,7 @@ class HistoryController extends AbstractController
             array_map(fn (HistoriqueEntreprise $historique) => $this->normalizeEntrepriseHistory($historique), $historiqueEntrepriseRepository->findAll()),
         );
 
-        // Trier par date décroissante
-        usort($historiques, function ($a, $b) {
+        usort($historiques, static function (array $a, array $b): int {
             return $b['dateModification'] <=> $a['dateModification'];
         });
 
@@ -51,8 +53,8 @@ class HistoryController extends AbstractController
     #[Route('/historique/{type}/{id}/supprimer', name: 'app_history_delete', methods: ['POST'])]
     public function delete(string $type, int $id, Request $request, EntityManagerInterface $entityManager): RedirectResponse
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_access_denied');
+        if ($response = $this->redirectIfNotAdmin()) {
+            return $response;
         }
 
         if (!$this->isCsrfTokenValid('delete_history_'.$type.'_'.$id, $request->request->get('_token'))) {
@@ -82,99 +84,129 @@ class HistoryController extends AbstractController
     #[Route('/historique/tout-supprimer', name: 'app_history_clear', methods: ['POST'])]
     public function clear(Request $request, EntityManagerInterface $entityManager): RedirectResponse
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_access_denied');
+        if ($response = $this->redirectIfNotAdmin()) {
+            return $response;
         }
 
         if (!$this->isCsrfTokenValid('clear_history', $request->request->get('_token'))) {
             return $this->redirectToRoute('app_history');
         }
 
-        $entityManager->createQuery('DELETE FROM App\\Entity\\HistoriqueStage h')->execute();
-        $entityManager->createQuery('DELETE FROM App\\Entity\\HistoriqueEleve h')->execute();
-        $entityManager->createQuery('DELETE FROM App\\Entity\\HistoriqueUtilisateur h')->execute();
-        $entityManager->createQuery('DELETE FROM App\\Entity\\HistoriqueEntreprise h')->execute();
+        foreach ([
+            HistoriqueStage::class,
+            HistoriqueEleve::class,
+            HistoriqueUtilisateur::class,
+            HistoriqueEntreprise::class,
+        ] as $historyClass) {
+            $entityManager->createQuery(sprintf('DELETE FROM %s h', $historyClass))->execute();
+        }
 
         return $this->redirectToRoute('app_history');
     }
 
     private function normalizeStageHistory(HistoriqueStage $historique): array
     {
-        return [
-            'id' => $historique->getId(),
-            'historyType' => 'stage',
-            'dateModification' => $historique->getDateModification(),
-            'typeAction' => $historique->getTypeAction(),
-            'entityType' => 'Stage',
-            'actorLabel' => $historique->getUtilisateur()
+        $targetLabel = $historique->getStage() && $historique->getStage()->getEleveStage() && $historique->getStage()->getEntrepriseStage()
+            ? $historique->getStage()->getEleveStage()->getPrenomEleve().' '.$historique->getStage()->getEleveStage()->getNomEleve().' - '.$historique->getStage()->getEntrepriseStage()->getNomEntreprise()
+            : ($historique->getStage() ? 'Stage supprimé' : 'N/A');
+
+        return $this->buildHistoryRow(
+            $historique->getId(),
+            'stage',
+            'Stage',
+            $historique->getDateModification(),
+            $historique->getTypeAction(),
+            $historique->getUtilisateur()
                 ? $historique->getUtilisateur()->getPrenomUtilisateur().' '.$historique->getUtilisateur()->getNomUtilisateur()
                 : 'Système',
-            'targetLabel' => $historique->getStage() && $historique->getStage()->getEleveStage() && $historique->getStage()->getEntrepriseStage()
-                ? $historique->getStage()->getEleveStage()->getPrenomEleve().' '.$historique->getStage()->getEleveStage()->getNomEleve().' - '.$historique->getStage()->getEntrepriseStage()->getNomEntreprise()
-                : ($historique->getStage() ? 'Stage supprimé' : 'N/A'),
-            'champModifie' => $historique->getChampModifie(),
-            'ancienneValeur' => $historique->getAncienneValeur(),
-            'nouvelleValeur' => $historique->getNouvelleValeur(),
-        ];
+            $targetLabel,
+            $historique->getChampModifie(),
+            $historique->getAncienneValeur(),
+            $historique->getNouvelleValeur(),
+        );
     }
 
     private function normalizeEleveHistory(HistoriqueEleve $historique): array
     {
-        return [
-            'id' => $historique->getId(),
-            'historyType' => 'eleve',
-            'dateModification' => $historique->getDateModification(),
-            'typeAction' => $historique->getTypeAction(),
-            'entityType' => 'Eleve',
-            'actorLabel' => $historique->getUtilisateur()
+        return $this->buildHistoryRow(
+            $historique->getId(),
+            'eleve',
+            'Eleve',
+            $historique->getDateModification(),
+            $historique->getTypeAction(),
+            $historique->getUtilisateur()
                 ? $historique->getUtilisateur()->getPrenomUtilisateur().' '.$historique->getUtilisateur()->getNomUtilisateur()
                 : 'Système',
-            'targetLabel' => $historique->getEleve()
+            $historique->getEleve()
                 ? $historique->getEleve()->getPrenomEleve().' '.$historique->getEleve()->getNomEleve()
                 : 'Élève supprimé',
-            'champModifie' => $historique->getChampModifie(),
-            'ancienneValeur' => $historique->getAncienneValeur(),
-            'nouvelleValeur' => $historique->getNouvelleValeur(),
-        ];
+            $historique->getChampModifie(),
+            $historique->getAncienneValeur(),
+            $historique->getNouvelleValeur(),
+        );
     }
 
     private function normalizeUtilisateurHistory(HistoriqueUtilisateur $historique): array
     {
-        return [
-            'id' => $historique->getId(),
-            'historyType' => 'utilisateur',
-            'dateModification' => $historique->getDateModification(),
-            'typeAction' => $historique->getTypeAction(),
-            'entityType' => 'Utilisateur',
-            'actorLabel' => $historique->getAuteur()
-                ? $historique->getAuteur()->getPrenomUtilisateur().' '.$historique->getAuteur()->getNomUtilisateur()
-                : 'Système',
-            'targetLabel' => $historique->getUtilisateur()
+        return $this->buildHistoryRow(
+            $historique->getId(),
+            'utilisateur',
+            'Utilisateur',
+            $historique->getDateModification(),
+            $historique->getTypeAction(),
+            $historique->getUtilisateur()
                 ? $historique->getUtilisateur()->getPrenomUtilisateur().' '.$historique->getUtilisateur()->getNomUtilisateur()
-                : 'Utilisateur supprimé',
-            'champModifie' => $historique->getChampModifie(),
-            'ancienneValeur' => $historique->getAncienneValeur(),
-            'nouvelleValeur' => $historique->getNouvelleValeur(),
-        ];
+                : 'Système',
+            null,
+            $historique->getChampModifie(),
+            $historique->getAncienneValeur(),
+            $historique->getNouvelleValeur(),
+        );
     }
 
     private function normalizeEntrepriseHistory(HistoriqueEntreprise $historique): array
     {
-        return [
-            'id' => $historique->getId(),
-            'historyType' => 'entreprise',
-            'dateModification' => $historique->getDateModification(),
-            'typeAction' => $historique->getTypeAction(),
-            'entityType' => 'Entreprise',
-            'actorLabel' => $historique->getUtilisateur()
+        return $this->buildHistoryRow(
+            $historique->getId(),
+            'entreprise',
+            'Entreprise',
+            $historique->getDateModification(),
+            $historique->getTypeAction(),
+            $historique->getUtilisateur()
                 ? $historique->getUtilisateur()->getPrenomUtilisateur().' '.$historique->getUtilisateur()->getNomUtilisateur()
                 : 'Système',
-            'targetLabel' => $historique->getEntreprise()
+            $historique->getEntreprise()
                 ? $historique->getEntreprise()->getNomEntreprise()
                 : 'Entreprise supprimée',
-            'champModifie' => $historique->getChampModifie(),
-            'ancienneValeur' => $historique->getAncienneValeur(),
-            'nouvelleValeur' => $historique->getNouvelleValeur(),
+            $historique->getChampModifie(),
+            $historique->getAncienneValeur(),
+            $historique->getNouvelleValeur(),
+        );
+    }
+
+    private function buildHistoryRow(
+        int $id,
+        string $historyType,
+        string $entityType,
+        ?\DateTimeImmutable $dateModification,
+        ?string $typeAction,
+        string $actorLabel,
+        ?string $targetLabel,
+        ?string $champModifie,
+        ?string $ancienneValeur,
+        ?string $nouvelleValeur,
+    ): array {
+        return [
+            'id' => $id,
+            'historyType' => $historyType,
+            'dateModification' => $dateModification,
+            'typeAction' => $typeAction,
+            'entityType' => $entityType,
+            'actorLabel' => $actorLabel,
+            'targetLabel' => $targetLabel,
+            'champModifie' => $champModifie,
+            'ancienneValeur' => $ancienneValeur,
+            'nouvelleValeur' => $nouvelleValeur,
         ];
     }
 }
