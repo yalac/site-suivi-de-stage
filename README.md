@@ -2,7 +2,7 @@
 
 Ce projet est une application Symfony permettant de gérer le suivi de stage. Ce README explique comment installer le projet en local, configurer la base de données, importer les données fournies et accéder au site.
 
-La documentation utilisateur complète est disponible ici : [DOCUMENT_UTILISATEUR.md](DOCUMENT_UTILISATEUR.md).
+La documentation utilisateur complète est disponible ici : [Document/LRR_siteSuiviStage_DU_docComplete_V2.md](Document/LRR_siteSuiviStage_DU_docComplete_V2.md).
 
 ## 1. Prérequis
 
@@ -51,9 +51,9 @@ Si votre MySQL utilise un autre utilisateur, mot de passe, hôte ou port, modifi
 
 ## 5. Créer et importer la base de données
 
-Le dossier `sql/` contient un dump complet de la base :
+Le dossier `Document/sql/` contient un dump complet de la base :
 
-- `sql/LRR_siteSuiviDeStage_DT_baseDeDonnee_V2.sql`
+- [Document/sql/LRR_siteSuiviDeStage_DB_baseDeDonnee_V2.sql](Document/sql/LRR_siteSuiviDeStage_DB_baseDeDonnee_V2.sql)
 
 ### Option recommandée : importer le dump fourni
 
@@ -63,7 +63,7 @@ Le dossier `sql/` contient un dump complet de la base :
 Exemple en ligne de commande :
 
 ```bash
-mysql -u root -p < sql/LRR_siteSuiviDeStage_DT_baseDeDonnee_V2.sql
+mysql -u root -p < Document/sql/LRR_siteSuiviDeStage_DB_baseDeDonnee_V2.sql
 ```
 
 Si vous utilisez phpMyAdmin :
@@ -71,7 +71,7 @@ Si vous utilisez phpMyAdmin :
 1. Ouvrir phpMyAdmin.
 2. Sélectionner ou créer la base `lrr_suiviestage`.
 3. Aller dans l’onglet d’import.
-4. Choisir le fichier `sql/LRR_siteSuiviDeStage_DT_baseDeDonnee_V2.sql`.
+4. Choisir le fichier `Document/sql/LRR_siteSuiviDeStage_DB_baseDeDonnee_V2.sql`.
 5. Lancer l’import.
 
 ### Option alternative : repartir d’une base vide
@@ -128,7 +128,7 @@ Pages utiles :
 1. Installer PHP, Composer et MySQL.
 2. Exécuter `composer install`.
 3. Vérifier la variable `DATABASE_URL`.
-4. Importer `sql/LRR_siteSuiviDeStage_DT_baseDeDonnee_V2.sql` dans MySQL.
+4. Importer `Document/sql/LRR_siteSuiviDeStage_DB_baseDeDonnee_V2.sql` dans MySQL.
 5. Vider le cache Symfony.
 6. Lancer le serveur.
 7. Ouvrir `http://127.0.0.1:8000/`.
