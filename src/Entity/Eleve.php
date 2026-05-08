@@ -35,8 +35,7 @@ class Eleve
     #[ORM\JoinColumn(name: 'promotion_eleve_id', nullable: true)]
     private ?Promotion $promotionEleve = null;
 
-    #[ORM\ManyToOne(targetEntity: Stage::class)]
-    #[ORM\JoinColumn(name: 'stage_eleve_id', nullable: true)]
+    #[ORM\OneToOne(mappedBy: 'eleveStage', targetEntity: Stage::class)]
     private ?Stage $stageEleve = null;
 
     /**

@@ -53,7 +53,7 @@
             <header class="page-header app-header">
                 <div>
                     <h1 class="app-title">Utilisateurs</h1>
-                    <p class="app-subtitle">Liste des utilisateurset gestion des comptes</p>
+                    <p class="app-subtitle">Liste des utilisateurs et gestion des comptes</p>
                 </div>
 
                 <div class="page-actions">
@@ -64,18 +64,18 @@
 
             <section class="app-card">
                 <div class="page-actions">
-                        <p class="app-muted">Listes des élèves</p>
+                        <p class="app-muted">Listes des élèves ({{ eleves|length }})</p>
                 </div>
 
                     <div class="table-wrap">
                         <table class="table-left">
                             <thead>
                                 <tr>
-                                    <th>Nom</th>
-                                    <th>Prénom</th>
-                                    <th>Option</th>
-                                    <th>Promotion</th>
-                                    <th>Actions</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Nom</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Prénom</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Option</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Promotion</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,18 +103,18 @@
                 <br />
                 <section class="app-card">
                     <div>
-                        <p class="app-subtitle">Liste des professeurs et administrateurs</p>
+                        <p class="app-muted">Liste des professeurs et administrateurs ({{ utilisateurs|length }})</p>
                     </div>
 
                     <div class="table-wrap">
                         <table class="table-left">
                            <thead>
                                 <tr>
-                                    <th>Nom</th>
-                                    <th>Prénom</th>
-                                    <th>Email</th>
-                                    <th>Rôle</th>
-                                    <th>Actions</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Nom</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Prénom</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Email</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Rôle</th>
+                                    <th width="20%" style="font-weight: bold; font-size: 20px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>

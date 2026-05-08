@@ -24,7 +24,7 @@ final class UsersController extends AbstractController
             return $this->redirectToRoute('app_access_denied');
         }
 
-        return $this->render('eleve/index.html.twig', [
+        return $this->render('home/utilisateur.html.twig', [
             'eleves' => $eleveRepository->findAll(),
             'utilisateurs' => $utilisateurRepository->findAll(),
         ]);

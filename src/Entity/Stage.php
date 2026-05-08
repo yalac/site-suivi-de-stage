@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\StageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StageRepository::class)]
@@ -31,19 +29,12 @@ class Stage
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
 
+    #[ORM\OneToOne(targetEntity: Eleve::class, inversedBy: 'stageEleve')]
+    #[ORM\JoinColumn(name: 'eleve_stage_id', nullable: true)]
+    private ?Eleve $eleveStage = null;
+
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $archive = false;
-
-    /**
-     * @var Collection<int, Eleve>
-     */
-    #[ORM\OneToMany(targetEntity: Eleve::class, mappedBy: 'stageEleve')]
-    private Collection $eleves;
-
-    public function __construct()
-    {
-        $this->eleves = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -105,6 +96,17 @@ class Stage
         return $this;
     }
 
+    public function getEleveStage(): ?Eleve
+    {
+        return $this->eleveStage;
+    }
+
+    public function setEleveStage(?Eleve $eleveStage): static
+    {
+        $this->eleveStage = $eleveStage;
+        return $this;
+    }
+
     public function isArchive(): bool
     {
         return $this->archive;
@@ -113,35 +115,6 @@ class Stage
     public function setArchive(bool $archive): static
     {
         $this->archive = $archive;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Eleve>
-     */
-    public function getEleves(): Collection
-    {
-        return $this->eleves;
-    }
-
-    public function addEleve(Eleve $eleve): static
-    {
-        if (!$this->eleves->contains($eleve)) {
-            $this->eleves->add($eleve);
-            $eleve->setStageEleve($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEleve(Eleve $eleve): static
-    {
-        if ($this->eleves->removeElement($eleve)) {
-            if ($eleve->getStageEleve() === $this) {
-                $eleve->setStageEleve(null);
-            }
-        }
-
         return $this;
     }
 

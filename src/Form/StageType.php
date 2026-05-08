@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Stage;
 use App\Entity\Entreprise;
+use App\Entity\Eleve;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,22 +16,22 @@ class StageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('descriptifStage', null, [
-                'label' => 'Descriptif du stage',
-                'required' => false,
-            ])
-            ->add('dateDebutStage', DateType::class, [
+        ->add('eleveStage', EntityType::class, [
+            'class' => Eleve::class,
+            'choice_label' => fn(Eleve $eleve) => $eleve->getNomEleve() . ' ' . $eleve->getPrenomEleve(),
+            'placeholder' => 'Choisir un élève',
+            'label' => 'Élève',
+        ])
+        ->add('dateDebutStage', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de début',
-                'required' => false,
+                'label' => 'Date de début'
             ])
             ->add('dateFinStage', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de fin',
-                'required' => false,
+                'label' => 'Date de fin'
             ])
-            ->add('dureeStage', null, [
-                'label' => 'Durée (jours)',
+            ->add('descriptifStage', null, [
+                'label' => 'Petite description (Pas obligatoire)',
                 'required' => false,
             ])
             ->add('entrepriseStage', EntityType::class, [

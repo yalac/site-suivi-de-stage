@@ -23,7 +23,7 @@ class StageController extends AbstractController
             return $this->redirectToRoute('app_access_denied');
         }
 
-		return $this->render('stage/stage.html.twig', [
+		return $this->render('home/stage.html.twig', [
 			'stages' => $stages,
 			'allStages' => $allStages,
 		]);
