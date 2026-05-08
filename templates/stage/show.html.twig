@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du stage{% endblock %}
+{% block title %}Stage{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -12,51 +12,76 @@
             margin: 0;
         }
 
-        .details-list {
-            list-style: none;
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .details-table th,
+        .details-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .details-table th {
+            width: 32%;
+        }
+
+        .action-row {
+            margin-top: 0.25rem;
+        }
+
+        .danger-form button {
             padding: 0;
-            margin: 0 0 1rem 0;
-            color: #cfe3ff;
-        }
-
-        .details-list li {
-            padding: 0.4rem 0;
-        }
-
-        .stage-actions {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .stage-actions .app-button-primary {
-            margin: 0;
         }
     </style>
 {% endblock %}
 
 {% block body %}
     <main class="app-page">
-        <section class="app-container" style="max-width: 900px;">
+        <section class="app-container">
             <header class="page-header app-header">
-                <h1 class="app-title">Détails du stage #{{ stage.id }}</h1>
-                <p class="app-subtitle">Informations complètes du stage.</p>
+                <h1 class="app-title">Détail du stage</h1>
+                <p class="app-subtitle">Informations complètes du stage sélectionné.</p>
             </header>
 
-            <div class="app-card">
-                <ul class="details-list">
-                    <li><strong>Entreprise:</strong> {{ stage.entrepriseStage.nomEntreprise }}</li>
-                    <li><strong>Date début:</strong> {{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</li>
-                    <li><strong>Date fin:</strong> {{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</li>
-                </ul>
+            <section class="app-card">
+                <table class="details-table app-table">
+                    <tbody>
+                        <tr>
+                            <th>Étudiant</th>
+                            <td>{{ stage.eleveStage?.nomEleve ? stage.eleveStage.prenomEleve ~ ' ' ~ stage.eleveStage.nomEleve : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Professeur référent</th>
+                            <td>{{ stage.eleveStage?.stageEleve?.profReferent ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Professeur visite</th>
+                            <td>{{ stage.eleveStage?.stageEleve?.profVisite ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Entreprise</th>
+                            <td>{{ stage.entrepriseStage?.nomEntreprise ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('d/m/Y') : 'N/A' }} - {{ stage.dateFinStage ? stage.dateFinStage|date('d/m/Y') : 'N/A' }} (durée : {{ stage.dateFinStage ? stage.dateFinStage.diff(stage.dateDebutStage).days : 'N/A' }} jours)</td>
+                        </tr>
+                        <tr>
+                            <th>Remarque</th>
+                            <td>{{ stage.descriptifStage }}</td>
+                    </tbody>
+                </table>
 
-                <div class="stage-actions">
-                    <a href="{{ path('app_stage_edit', {'id': stage.id}) }}" class="app-button-primary">Modifier</a>
-                    <a href="{{ path('app_stage') }}" class="app-link">Retour</a>
+                <div class="action-row app-section-actions">
+                    <a class="app-link" href="{{ path('app_history', {'id': stage.id}) }}">Retour</a>
+                    <div class="danger-form">{{ include('stage/_delete_form.html.twig') }}</div>
                 </div>
-            </div>
+            </section>
         </section>
     </main>
-
 {% endblock %}

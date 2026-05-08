@@ -21,11 +21,7 @@ class Eleve
     #[ORM\Column(name: 'prenom_eleve', length: 150)]
     private ?string $prenomEleve = null;
 
-    #[ORM\Column(name: 'prof_referent', length: 150, nullable: true)]
-    private ?string $profReferent = null;
-
-    #[ORM\Column(name: 'prof_visite', length: 150, nullable: true)]
-    private ?string $profVisite = null;
+    
 
     #[ORM\ManyToOne(targetEntity: Option::class)]
     #[ORM\JoinColumn(name: 'option_eleve_id', nullable: true)]
@@ -74,28 +70,6 @@ class Eleve
     public function setPrenomEleve(string $prenomEleve): static
     {
         $this->prenomEleve = $prenomEleve;
-        return $this;
-    }
-
-    public function getProfReferent(): ?string
-    {
-        return $this->profReferent;
-    }
-
-    public function setProfReferent(?string $profReferent): static
-    {
-        $this->profReferent = $profReferent;
-        return $this;
-    }
-
-    public function getProfVisite(): ?string
-    {
-        return $this->profVisite;
-    }
-
-    public function setProfVisite(?string $profVisite): static
-    {
-        $this->profVisite = $profVisite;
         return $this;
     }
 

@@ -65,11 +65,11 @@
                         </tr>
                         <tr>
                             <th>Professeur référent</th>
-                            <td>{{ eleve.profReferent }}</td>
+                            <td>{{ eleve.stageEleve?.profReferent ?? 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Professeur visite</th>
-                            <td>{{ eleve.profVisite }}</td>
+                            <td>{{ eleve.stageEleve?.profVisite ?? 'N/A' }}</td>
                         </tr>
                     </tbody>
                 </table>

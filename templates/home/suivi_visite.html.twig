@@ -50,8 +50,8 @@
                                             N/A
                                         {% endif %}
                                     </td>
-                                    <td>{{ eleve.profReferent ?? 'N/A' }}</td>
-                                    <td>{{ eleve.profVisite ?? 'N/A' }}</td>
+                                    <td>{{ eleve.stageEleve?.profReferent ?? 'N/A' }}</td>
+                                    <td>{{ eleve.stageEleve?.profVisite ?? 'N/A' }}</td>
                                 </tr>
                             {% else %}
                                 <tr>

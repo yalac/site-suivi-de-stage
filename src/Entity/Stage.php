@@ -22,9 +22,6 @@ class Stage
     #[ORM\Column(name: 'date_fin_stage', type: 'date', nullable: true)]
     private ?\DateTimeInterface $dateFinStage = null;
 
-    #[ORM\Column(name: 'duree_stage', nullable: true)]
-    private ?int $dureeStage = null;
-
     #[ORM\ManyToOne(targetEntity: Entreprise::class)]
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
@@ -32,6 +29,12 @@ class Stage
     #[ORM\OneToOne(targetEntity: Eleve::class, inversedBy: 'stageEleve')]
     #[ORM\JoinColumn(name: 'eleve_stage_id', nullable: true)]
     private ?Eleve $eleveStage = null;
+
+    #[ORM\Column(name: 'prof_referent', length: 150, nullable: true)]
+    private ?string $profReferent = null;
+
+    #[ORM\Column(name: 'prof_visite', length: 150, nullable: true)]
+    private ?string $profVisite = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $archive = false;
@@ -74,17 +77,6 @@ class Stage
         return $this;
     }
 
-    public function getDureeStage(): ?int
-    {
-        return $this->dureeStage;
-    }
-
-    public function setDureeStage(?int $dureeStage): static
-    {
-        $this->dureeStage = $dureeStage;
-        return $this;
-    }
-
     public function getEntrepriseStage(): ?Entreprise
     {
         return $this->entrepriseStage;
@@ -104,6 +96,28 @@ class Stage
     public function setEleveStage(?Eleve $eleveStage): static
     {
         $this->eleveStage = $eleveStage;
+        return $this;
+    }
+
+    public function getProfReferent(): ?string
+    {
+        return $this->profReferent;
+    }
+
+    public function setProfReferent(?string $profReferent): static
+    {
+        $this->profReferent = $profReferent;
+        return $this;
+    }
+
+    public function getProfVisite(): ?string
+    {
+        return $this->profVisite;
+    }
+
+    public function setProfVisite(?string $profVisite): static
+    {
+        $this->profVisite = $profVisite;
         return $this;
     }
 

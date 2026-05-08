@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Stage;
 use App\Form\StageType;
 use App\Repository\StageRepository;
+use App\Repository\UtilisateurRepository;
 
 class StageController extends AbstractController
 {
@@ -30,10 +31,11 @@ class StageController extends AbstractController
 	}
 
 	#[Route('/stages/new', name: 'app_stage_new', methods: ['GET','POST'])]
-	public function new(Request $request, EntityManagerInterface $em): Response
+	public function new(Request $request, EntityManagerInterface $em, UtilisateurRepository $utilisateurRepository): Response
 	{
 		$stage = new Stage();
-		$form = $this->createForm(StageType::class, $stage);
+		$profChoices = $utilisateurRepository->findProfFullNames();
+		$form = $this->createForm(StageType::class, $stage, ['prof_choices' => $profChoices]);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
@@ -57,9 +59,10 @@ class StageController extends AbstractController
 	}
 
 	#[Route('/stages/{id}/edit', name: 'app_stage_edit', methods: ['GET','POST'])]
-	public function edit(Request $request, Stage $stage, EntityManagerInterface $em): Response
+	public function edit(Request $request, Stage $stage, EntityManagerInterface $em, UtilisateurRepository $utilisateurRepository): Response
 	{
-		$form = $this->createForm(StageType::class, $stage);
+		$profChoices = $utilisateurRepository->findProfFullNames();
+		$form = $this->createForm(StageType::class, $stage, ['prof_choices' => $profChoices]);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {

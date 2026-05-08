@@ -104,9 +104,17 @@
             {{ form_row(form.dateDebutStage) }}
             {{ form_row(form.dateFinStage) }}
         </div>
-        {{ form_row(form.entrepriseStage) }}
+        <div class="form-row">
+            {{ form_row(form.entrepriseStage) }}
+        </div>
+        <div class="form-row">
+            {{ form_row(form.eleveStage) }}
+        </div>
+        <div class="form-row">
+            {{ form_row(form.profReferent) }}
+            {{ form_row(form.profVisite) }}
+        </div>
         {{ form_row(form.descriptifStage) }}
-        {{ form_row(form.eleveStage) }}
         {{ form_rest(form) }}
 </div>
     {{ form_end(form) }}

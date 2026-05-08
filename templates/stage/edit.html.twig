@@ -12,43 +12,50 @@
             margin: 0;
         }
 
-        .form-stack {
-            display: grid;
-            gap: 0.8rem;
-        }
-
-        .form-actions {
+        .form-with-actions {
             display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-top: 0.8rem;
+            flex-direction: column;
+            gap: 0;
         }
 
-        .form-actions .app-button-primary {
+        .unified-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(104, 137, 197, 0.06);
+            margin-top: 0.5rem;
+        }
+
+        .unified-actions .app-button-primary {
             margin: 0;
+        }
+
+        .danger-form button {
+            padding: 0;
         }
     </style>
 {% endblock %}
 
 {% block body %}
     <main class="app-page">
-        <section class="app-container" style="max-width: 900px;">
+        <section class="app-container">
             <header class="page-header app-header">
                 <h1 class="app-title">Modifier le stage</h1>
-                <p class="app-subtitle">Mettez à jour les informations du stage.</p>
+                <p class="app-subtitle">Mettre à jour les informations du stage.</p>
             </header>
 
-            <div class="app-card">
-                {{ form_start(form) }}
-                    <div class="form-stack">{{ form_widget(form) }}</div>
-                    <div class="form-actions">
-                        <button type="submit" class="app-button-primary">Enregistrer</button>
-                        <a href="{{ path('app_stage') }}" class="app-link">Annuler</a>
+            <section class="app-card">
+                <div class="form-with-actions">
+                    {{ include('stage/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+                    <div class="unified-actions app-section-actions">
+                        <button type="submit" form="user-form-edit" class="app-button-primary">Enregistrer</button>
+                        <a class="app-link" href="{{ path('app_stage') }}">Annuler</a>
+                        <div class="danger-form">{{ include('stage/_delete_form.html.twig') }}</div>
                     </div>
-                {{ form_end(form) }}
-            </div>
+                </div>
+            </section>
         </section>
     </main>
-
 {% endblock %}

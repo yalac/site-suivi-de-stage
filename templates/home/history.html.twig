@@ -69,20 +69,26 @@
                     <table class="table-left">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Entreprise</th>
-                                <th>Date début</th>
-                                <th>Date fin</th>
-                                <th>Actions</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Étudiant</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Professeur référent</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Professeur visite</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Entreprise</th>
+                                <th width="15%" style="font-weight: bold; font-size: 20px;">Remarque</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Date</th>
+                                <th width="10%" style="font-weight: bold; font-size: 20px;">Durée en jours</th>
+                                <th width="25%" style="font-weight: bold; font-size: 20px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for stage in stages %}
                             <tr>
-                                <td>{{ stage.id }}</td>
+                                <td>{{ stage.eleveStage ? stage.eleveStage.prenomEleve ~ ' ' ~ stage.eleveStage.nomEleve : '-' }}</td>
+                                <td>{{ stage.profReferent ?: '-' }}</td>
+                                <td>{{ stage.profVisite ?: '-' }}</td>
                                 <td>{{ stage.entrepriseStage.nomEntreprise }}</td>
-                                <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('Y-m-d') : '—' }}</td>
-                                <td>{{ stage.dateFinStage ? stage.dateFinStage|date('Y-m-d') : '—' }}</td>
+                                <td>{{ stage.descriptifStage }}</td>
+                                <td>{{ stage.dateDebutStage ? stage.dateDebutStage|date('d/m/Y') : '—' }}<br />{{ stage.dateFinStage ? stage.dateFinStage|date('d/m/Y') : '—' }}</td>
+                                <td>{{ stage.dateFinStage and stage.dateDebutStage ? ((stage.dateFinStage|date('U')) - (stage.dateDebutStage|date('U'))) / 86400 : '—' }}</td>
                                 <td class="table-actions">
                                     <a class="app-link" href="{{ path('app_stage_show', {'id': stage.id}) }}">Voir</a>
                                 </td>

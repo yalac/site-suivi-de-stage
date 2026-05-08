@@ -33,6 +33,23 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Return full names of users whose Role.nomRole = 'PROF'
+     * @return string[]
+     */
+    public function findProfFullNames(): array
+    {
+        $qb = $this->createQueryBuilder('utilisateur')
+            ->select("CONCAT(utilisateur.prenomUtilisateur, ' ', utilisateur.nomUtilisateur) AS nomComplet")
+            ->join('utilisateur.roleUtilisateur', 'role')
+            ->where("UPPER(role.nomRole) = :prof")
+            ->setParameter('prof', 'PROF')
+            ->orderBy('nomComplet', 'ASC');
+
+        $rows = $qb->getQuery()->getScalarResult();
+        return array_map(fn($r) => $r['nomComplet'], $rows);
+    }
+
     //    /**
     //     * @return Utilisateur[] Returns an array of Utilisateur objects
     //     */
