@@ -133,8 +133,8 @@
                                 <td class="table-actions">
                                     {{ include('_partials/delete_form.html.twig', {
                                         route_name: 'app_history_delete',
-                                        route_params: {'type': historique.historyType, 'id': historique.id},
-                                        csrf_token_id: 'delete_history_' ~ historique.historyType ~ '_' ~ historique.id,
+                                        route_params: {'id': historique.id},
+                                        csrf_token_id: 'delete_history_' ~ historique.id,
                                         confirm_message: 'Supprimer cette entrée d\'historique ?',
                                     }) }}
                                 </td>

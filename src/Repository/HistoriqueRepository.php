@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use App\Entity\HistoriqueStage;
+use App\Entity\Historique;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<HistoriqueStage>
+ * @extends ServiceEntityRepository<Historique>
  */
-class HistoriqueStageRepository extends ServiceEntityRepository
+class HistoriqueRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, HistoriqueStage::class);
+        parent::__construct($registry, Historique::class);
     }
 }

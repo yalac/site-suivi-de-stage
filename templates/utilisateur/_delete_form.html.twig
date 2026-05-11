@@ -1,6 +1,8 @@
-{{ include('_partials/delete_form.html.twig', {
-    route_name: 'app_utilisateur_delete',
-    route_params: {'id': utilisateur.id},
-    csrf_token_id: 'delete' ~ utilisateur.id,
-    confirm_message: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
-}) }}
+{% if app.user is null or app.user.id != utilisateur.id %}
+    {{ include('_partials/delete_form.html.twig', {
+        route_name: 'app_utilisateur_delete',
+        route_params: {'id': utilisateur.id},
+        csrf_token_id: 'delete' ~ utilisateur.id,
+        confirm_message: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
+    }) }}
+{% endif %}
