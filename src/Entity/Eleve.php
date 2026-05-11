@@ -23,7 +23,7 @@ class Eleve
 
     
 
-    #[ORM\ManyToOne(targetEntity: Option::class)]
+    #[ORM\ManyToOne(targetEntity: Option::class, inversedBy: 'eleves')]
     #[ORM\JoinColumn(name: 'option_eleve_id', nullable: true)]
     private ?Option $optionEleve = null;
 
@@ -31,7 +31,8 @@ class Eleve
     #[ORM\JoinColumn(name: 'promotion_eleve_id', nullable: true)]
     private ?Promotion $promotionEleve = null;
 
-    #[ORM\OneToOne(mappedBy: 'eleveStage', targetEntity: Stage::class)]
+    #[ORM\OneToOne(targetEntity: Stage::class, inversedBy: 'eleveStage')]
+    #[ORM\JoinColumn(name: 'stage_eleve_id', nullable: true, onDelete: 'SET NULL')]
     private ?Stage $stageEleve = null;
 
     /**

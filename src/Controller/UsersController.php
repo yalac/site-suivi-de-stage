@@ -82,10 +82,10 @@ final class UsersController extends AbstractController
     }
 
     #[Route('/Eleve/{id}', name: 'app_eleve_delete', methods: ['POST'])]
-    public function deleteEleve(Request $request, Eleve $eleve, EntityManagerInterface $entityManager, StageRepository $stageRepository): Response
+    public function deleteEleve(Request $request, Eleve $eleve, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$eleve->getId(), $request->getPayload()->getString('_token'))) {
-            if ($stageRepository->findOneBy(['eleveStage' => $eleve]) !== null) {
+            if ($eleve->getStageEleve() !== null) {
                 $this->addFlash('warning', 'Impossible de supprimer cet élève : un stage correspond déjà à cet élève.');
 
                 return $this->redirectToUsersIndex();

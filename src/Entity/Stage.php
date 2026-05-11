@@ -26,8 +26,7 @@ class Stage
     #[ORM\JoinColumn(name: 'entreprise_stage_id', nullable: false)]
     private ?Entreprise $entrepriseStage = null;
 
-    #[ORM\OneToOne(targetEntity: Eleve::class, inversedBy: 'stageEleve')]
-    #[ORM\JoinColumn(name: 'eleve_stage_id', nullable: true)]
+    #[ORM\OneToOne(mappedBy: 'stageEleve', targetEntity: Eleve::class)]
     private ?Eleve $eleveStage = null;
 
     #[ORM\Column(name: 'prof_referent', length: 150, nullable: true)]
