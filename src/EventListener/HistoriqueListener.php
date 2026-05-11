@@ -6,10 +6,7 @@ use App\Entity\Stage;
 use App\Entity\Eleve;
 use App\Entity\Utilisateur;
 use App\Entity\Entreprise;
-use App\Entity\HistoriqueStage;
-use App\Entity\HistoriqueEleve;
-use App\Entity\HistoriqueUtilisateur;
-use App\Entity\HistoriqueEntreprise;
+use App\Entity\Historique;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -29,13 +26,13 @@ class HistoriqueListener
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof Stage) {
-                $this->persistHistory($em, $this->createStageHistory($entity, 'créé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'créé', 'stage'));
             } elseif ($entity instanceof Eleve) {
-                $this->persistHistory($em, $this->createEleveHistory($entity, 'créé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'créé', 'eleve'));
             } elseif ($entity instanceof Utilisateur) {
-                $this->persistHistory($em, $this->createUtilisateurHistory($entity, 'créé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'créé', 'utilisateur'));
             } elseif ($entity instanceof Entreprise) {
-                $this->persistHistory($em, $this->createEntrepriseHistory($entity, 'créé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'créé', 'entreprise'));
             }
         }
 
@@ -44,32 +41,32 @@ class HistoriqueListener
 
             if ($entity instanceof Stage && !empty($changeSet)) {
                 foreach ($changeSet as $field => [$oldValue, $newValue]) {
-                    $this->persistHistory($em, $this->createStageHistory($entity, 'modifié', $field, $oldValue, $newValue));
+                    $this->persistHistory($em, $this->createHistory($entity, 'modifié', 'stage', $field, $oldValue, $newValue));
                 }
             } elseif ($entity instanceof Eleve && !empty($changeSet)) {
                 foreach ($changeSet as $field => [$oldValue, $newValue]) {
-                    $this->persistHistory($em, $this->createEleveHistory($entity, 'modifié', $field, $oldValue, $newValue));
+                    $this->persistHistory($em, $this->createHistory($entity, 'modifié', 'eleve', $field, $oldValue, $newValue));
                 }
             } elseif ($entity instanceof Utilisateur && !empty($changeSet)) {
                 foreach ($changeSet as $field => [$oldValue, $newValue]) {
-                    $this->persistHistory($em, $this->createUtilisateurHistory($entity, 'modifié', $field, $oldValue, $newValue));
+                    $this->persistHistory($em, $this->createHistory($entity, 'modifié', 'utilisateur', $field, $oldValue, $newValue));
                 }
             } elseif ($entity instanceof Entreprise && !empty($changeSet)) {
                 foreach ($changeSet as $field => [$oldValue, $newValue]) {
-                    $this->persistHistory($em, $this->createEntrepriseHistory($entity, 'modifié', $field, $oldValue, $newValue));
+                    $this->persistHistory($em, $this->createHistory($entity, 'modifié', 'entreprise', $field, $oldValue, $newValue));
                 }
             }
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
             if ($entity instanceof Stage) {
-                $this->persistHistory($em, $this->createStageHistory($entity, 'supprimé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'supprimé', 'stage'));
             } elseif ($entity instanceof Eleve) {
-                $this->persistHistory($em, $this->createEleveHistory($entity, 'supprimé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'supprimé', 'eleve'));
             } elseif ($entity instanceof Utilisateur) {
-                $this->persistHistory($em, $this->createUtilisateurHistory($entity, 'supprimé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'supprimé', 'utilisateur'));
             } elseif ($entity instanceof Entreprise) {
-                $this->persistHistory($em, $this->createEntrepriseHistory($entity, 'supprimé'));
+                $this->persistHistory($em, $this->createHistory($entity, 'supprimé', 'entreprise'));
             }
         }
     }
@@ -103,78 +100,43 @@ class HistoriqueListener
         $em->getUnitOfWork()->computeChangeSet($em->getClassMetadata($historique::class), $historique);
     }
 
-    private function createStageHistory(Stage $stage, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueStage
+    private function createHistory(Stage|Eleve|Utilisateur|Entreprise $entity, string $typeAction, string $typeEntite, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): Historique
     {
         if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
-            $newValue = $this->describeStage($stage);
+            $newValue = match ($entity::class) {
+                Stage::class => $this->describeStage($entity),
+                Eleve::class => $this->describeEleve($entity),
+                Utilisateur::class => $this->describeUtilisateur($entity),
+                Entreprise::class => $this->describeEntreprise($entity),
+            };
         } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
-            $oldValue = $this->describeStage($stage);
+            $oldValue = match ($entity::class) {
+                Stage::class => $this->describeStage($entity),
+                Eleve::class => $this->describeEleve($entity),
+                Utilisateur::class => $this->describeUtilisateur($entity),
+                Entreprise::class => $this->describeEntreprise($entity),
+            };
         }
 
-        $historique = new HistoriqueStage();
-        $historique->setStage($stage);
-        $historique->setUtilisateur($this->getConnectedUser());
-        $historique->setDateModification(new \DateTimeImmutable());
-        $historique->setTypeAction($typeAction);
-        $historique->setChampModifie($field);
-        $historique->setAncienneValeur($this->convertValueToString($oldValue));
-        $historique->setNouvelleValeur($this->convertValueToString($newValue));
-
-        return $historique;
-    }
-
-    private function createEleveHistory(Eleve $eleve, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueEleve
-    {
-        if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
-            $newValue = $this->describeEleve($eleve);
-        } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
-            $oldValue = $this->describeEleve($eleve);
+        $historique = new Historique();
+        
+        if ($entity instanceof Stage) {
+            $historique->setStage($entity);
+        } elseif ($entity instanceof Eleve) {
+            $historique->setEleve($entity);
+        } elseif ($entity instanceof Utilisateur) {
+            $historique->setUtilisateur($this->getConnectedUser());
+        } elseif ($entity instanceof Entreprise) {
+            $historique->setEntreprise($entity);
         }
-
-        $historique = new HistoriqueEleve();
-        $historique->setEleve($eleve);
-        $historique->setUtilisateur($this->getConnectedUser());
-        $historique->setDateModification(new \DateTimeImmutable());
-        $historique->setTypeAction($typeAction);
-        $historique->setChampModifie($field);
-        $historique->setAncienneValeur($this->convertValueToString($oldValue));
-        $historique->setNouvelleValeur($this->convertValueToString($newValue));
-
-        return $historique;
-    }
-
-    private function createUtilisateurHistory(Utilisateur $utilisateur, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueUtilisateur
-    {
-        if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
-            $newValue = $this->describeUtilisateur($utilisateur);
-        } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
-            $oldValue = $this->describeUtilisateur($utilisateur);
+        
+        if (!($entity instanceof Utilisateur)) {
+            $historique->setUtilisateur($this->getConnectedUser());
         }
-
-        $historique = new HistoriqueUtilisateur();
-        $historique->setUtilisateur($this->getConnectedUser());
+        
         $historique->setDateModification(new \DateTimeImmutable());
         $historique->setTypeAction($typeAction);
-        $historique->setChampModifie($field);
-        $historique->setAncienneValeur($this->convertValueToString($oldValue));
-        $historique->setNouvelleValeur($this->convertValueToString($newValue));
-
-        return $historique;
-    }
-
-    private function createEntrepriseHistory(Entreprise $entreprise, string $typeAction, ?string $field = null, mixed $oldValue = null, mixed $newValue = null): HistoriqueEntreprise
-    {
-        if ($typeAction === 'créé' && $oldValue === null && $newValue === null) {
-            $newValue = $this->describeEntreprise($entreprise);
-        } elseif ($typeAction === 'supprimé' && $oldValue === null && $newValue === null) {
-            $oldValue = $this->describeEntreprise($entreprise);
-        }
-
-        $historique = new HistoriqueEntreprise();
-        $historique->setEntreprise($entreprise);
-        $historique->setUtilisateur($this->getConnectedUser());
-        $historique->setDateModification(new \DateTimeImmutable());
-        $historique->setTypeAction($typeAction);
+        $historique->setTypeEntite($typeEntite);
         $historique->setChampModifie($field);
         $historique->setAncienneValeur($this->convertValueToString($oldValue));
         $historique->setNouvelleValeur($this->convertValueToString($newValue));

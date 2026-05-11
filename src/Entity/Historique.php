@@ -2,22 +2,30 @@
 
 namespace App\Entity;
 
-use App\Repository\HistoriqueEntrepriseRepository;
+use App\Repository\HistoriqueRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: HistoriqueEntrepriseRepository::class)]
-#[ORM\Table(name: 'historique_entreprise')]
-class HistoriqueEntreprise
+#[ORM\Entity(repositoryClass: HistoriqueRepository::class)]
+#[ORM\Table(name: 'historique')]
+class Historique
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(targetEntity: Eleve::class)]
+    #[ORM\JoinColumn(name: 'eleve_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Eleve $eleve = null;
+
     #[ORM\ManyToOne(targetEntity: Entreprise::class)]
     #[ORM\JoinColumn(name: 'entreprise_id', nullable: true, onDelete: 'SET NULL')]
     private ?Entreprise $entreprise = null;
+
+    #[ORM\ManyToOne(targetEntity: Stage::class)]
+    #[ORM\JoinColumn(name: 'stage_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Stage $stage = null;
 
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
     #[ORM\JoinColumn(name: 'utilisateur_id', nullable: true, onDelete: 'SET NULL')]
@@ -27,7 +35,7 @@ class HistoriqueEntreprise
     private ?\DateTimeImmutable $dateModification = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $typeAction = null; // 'créé', 'modifié', 'supprimé'
+    private ?string $typeAction = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $champModifie = null;
@@ -38,9 +46,23 @@ class HistoriqueEntreprise
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $nouvelleValeur = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $typeEntite = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getEleve(): ?Eleve
+    {
+        return $this->eleve;
+    }
+
+    public function setEleve(?Eleve $eleve): static
+    {
+        $this->eleve = $eleve;
+        return $this;
     }
 
     public function getEntreprise(): ?Entreprise
@@ -51,6 +73,17 @@ class HistoriqueEntreprise
     public function setEntreprise(?Entreprise $entreprise): static
     {
         $this->entreprise = $entreprise;
+        return $this;
+    }
+
+    public function getStage(): ?Stage
+    {
+        return $this->stage;
+    }
+
+    public function setStage(?Stage $stage): static
+    {
+        $this->stage = $stage;
         return $this;
     }
 
@@ -117,6 +150,17 @@ class HistoriqueEntreprise
     public function setNouvelleValeur(?string $nouvelleValeur): static
     {
         $this->nouvelleValeur = $nouvelleValeur;
+        return $this;
+    }
+
+    public function getTypeEntite(): ?string
+    {
+        return $this->typeEntite;
+    }
+
+    public function setTypeEntite(string $typeEntite): static
+    {
+        $this->typeEntite = $typeEntite;
         return $this;
     }
 }
