@@ -94,7 +94,18 @@ class Stage
 
     public function setEleveStage(?Eleve $eleveStage): static
     {
+        // unset the owning side of the relation if necessary
+        if ($eleveStage === null && $this->eleveStage !== null) {
+            $this->eleveStage->setStageEleve(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($eleveStage !== null && $eleveStage->getStageEleve() !== $this) {
+            $eleveStage->setStageEleve($this);
+        }
+
         $this->eleveStage = $eleveStage;
+
         return $this;
     }
 
